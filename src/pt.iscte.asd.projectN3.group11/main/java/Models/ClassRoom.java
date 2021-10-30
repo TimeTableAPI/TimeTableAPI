@@ -15,7 +15,13 @@ public class ClassRoom {
     final int exam_capacity;
     final int number_characteristics;
 
-    public ClassRoom(LinkedList<Boolean> characteristics, String building, String classroomName, int normal_capacity, int exam_capacity, int number_characteristics) {
+    public ClassRoom(LinkedList<Boolean> characteristics,
+                     String building,
+                     String classroomName,
+                     int normal_capacity,
+                     int exam_capacity,
+                     int number_characteristics
+    ) {
         this.characteristics = characteristics;
         this.building = building;
         this.classroomName = classroomName;
