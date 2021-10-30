@@ -18,22 +18,23 @@ public class ClassRoomLoad {
     public static void main(String[] args) {
 //https://www.callicoder.com/java-read-write-csv-file-opencsv/
         try (
-                Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_FILE_PATH));
-                CSVReader csvReader = new CSVReader(reader)
+                final Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_FILE_PATH));
+                final CSVReader csvReader = new CSVReader(reader)
         ) {
-            LinkedList<ClassRoom> classRooms = new LinkedList<>();
+            final LinkedList<ClassRoom> classRooms = new LinkedList<>();
+            final String[] headers = csvReader.readNext();
+
             String[] nextRecord;
-            String[] headers = csvReader.readNext();
             if (Arrays.equals(headers, ClassRoom.CHARACTERISTICS_LIST)) {
                 System.out.println("ClassRoomLoad.main::Arrays are equal, loading...");
 
                 while ((nextRecord = csvReader.readNext()) != null) {
-                    String building = nextRecord[0];
-                    String classroomName = nextRecord[1];
-                    int normal_capacity = Integer.parseInt(nextRecord[2]);
-                    int exam_capacity = Integer.parseInt(nextRecord[3]);
-                    int number_characteristics = Integer.parseInt(nextRecord[4]);
-                    LinkedList<Boolean> characteristics = new LinkedList<>();
+                    final String building = nextRecord[0];
+                    final String classroomName = nextRecord[1];
+                    final int normal_capacity = Integer.parseInt(nextRecord[2]);
+                    final int exam_capacity = Integer.parseInt(nextRecord[3]);
+                    final int number_characteristics = Integer.parseInt(nextRecord[4]);
+                    final LinkedList<Boolean> characteristics = new LinkedList<>();
 
                     for (int index = 5; index < nextRecord.length; index++) {
                         if (nextRecord[index].equals("X")) {

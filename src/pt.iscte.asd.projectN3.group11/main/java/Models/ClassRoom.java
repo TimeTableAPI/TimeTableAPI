@@ -1,7 +1,6 @@
 package Models;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class ClassRoom {
     public static final int NUMBER_OF_CHARACTERISTICS = 30;
@@ -31,7 +30,7 @@ public class ClassRoom {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "ClassRoom{" +
                 " building='" + building + '\'' +
                 ", classroomName='" + classroomName + '\'' +
