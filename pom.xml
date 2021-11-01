@@ -7,7 +7,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>ADS_Project_3</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <build>
         <plugins>
             <plugin>
