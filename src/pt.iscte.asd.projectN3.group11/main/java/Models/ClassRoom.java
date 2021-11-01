@@ -25,7 +25,7 @@ public class ClassRoom {
      *
      * */
     public static final int NUMBER_OF_CHARACTERISTICS = 30;
-    public static final String[] CHARACTERISTICS_LIST = new String[]{"Edifício", "Nome sala", "Capacidade Normal", "Capacidade Exame", "Nº características", "Anfiteatro aulas", "Apoio técnico eventos", "Arq 1", "Arq 2", "Arq 3", "Arq 4", "Arq 5", "Arq 6", "Arq 9", "BYOD (Bring Your Own Device)", "Focus Group", "Horário sala visível portal público", "Laboratório de Arquitectura de Computadores I", "Laboratório de Arquitectura de Computadores II", "Laboratório de Bases de Engenharia", "Laboratório de Electrónica", "Laboratório de Informática", "Laboratório de Jornalismo", "Laboratório de Redes de Computadores I", "Laboratório de Redes de Computadores II", "Laboratório de Telecomunicações", "Sala Aulas Mestrado", "Sala Aulas Mestrado Plus", "Sala NEE", "Sala Provas", "Sala Reunião", "Sala de Arquitectura", "Sala de Aulas normal", "videoconferencia", "Átrio"};
+    public static final String[] CHARACTERISTICS_LIST = new String[]{"Anfiteatro aulas", "Apoio técnico eventos", "Arq 1", "Arq 2", "Arq 3", "Arq 4", "Arq 5", "Arq 6", "Arq 9", "BYOD (Bring Your Own Device)", "Focus Group", "Horário sala visível portal público", "Laboratório de Arquitectura de Computadores I", "Laboratório de Arquitectura de Computadores II", "Laboratório de Bases de Engenharia", "Laboratório de Electrónica", "Laboratório de Informática", "Laboratório de Jornalismo", "Laboratório de Redes de Computadores I", "Laboratório de Redes de Computadores II", "Laboratório de Telecomunicações", "Sala Aulas Mestrado", "Sala Aulas Mestrado Plus", "Sala NEE", "Sala Provas", "Sala Reunião", "Sala de Arquitectura", "Sala de Aulas normal", "videoconferencia", "Átrio"};
 
     final LinkedList<Boolean> characteristics;
 
@@ -35,12 +35,13 @@ public class ClassRoom {
     final int exam_capacity;
     final int number_characteristics;
 
-    public ClassRoom(LinkedList<Boolean> characteristics,
-                     String building,
-                     String classroomName,
-                     int normal_capacity,
-                     int exam_capacity,
-                     int number_characteristics
+    public ClassRoom(
+            LinkedList<Boolean> characteristics,
+            String building,
+            String classroomName,
+            int normal_capacity,
+            int exam_capacity,
+            int number_characteristics
     ) {
         this.characteristics = characteristics;
         this.building = building;
