@@ -1,14 +1,12 @@
-package Models;
-
-import org.junit.jupiter.api.function.Executable;
+package pt.iscte.asd.projectN3.group11.models;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ClassRoomTest {
-    ClassRoom classRoom;
+class ClassroomTest {
+    Classroom classRoom;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -50,7 +48,7 @@ class ClassRoomTest {
         final int exam_capacity=10;
         final int number_characteristics=2;
 
-        classRoom = new ClassRoom(characteristics,
+        classRoom = new Classroom(characteristics,
                 building,
                 classroomName,
                 normal_capacity,

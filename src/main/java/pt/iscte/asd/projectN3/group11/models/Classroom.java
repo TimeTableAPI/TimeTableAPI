@@ -1,8 +1,8 @@
-package Models;
+package pt.iscte.asd.projectN3.group11.models;
 
 import java.util.LinkedList;
 
-public class ClassRoom {
+public class Classroom {
     /**
      * <p>ClassRoom is a class used to hold all the proprieties belonging to the classRoom of a School or University </p>
      * <p>To hold all of these proprieties the class has some {@link String} and {@link Integer} final variables like the ones below</p>
@@ -21,7 +21,7 @@ public class ClassRoom {
      *     <li>etc...</li>
      * </ul>
      *
-     * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link ClassRoom#NUMBER_OF_CHARACTERISTICS}</p>
+     * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
      *
      * */
     public static final int NUMBER_OF_CHARACTERISTICS = 30;
@@ -31,24 +31,24 @@ public class ClassRoom {
 
     final String building;
     final String classroomName;
-    final int normal_capacity;
-    final int exam_capacity;
-    final int number_characteristics;
+    final int normalCapacity;
+    final int examCapacity;
+    final int numberCharacteristics;
 
-    public ClassRoom(
+    public Classroom(
             LinkedList<Boolean> characteristics,
             String building,
             String classroomName,
-            int normal_capacity,
-            int exam_capacity,
-            int number_characteristics
+            int normalCapacity,
+            int examCapacity,
+            int numberCharacteristics
     ) {
         this.characteristics = characteristics;
         this.building = building;
         this.classroomName = classroomName;
-        this.normal_capacity = normal_capacity;
-        this.exam_capacity = exam_capacity;
-        this.number_characteristics = number_characteristics;
+        this.normalCapacity = normalCapacity;
+        this.examCapacity = examCapacity;
+        this.numberCharacteristics = numberCharacteristics;
     }
 
     @Override
@@ -56,63 +56,63 @@ public class ClassRoom {
         return "ClassRoom{" +
                 " building='" + building + '\'' +
                 ", classroomName='" + classroomName + '\'' +
-                ", normal_capacity=" + normal_capacity +
-                ", exam_capacity=" + exam_capacity +
-                ", number_characteristics=" + number_characteristics +
+                ", normal_capacity=" + normalCapacity +
+                ", exam_capacity=" + examCapacity +
+                ", number_characteristics=" + numberCharacteristics +
                 ", characteristics=" + characteristics +
                 '}';
     }
 /**
- * @return {@link ClassRoom#CHARACTERISTICS_LIST}
+ * @return {@link Classroom#CHARACTERISTICS_LIST}
  * */
-    public LinkedList<Boolean> getCharacteristics() {
+    public final LinkedList<Boolean> getCharacteristics() {
         return characteristics;
     }
 
 /** Retrieves the Building where the classRoom is located
- * @return {@link ClassRoom#building}
+ * @return {@link Classroom#building}
  * */
-    public String getBuilding() {
+    public final String getBuilding() {
         return building;
     }
 
 /**Retrieves the classRoom's name
- * @return {@link ClassRoom#classroomName}
+ * @return {@link Classroom#classroomName}
  * */
-    public String getClassroomName() {
+    public final String getClassroomName() {
         return classroomName;
     }
 
 /**Retrieves the normal capacity of the classRoom
- * @return {@link ClassRoom#normal_capacity}
+ * @return {@link Classroom#normalCapacity}
  * */
-    public int getNormal_capacity() {
-        return normal_capacity;
+    public final int getNormalCapacity() {
+        return normalCapacity;
     }
 
 /**Retrieves the capacity of the classRoom if an exam where to occur in it
- * @return {@link ClassRoom#exam_capacity}
+ * @return {@link Classroom#examCapacity}
  * */
-    public int getExam_capacity() {
-        return exam_capacity;
+    public final int getExamCapacity() {
+        return examCapacity;
     }
 
 /**Retrieves the number of characteristics/proprieties the classRoom fulfills
- * @return {@link ClassRoom#number_characteristics}
+ * @return {@link Classroom#numberCharacteristics}
  * */
-    public int getNumber_characteristics() {
-        return number_characteristics;
+    public final int getNumberCharacteristics() {
+        return numberCharacteristics;
     }
 /**
  *<p> Retrieves whether or not the classRoom fulfills the input characteristic</p>
- * <p> If the input characteristic is not in the static {@link ClassRoom#CHARACTERISTICS_LIST} the method throws {@link IllegalArgumentException} </p>
+ * <p> If the input characteristic is not in the static {@link Classroom#CHARACTERISTICS_LIST} the method throws {@link IllegalArgumentException} </p>
  *
- * @param characteristic a String that represents a characteristic the classRoom may have, like if it is a Lab for example, the full list can be seen here {@link ClassRoom#CHARACTERISTICS_LIST}
+ * @param characteristic a String that represents a characteristic the classRoom may have, like if it is a Lab for example, the full list can be seen here {@link Classroom#CHARACTERISTICS_LIST}
  * @return <b>true</b> if classRoom fulfills the characteristic and <b>false</b> if it doesn't
  * */
-    public boolean hasCharacteristic(String characteristic) throws IllegalArgumentException{
-        for(int i =0 ;i<ClassRoom.CHARACTERISTICS_LIST.length;i++){
-            if(ClassRoom.CHARACTERISTICS_LIST[i].equals(characteristic)){
+    public final boolean hasCharacteristic(String characteristic) throws IllegalArgumentException{
+        for(int i = 0; i< Classroom.CHARACTERISTICS_LIST.length; i++){
+            if(Classroom.CHARACTERISTICS_LIST[i].equals(characteristic)){
                 return this.characteristics.get(i);
             }
         }

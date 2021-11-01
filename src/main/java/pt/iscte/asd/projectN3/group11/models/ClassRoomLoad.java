@@ -1,4 +1,4 @@
-package Models;
+package pt.iscte.asd.projectN3.group11.models;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -13,19 +13,18 @@ import java.util.LinkedList;
 public class ClassRoomLoad {
 
 
-    private static final String SAMPLE_CSV_FILE_PATH = "./src/pt.iscte.asd.projectN3.group11/main/resources/ADS - Caracterizacao das salas.csv";
+    private static final String SAMPLE_CSV_FILE_PATH = "./src/main/resources/ADS - Caracterizacao das salas.csv";
 
     public static void main(String[] args) {
-//https://www.callicoder.com/java-read-write-csv-file-opencsv/
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_FILE_PATH));
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
-            final LinkedList<ClassRoom> classRooms = new LinkedList<>();
+            final LinkedList<Classroom> classrooms = new LinkedList<>();
             final String[] headers = csvReader.readNext();
 
             String[] nextRecord;
-            if (Arrays.equals(headers, ClassRoom.CHARACTERISTICS_LIST)) {
+            if (Arrays.equals(headers, Classroom.CHARACTERISTICS_LIST)) {
                 System.out.println("ClassRoomLoad.main::Arrays are equal, loading...");
 
                 while ((nextRecord = csvReader.readNext()) != null) {
@@ -43,10 +42,10 @@ public class ClassRoomLoad {
                             characteristics.add(false);
                         }
                     }
-                    ClassRoom classN = new ClassRoom(characteristics, building, classroomName, normal_capacity, exam_capacity, number_characteristics);
-                    classRooms.add(classN);
+                    Classroom classN = new Classroom(characteristics, building, classroomName, normal_capacity, exam_capacity, number_characteristics);
+                    classrooms.add(classN);
                 }
-                System.out.println("ClassRoomLoad.main::classRooms = " + classRooms);
+                System.out.println("ClassRoomLoad.main::classRooms = " + classrooms);
             } else {
                 System.out.println("ClassRoomLoad.main::Arrays are NOT equal, exiting...");
 
