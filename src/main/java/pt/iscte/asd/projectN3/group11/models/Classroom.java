@@ -36,12 +36,12 @@ public class Classroom {
     final int numberCharacteristics;
 
     public Classroom(
-            LinkedList<Boolean> characteristics,
-            String building,
-            String classroomName,
-            int normalCapacity,
-            int examCapacity,
-            int numberCharacteristics
+            final LinkedList<Boolean> characteristics,
+            final String building,
+            final String classroomName,
+            final int normalCapacity,
+            final int examCapacity,
+            final int numberCharacteristics
     ) {
         this.characteristics = characteristics;
         this.building = building;
@@ -110,7 +110,7 @@ public class Classroom {
  * @param characteristic a String that represents a characteristic the classRoom may have, like if it is a Lab for example, the full list can be seen here {@link Classroom#CHARACTERISTICS_LIST}
  * @return <b>true</b> if classRoom fulfills the characteristic and <b>false</b> if it doesn't
  * */
-    public final boolean hasCharacteristic(String characteristic) throws IllegalArgumentException{
+    public final boolean hasCharacteristic(final String characteristic) throws IllegalArgumentException{
         for(int i = 0; i< Classroom.CHARACTERISTICS_LIST.length; i++){
             if(Classroom.CHARACTERISTICS_LIST[i].equals(characteristic)){
                 return this.characteristics.get(i);
