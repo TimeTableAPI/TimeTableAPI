@@ -1,13 +1,16 @@
 package pt.iscte.asd.projectN3.group11.models;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Class {
-    private final String course;
-    private final String unit;
+    private final LinkedList<String> courses;
+    private final LinkedList<String> units;
     private final String shift;
-    private final String classOfCourse;
-    private final String studentNum;
-    private final String shiftsWithFreeSpots;
-    private final String shiftsWithMoreThanTheCapacity;
+    private final LinkedList<String> classesOfCourse;
+    private final int numberOfStudentsInClass;
+    private final int shiftsWithFreeSpots;
+    private final int shiftsWithMoreThanTheCapacity;
     private final String weekday;
     private final String beginningHour;
     private final String endHour;
@@ -15,14 +18,14 @@ public class Class {
     private final String askedCharacteristics;
     private final String classroom;
     private final String capacity;
-    private final String realCharacteristics;
+    private final LinkedList<String> realCharacteristics;
 
-    public Class(final String course, final String unit, final String shift, final String classOfCourse, final String studentNum, final String shiftsWithFreeSpots, final String shiftsWithMoreThanTheCapacity, final String weekday, final String beginningHour, final String endHour, final String monthDay, final String askedCharacteristics, final String classroom, final String capacity, final String realCharacteristics) {
-        this.course = course;
-        this.unit = unit;
+    public Class(final List<String> courses, final List<String> units, final String shift, final List<String> classesOfCourse, final int numberOfStudentsInClass, final int shiftsWithFreeSpots, final int shiftsWithMoreThanTheCapacity, final String weekday, final String beginningHour, final String endHour, final String monthDay, final String askedCharacteristics, final String classroom, final String capacity, final List<String> realCharacteristics) {
+        this.courses = new LinkedList<>(courses);
+        this.units = new LinkedList<>(units);
         this.shift = shift;
-        this.classOfCourse = classOfCourse;
-        this.studentNum = studentNum;
+        this.classesOfCourse =  new LinkedList<>(classesOfCourse);
+        this.numberOfStudentsInClass = numberOfStudentsInClass;
         this.shiftsWithFreeSpots = shiftsWithFreeSpots;
         this.shiftsWithMoreThanTheCapacity = shiftsWithMoreThanTheCapacity;
         this.weekday = weekday;
@@ -32,17 +35,17 @@ public class Class {
         this.askedCharacteristics = askedCharacteristics;
         this.classroom = classroom;
         this.capacity = capacity;
-        this.realCharacteristics = realCharacteristics;
+        this.realCharacteristics = new LinkedList<>(realCharacteristics);
     }
 
     @Override
     public final String toString() {
-        return "Timetable{" +
-                "course='" + course + '\'' +
-                ", unit='" + unit + '\'' +
+        return "Class{" +
+                "courses=" + courses +
+                ", units=" + units +
                 ", shift='" + shift + '\'' +
-                ", classOfCourse='" + classOfCourse + '\'' +
-                ", studentNum='" + studentNum + '\'' +
+                ", classesOfCourse=" + classesOfCourse +
+                ", numberOfStudentsInClass='" + numberOfStudentsInClass + '\'' +
                 ", shiftsWithFreeSpots='" + shiftsWithFreeSpots + '\'' +
                 ", shiftsWithMoreThanTheCapacity='" + shiftsWithMoreThanTheCapacity + '\'' +
                 ", weekday='" + weekday + '\'' +
@@ -52,24 +55,24 @@ public class Class {
                 ", askedCharacteristics='" + askedCharacteristics + '\'' +
                 ", classroom='" + classroom + '\'' +
                 ", capacity='" + capacity + '\'' +
-                ", realCharacteristics='" + realCharacteristics + '\'' +
+                ", realCharacteristics=" + realCharacteristics +
                 '}';
     }
 
     /**
      * Gets Course.
-     * @return {@link Class#course}
+     * @return {@link Class#courses}
      */
-    public final String getCourse() {
-        return course;
+    public final LinkedList<String> getCourses() {
+        return courses;
     }
 
     /**
      * Gets Unit.
-     * @return {@link Class#unit}
+     * @return {@link Class#units}
      */
-    public final String getUnit() {
-        return unit;
+    public final LinkedList<String> getUnits() {
+        return units;
     }
 
     /**
@@ -82,25 +85,25 @@ public class Class {
 
     /**
      * Gets Class of course.
-     * @return {@link Class#classOfCourse}
+     * @return {@link Class#classesOfCourse}
      */
-    public final String getClassOfCourse() {
-        return classOfCourse;
+    public final LinkedList<String> getClassesOfCourse() {
+        return classesOfCourse;
     }
 
     /**
      * Gets the number of students.
-     * @return {@link Class#studentNum}
+     * @return {@link Class#numberOfStudentsInClass}
      */
-    public final String getStudentNum() {
-        return studentNum;
+    public final int getNumberOfStudentsInClass() {
+        return numberOfStudentsInClass;
     }
 
     /**
      * Gets Shifts with free spots.
      * @return {@link Class#shiftsWithFreeSpots}
      */
-    public final String getShiftsWithFreeSpots() {
+    public final int getShiftsWithFreeSpots() {
         return shiftsWithFreeSpots;
     }
 
@@ -108,7 +111,7 @@ public class Class {
      * Gets Shifts with more students than the capacity.
      * @return {@link Class#shiftsWithMoreThanTheCapacity}
      */
-    public final String getShiftsWithMoreThanTheCapacity() {
+    public final int getShiftsWithMoreThanTheCapacity() {
         return shiftsWithMoreThanTheCapacity;
     }
 
@@ -172,7 +175,7 @@ public class Class {
      * Gets real characteristics
      * @return {@link Class#realCharacteristics}
      */
-    public final String getRealCharacteristics() {
+    public final LinkedList<String> getRealCharacteristics() {
         return realCharacteristics;
     }
 }
