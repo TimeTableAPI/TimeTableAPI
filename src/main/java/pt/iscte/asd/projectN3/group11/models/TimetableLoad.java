@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class TimetableLoad {
@@ -19,8 +20,8 @@ public class TimetableLoad {
                 final Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_FILE_PATH));
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
-            final LinkedList<Class> aClasses = new LinkedList<>();;
-
+            final LinkedList<Class> aClasses = new LinkedList<>();
+            csvReader.readNext();
             String[] nextRecord;
 
             while ((nextRecord = csvReader.readNext()) != null) {
@@ -42,13 +43,13 @@ public class TimetableLoad {
                 final String realCharacteristics = nextRecord[14];
 
                 Class aClass = new Class(
-                        course,
-                        unit,
+                        Arrays.asList(course.split(", ")),
+                        Arrays.asList(unit.split(", ")),
                         shift,
-                        classOfCourse,
-                        studentNum,
-                        shiftsWithFreeSpots,
-                        shiftsWithMoreThanTheCapacity,
+                        Arrays.asList(classOfCourse.split(", ")),
+                        Integer.parseInt(studentNum),
+                        Integer.parseInt(shiftsWithFreeSpots),
+                        Integer.parseInt(shiftsWithMoreThanTheCapacity),
                         weekday,
                         beginningHour,
                         endHour,
@@ -56,7 +57,7 @@ public class TimetableLoad {
                         askedCharacteristics,
                         classroom,
                         capacity,
-                        realCharacteristics);
+                        Arrays.asList((realCharacteristics.split(", "))));
 
                 System.out.println(aClass);
                 aClasses.add(aClass);
