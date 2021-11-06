@@ -1,7 +1,8 @@
-package pt.iscte.asd.projectN3.group11.models;
+package pt.iscte.asd.projectN3.group11.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import pt.iscte.asd.projectN3.group11.models.Class;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -10,17 +11,20 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class TimetableLoad {
+public class ClassLoader {
 
-    private static final String SAMPLE_CSV_FILE_PATH = "./src/main/resources/ADS - Exemplo de horario do 1o Semestre.csv";
-
-    public static void main(final String[] args)
+    /**
+     * Loads a Class csv file.
+     * @param path path to the classroom csv.
+     * @return List of classrooms
+     */
+    public static final LinkedList<Class> load(final String path)
     {
+        final LinkedList<Class> classes = new LinkedList<>();
         try (
-                final Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_FILE_PATH));
+                final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
-            final LinkedList<Class> aClasses = new LinkedList<>();
             csvReader.readNext();
             String[] nextRecord;
 
@@ -60,11 +64,12 @@ public class TimetableLoad {
                         Arrays.asList((realCharacteristics.split(", "))));
 
                 System.out.println(aClass);
-                aClasses.add(aClass);
+                classes.add(aClass);
             }
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
+        return classes;
     }
 }
