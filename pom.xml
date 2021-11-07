@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>pt.iscte.asd.projectN3.group11</groupId>
     <artifactId>ADS_Project_3</artifactId>
     <version>0.0.2</version>
     <build>
