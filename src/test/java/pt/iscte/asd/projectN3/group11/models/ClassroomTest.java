@@ -48,13 +48,14 @@ class ClassroomTest {
         final int exam_capacity=10;
         final int number_characteristics=2;
 
-        classRoom = new Classroom(characteristics,
-                building,
-                classroomName,
-                normal_capacity,
-                exam_capacity,
-                number_characteristics
-        );
+        classRoom = new Classroom.Builder().
+                building(building).
+                classroomName(classroomName).
+                normalCapacity(normal_capacity).
+                examCapacity(exam_capacity).
+                numberCharacteristics(number_characteristics).
+                characteristics(characteristics).
+                build();
 
 
     }
