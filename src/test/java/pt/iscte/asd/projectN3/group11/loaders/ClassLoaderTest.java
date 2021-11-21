@@ -30,7 +30,23 @@ public class ClassLoaderTest {
         final String classroom = "";
         final String capacity = "50";
         final List<String> realCharacteristics = Arrays.asList("Sala Aulas Mestrado Plus", "Horário sala visível portal público", "Sala Aulas Mestrado", "Sala de Aulas normal");
-        aClass = new Class(courses, units,shift,classesOfCourse,numberOfStudentsInClass,shiftsWithFreeSpots, shiftsWithMoreThanTheCapacity, weekday, beginningHour,endHour,monthDay, askedCharacteristics, classroom, capacity, realCharacteristics);
+        aClass = new Class.Builder().
+                courses(courses).
+                units(units).
+                shift(shift).
+                classesOfCourse(classesOfCourse).
+                numberOfStudentsInClass(numberOfStudentsInClass).
+                shiftsWithFreeSpots(shiftsWithFreeSpots).
+                shiftsWithMoreThanTheCapacity(shiftsWithMoreThanTheCapacity).
+                weekday(weekday).
+                beginningHour(beginningHour).
+                endHour(endHour).
+                monthDay(monthDay).
+                askedCharacteristics(askedCharacteristics).
+                classroom(classroom).
+                capacity(capacity).
+                realCharacteristics(realCharacteristics).
+                build();
     }
 
     @org.junit.jupiter.api.Test
