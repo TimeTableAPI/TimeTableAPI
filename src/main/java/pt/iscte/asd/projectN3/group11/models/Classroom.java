@@ -35,20 +35,53 @@ public class Classroom {
     final int examCapacity;
     final int numberCharacteristics;
 
-    public Classroom(
-            final LinkedList<Boolean> characteristics,
-            final String building,
-            final String classroomName,
-            final int normalCapacity,
-            final int examCapacity,
-            final int numberCharacteristics
-    ) {
-        this.characteristics = characteristics;
-        this.building = building;
-        this.classroomName = classroomName;
-        this.normalCapacity = normalCapacity;
-        this.examCapacity = examCapacity;
-        this.numberCharacteristics = numberCharacteristics;
+    private Classroom(Builder builder){
+        this.characteristics = builder.characteristics;
+        this.building = builder.building;
+        this.classroomName = builder.classroomName;
+        this.normalCapacity = builder.normalCapacity;
+        this.examCapacity = builder.examCapacity;
+        this.numberCharacteristics = builder.numberCharacteristics;
+    }
+
+    public static class  Builder{
+        private LinkedList<Boolean> characteristics;
+        private String building;
+        private String classroomName;
+        private int normalCapacity;
+        private int examCapacity;
+        private int numberCharacteristics;
+
+        public Builder characteristics(final LinkedList<Boolean> characteristics){
+            this.characteristics = characteristics;
+            return this;
+        }
+        public Builder building(final String building){
+            this.building = building;
+            return this;
+        }
+        public Builder classroomName(final String classroomName){
+            this.classroomName = classroomName;
+            return this;
+        }
+        public Builder normalCapacity(final int normalCapacity){
+            this.normalCapacity = normalCapacity;
+            return this;
+        }
+        public Builder examCapacity(final int examCapacity){
+            this.examCapacity = examCapacity;
+            return this;
+        }
+        public Builder numberCharacteristics(final int numberCharacteristics){
+            this.numberCharacteristics = numberCharacteristics;
+            return this;
+        }
+
+        public Classroom build(){
+            return new Classroom(this);
+        }
+
+
     }
 
     @Override
