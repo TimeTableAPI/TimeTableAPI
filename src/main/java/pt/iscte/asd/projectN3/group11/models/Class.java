@@ -1,5 +1,6 @@
 package pt.iscte.asd.projectN3.group11.models;
 
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,23 +21,125 @@ public class Class {
     private final String capacity;
     private final LinkedList<String> realCharacteristics;
 
-    public Class(final List<String> courses, final List<String> units, final String shift, final List<String> classesOfCourse, final int numberOfStudentsInClass, final int shiftsWithFreeSpots, final int shiftsWithMoreThanTheCapacity, final String weekday, final String beginningHour, final String endHour, final String monthDay, final String askedCharacteristics, final String classroom, final String capacity, final List<String> realCharacteristics) {
-        this.courses = new LinkedList<>(courses);
-        this.units = new LinkedList<>(units);
-        this.shift = shift;
-        this.classesOfCourse =  new LinkedList<>(classesOfCourse);
-        this.numberOfStudentsInClass = numberOfStudentsInClass;
-        this.shiftsWithFreeSpots = shiftsWithFreeSpots;
-        this.shiftsWithMoreThanTheCapacity = shiftsWithMoreThanTheCapacity;
-        this.weekday = weekday;
-        this.beginningHour = beginningHour;
-        this.endHour = endHour;
-        this.monthDay = monthDay;
-        this.askedCharacteristics = askedCharacteristics;
-        this.classroom = classroom;
-        this.capacity = capacity;
-        this.realCharacteristics = new LinkedList<>(realCharacteristics);
+    private Class(Builder builder) {
+        this.courses = builder.courses;
+        this.units = builder.units;
+        this.shift = builder.shift;
+        this.classesOfCourse =  builder.classesOfCourse;
+        this.numberOfStudentsInClass = builder.numberOfStudentsInClass;
+        this.shiftsWithFreeSpots = builder.shiftsWithFreeSpots;
+        this.shiftsWithMoreThanTheCapacity = builder.shiftsWithMoreThanTheCapacity;
+        this.weekday = builder.weekday;
+        this.beginningHour = builder.beginningHour;
+        this.endHour = builder.endHour;
+        this.monthDay = builder.monthDay;
+        this.askedCharacteristics = builder.askedCharacteristics;
+        this.classroom = builder.classroom;
+        this.capacity = builder.capacity;
+        this.realCharacteristics = builder.realCharacteristics;
     }
+
+    public static class Builder{
+        private LinkedList<String> courses;
+        private LinkedList<String> units;
+        private String shift;
+        private LinkedList<String> classesOfCourse;
+        private int numberOfStudentsInClass;
+        private int shiftsWithFreeSpots;
+        private int shiftsWithMoreThanTheCapacity;
+        private String weekday;
+        private String beginningHour;
+        private String endHour;
+        private String monthDay;
+        private String askedCharacteristics;
+        private String classroom;
+        private String capacity;
+        private LinkedList<String> realCharacteristics;
+
+        public Builder courses (List<String> courses ){
+            this.courses = new LinkedList<>(courses);
+            return this;
+        }
+
+        public Builder units (List<String> units ){
+            this.units = new LinkedList<>(units);
+            return this;
+        }
+
+        public Builder shift (String shift ){
+            this.shift = shift;
+            return this;
+        }
+
+        public Builder classesOfCourse (List<String> classesOfCourse ){
+            this.classesOfCourse = new LinkedList<>(classesOfCourse);
+            return this;
+        }
+
+        public Builder numberOfStudentsInClass (int numberOfStudentsInClass ){
+            this.numberOfStudentsInClass = numberOfStudentsInClass;
+            return this;
+        }
+
+        public Builder shiftsWithFreeSpots (int shiftsWithFreeSpots ){
+            this.shiftsWithFreeSpots = shiftsWithFreeSpots;
+            return this;
+        }
+
+        public Builder shiftsWithMoreThanTheCapacity (int shiftsWithMoreThanTheCapacity ){
+            this.shiftsWithMoreThanTheCapacity = shiftsWithMoreThanTheCapacity;
+            return this;
+        }
+
+        public Builder weekday (String weekday ){
+            this.weekday = weekday;
+            return this;
+        }
+
+        public Builder beginningHour (String beginningHour ){
+            this.beginningHour = beginningHour;
+            return this;
+        }
+
+        public Builder endHour (String endHour ){
+            this.endHour = endHour;
+            return this;
+        }
+
+        public Builder monthDay (String monthDay ){
+            this.monthDay = monthDay;
+            return this;
+        }
+
+        public Builder askedCharacteristics (String askedCharacteristics ){
+            this.askedCharacteristics = askedCharacteristics;
+            return this;
+        }
+
+        public Builder classroom (String classroom ){
+            this.classroom = classroom;
+            return this;
+        }
+
+        public Builder capacity (String capacity ){
+            this.capacity = capacity;
+            return this;
+        }
+
+        public Builder realCharacteristics (List<String> realCharacteristics ){
+            this.realCharacteristics = new LinkedList<>(realCharacteristics);
+            return this;
+        }
+
+        public Class build(){
+            return new Class(this);
+        }
+
+
+
+    }
+
+
 
     @Override
     public final String toString() {

@@ -46,22 +46,23 @@ public class ClassLoader {
                 final String capacity = nextRecord[13];
                 final String realCharacteristics = nextRecord[14];
 
-                Class aClass = new Class(
-                        Arrays.asList(course.split(", ")),
-                        Arrays.asList(unit.split(", ")),
-                        shift,
-                        Arrays.asList(classOfCourse.split(", ")),
-                        Integer.parseInt(studentNum),
-                        Integer.parseInt(shiftsWithFreeSpots),
-                        Integer.parseInt(shiftsWithMoreThanTheCapacity),
-                        weekday,
-                        beginningHour,
-                        endHour,
-                        monthDay,
-                        askedCharacteristics,
-                        classroom,
-                        capacity,
-                        Arrays.asList((realCharacteristics.split(", "))));
+                Class aClass = new Class.Builder().
+                        courses(Arrays.asList(course.split(", "))).
+                        units(Arrays.asList(unit.split(", "))).
+                        shift(shift).
+                        classesOfCourse(Arrays.asList(classOfCourse.split(", "))).
+                        numberOfStudentsInClass(Integer.parseInt(studentNum)).
+                        shiftsWithFreeSpots(Integer.parseInt(shiftsWithFreeSpots)).
+                        shiftsWithMoreThanTheCapacity(Integer.parseInt(shiftsWithMoreThanTheCapacity)).
+                        weekday(weekday).
+                        beginningHour(beginningHour).
+                        endHour(endHour).
+                        monthDay(monthDay).
+                        askedCharacteristics(askedCharacteristics).
+                        classroom(classroom).
+                        capacity(capacity).
+                        realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
+                        build();
 
                 System.out.println(aClass);
                 classes.add(aClass);
