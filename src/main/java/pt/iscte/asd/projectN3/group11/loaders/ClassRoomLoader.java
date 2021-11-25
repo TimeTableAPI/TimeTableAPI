@@ -45,7 +45,14 @@ public class ClassRoomLoader {
 						characteristics.add(false);
 					}
 				}
-				Classroom classN = new Classroom(characteristics, building, classroomName, normal_capacity, exam_capacity, number_characteristics);
+				Classroom classN = new Classroom.Builder().
+						building(building).
+						classroomName(classroomName).
+						normalCapacity(normal_capacity).
+						examCapacity(exam_capacity).
+						numberCharacteristics(number_characteristics).
+						characteristics(characteristics).
+						build();
 				classrooms.add(classN);
 			}
 			System.out.println("ClassRoomLoad.main::classRooms = " + classrooms);

@@ -51,7 +51,14 @@ public class ClassRoomLoaderTest {
             false,//videoconferencia,
             false//Átrio
     ));
-        aClassRoom = new Classroom(characteristics,building,classroomName,normalCapacity,examCapacity,numberCharacteristics);
+        aClassRoom = new Classroom.Builder().
+                building(building).
+                classroomName(classroomName).
+                normalCapacity(normalCapacity).
+                examCapacity(examCapacity).
+                numberCharacteristics(numberCharacteristics).
+                characteristics(characteristics).
+                build();
         //Edifício Teste,123,50,25,4,,,,,,,,,,,,X,,,,,,,,,,X,X,,,,,X,,
     }
 
