@@ -7,7 +7,7 @@
 
     <groupId>pt.iscte.asd.projectN3.group11</groupId>
     <artifactId>ADS_Project_3</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <build>
         <plugins>
             <plugin>
