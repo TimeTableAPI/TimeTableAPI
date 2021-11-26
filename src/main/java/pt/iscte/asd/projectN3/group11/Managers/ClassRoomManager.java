@@ -8,8 +8,8 @@ import java.util.List;
 public class ClassRoomManager {
 	final LinkedList<Classroom> classrooms;
 
-	public ClassRoomManager(LinkedList<Classroom> classrooms) {
-		this.classrooms = classrooms;
+	public ClassRoomManager(List<Classroom> classrooms) {
+		this.classrooms = (LinkedList<Classroom>) classrooms;
 	}
 
 	public final List<Classroom> getWithCapacity(int  capacity){
@@ -51,10 +51,19 @@ public class ClassRoomManager {
 		return result;
 	}
 
-	public final List<Classroom> getWithBuilding(String building){
+	public final List<Classroom> getInBuilding(String building){
 		LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x :this.classrooms){
 			if (x.isInBuilding(building)){
+				result.add(x);
+			}
+		}
+		return result;
+	}
+	public final List<Classroom> getInAnyBuilding(List<String> buildings){
+		LinkedList<Classroom> result = new LinkedList<>();
+		for (Classroom x :this.classrooms){
+			if (x.isInANYBuilding(buildings)){
 				result.add(x);
 			}
 		}
