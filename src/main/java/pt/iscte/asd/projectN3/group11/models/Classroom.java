@@ -2,38 +2,45 @@ package pt.iscte.asd.projectN3.group11.models;
 
 import java.util.LinkedList;
 
+/**
+ * <p>ClassRoom is a class used to hold all the proprieties belonging to the classRoom of a School or University </p>
+ * <p>To hold all of these proprieties the class has some {@link String} and {@link Integer} final variables like the ones below</p>
+ * <ul>
+ *     <li>{@link String} Building</li>
+ *     <li>{@link String} Name</li>
+ *     <li>{@link Integer} Normal capacity</li>
+ *     <li>{@link Integer} Exam capacity</li>
+ * </ul>
+ * <p>Then it also has a list of {@link Boolean} values representing if the classroom has or does not have specific proprieties like:</p>
+ * <ul>
+ *     <li>If it is an Anfiteatro</li>
+ *     <li>If it is a Lab</li>
+ *     <li>If it is for Events</li>
+ *     <li>If it is BYOD</li>
+ *     <li>etc...</li>
+ * </ul>
+ *
+ * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
+ *
+ * */
 public class Classroom {
-    /**
-     * <p>ClassRoom is a class used to hold all the proprieties belonging to the classRoom of a School or University </p>
-     * <p>To hold all of these proprieties the class has some {@link String} and {@link Integer} final variables like the ones below</p>
-     * <ul>
-     *     <li>{@link String} Building</li>
-     *     <li>{@link String} Name</li>
-     *     <li>{@link Integer} Normal capacity</li>
-     *     <li>{@link Integer} Exam capacity</li>
-     * </ul>
-     * <p>Then it also has a list of {@link Boolean} values representing if the classroom has or does not have specific proprieties like:</p>
-     * <ul>
-     *     <li>If it is an Anfiteatro</li>
-     *     <li>If it is a Lab</li>
-     *     <li>If it is for Events</li>
-     *     <li>If it is BYOD</li>
-     *     <li>etc...</li>
-     * </ul>
-     *
-     * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
-     *
-     * */
+
     public static final int NUMBER_OF_CHARACTERISTICS = 30;
     public static final String[] CHARACTERISTICS_LIST = new String[]{"Anfiteatro aulas", "Apoio técnico eventos", "Arq 1", "Arq 2", "Arq 3", "Arq 4", "Arq 5", "Arq 6", "Arq 9", "BYOD (Bring Your Own Device)", "Focus Group", "Horário sala visível portal público", "Laboratório de Arquitectura de Computadores I", "Laboratório de Arquitectura de Computadores II", "Laboratório de Bases de Engenharia", "Laboratório de Electrónica", "Laboratório de Informática", "Laboratório de Jornalismo", "Laboratório de Redes de Computadores I", "Laboratório de Redes de Computadores II", "Laboratório de Telecomunicações", "Sala Aulas Mestrado", "Sala Aulas Mestrado Plus", "Sala NEE", "Sala Provas", "Sala Reunião", "Sala de Arquitectura", "Sala de Aulas normal", "videoconferencia", "Átrio"};
 
-    final LinkedList<Boolean> characteristics;
+    //region MEMBERS
 
-    final String building;
-    final String classroomName;
-    final int normalCapacity;
-    final int examCapacity;
-    final int numberCharacteristics;
+    private final LinkedList<Boolean> characteristics;
+
+    private final String building;
+    private final String classroomName;
+    private final int normalCapacity;
+    private final int examCapacity;
+    private final int numberCharacteristics;
+
+    //endregion
+
+    //region CONSTRUCTORS
 
     private Classroom(Builder builder){
         this.characteristics = builder.characteristics;
@@ -43,6 +50,10 @@ public class Classroom {
         this.examCapacity = builder.examCapacity;
         this.numberCharacteristics = builder.numberCharacteristics;
     }
+
+    //endregion
+
+    //region BUILDER
 
     public static class  Builder{
         private LinkedList<Boolean> characteristics;
@@ -84,17 +95,9 @@ public class Classroom {
 
     }
 
-    @Override
-    public final String toString() {
-        return "ClassRoom{" +
-                " building='" + building + '\'' +
-                ", classroomName='" + classroomName + '\'' +
-                ", normal_capacity=" + normalCapacity +
-                ", exam_capacity=" + examCapacity +
-                ", number_characteristics=" + numberCharacteristics +
-                ", characteristics=" + characteristics +
-                '}';
-    }
+    //endregion
+
+    //region GETTERS
 /**
  * @return {@link Classroom#CHARACTERISTICS_LIST}
  * */
@@ -150,6 +153,20 @@ public class Classroom {
             }
         }
         throw new IllegalArgumentException();
+    }
+
+    //endregion
+
+    @Override
+    public final String toString() {
+        return "ClassRoom{" +
+                " building='" + building + '\'' +
+                ", classroomName='" + classroomName + '\'' +
+                ", normal_capacity=" + normalCapacity +
+                ", exam_capacity=" + examCapacity +
+                ", number_characteristics=" + numberCharacteristics +
+                ", characteristics=" + characteristics +
+                '}';
     }
 
 }

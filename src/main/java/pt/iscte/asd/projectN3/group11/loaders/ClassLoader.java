@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class ClassLoader {
+    //region LOADERS
 
     /**
      * Loads a Class csv file.
@@ -73,4 +74,6 @@ public class ClassLoader {
         }
         return classes;
     }
+
+    //endregion
 }
