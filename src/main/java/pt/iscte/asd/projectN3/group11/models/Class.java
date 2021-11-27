@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Class {
+
+    //region MEMBERS
+
     private final LinkedList<String> courses;
     private final LinkedList<String> units;
     private final String shift;
@@ -20,6 +23,10 @@ public class Class {
     private final String classroom;
     private final String capacity;
     private final LinkedList<String> realCharacteristics;
+
+    //endregion
+
+    //region CONSTRUCTORS
 
     private Class(Builder builder) {
         this.courses = builder.courses;
@@ -38,6 +45,10 @@ public class Class {
         this.capacity = builder.capacity;
         this.realCharacteristics = builder.realCharacteristics;
     }
+
+    //endregion
+
+    //region BUILDER
 
     public static class Builder{
         private LinkedList<String> courses;
@@ -134,33 +145,11 @@ public class Class {
         public Class build(){
             return new Class(this);
         }
-
-
-
     }
 
+    //endregion
 
-
-    @Override
-    public final String toString() {
-        return "Class{" +
-                "courses=" + courses +
-                ", units=" + units +
-                ", shift='" + shift + '\'' +
-                ", classesOfCourse=" + classesOfCourse +
-                ", numberOfStudentsInClass='" + numberOfStudentsInClass + '\'' +
-                ", shiftsWithFreeSpots='" + shiftsWithFreeSpots + '\'' +
-                ", shiftsWithMoreThanTheCapacity='" + shiftsWithMoreThanTheCapacity + '\'' +
-                ", weekday='" + weekday + '\'' +
-                ", beginningHour='" + beginningHour + '\'' +
-                ", endHour='" + endHour + '\'' +
-                ", monthDay='" + monthDay + '\'' +
-                ", askedCharacteristics='" + askedCharacteristics + '\'' +
-                ", classroom='" + classroom + '\'' +
-                ", capacity='" + capacity + '\'' +
-                ", realCharacteristics=" + realCharacteristics +
-                '}';
-    }
+    //region GETTERS
 
     /**
      * Gets Course.
@@ -281,4 +270,28 @@ public class Class {
     public final LinkedList<String> getRealCharacteristics() {
         return realCharacteristics;
     }
+
+    //endregion
+
+    @Override
+    public final String toString() {
+        return "Class{" +
+                "courses=" + courses +
+                ", units=" + units +
+                ", shift='" + shift + '\'' +
+                ", classesOfCourse=" + classesOfCourse +
+                ", numberOfStudentsInClass='" + numberOfStudentsInClass + '\'' +
+                ", shiftsWithFreeSpots='" + shiftsWithFreeSpots + '\'' +
+                ", shiftsWithMoreThanTheCapacity='" + shiftsWithMoreThanTheCapacity + '\'' +
+                ", weekday='" + weekday + '\'' +
+                ", beginningHour='" + beginningHour + '\'' +
+                ", endHour='" + endHour + '\'' +
+                ", monthDay='" + monthDay + '\'' +
+                ", askedCharacteristics='" + askedCharacteristics + '\'' +
+                ", classroom='" + classroom + '\'' +
+                ", capacity='" + capacity + '\'' +
+                ", realCharacteristics=" + realCharacteristics +
+                '}';
+    }
+
 }
