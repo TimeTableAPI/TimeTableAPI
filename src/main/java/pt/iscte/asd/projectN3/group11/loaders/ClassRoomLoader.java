@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 
 public class ClassRoomLoader {
+	//region LOADERS
 
 	/**
 	 * Loads a Classroom csv file.
@@ -63,4 +64,5 @@ public class ClassRoomLoader {
 		return classrooms;
 	}
 
+	//endregion
 }
