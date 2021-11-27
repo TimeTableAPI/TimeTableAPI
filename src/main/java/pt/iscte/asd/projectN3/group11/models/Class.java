@@ -128,7 +128,7 @@ public class Class {
         }
 
         public Builder classroom (String classroom ){
-            this.classroom = classroom;
+            this.classroosm = classroom;
             return this;
         }
 
