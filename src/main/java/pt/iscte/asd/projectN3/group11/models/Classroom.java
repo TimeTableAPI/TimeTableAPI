@@ -1,9 +1,11 @@
 package pt.iscte.asd.projectN3.group11.models;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
- * <p>ClassRoom is a class used to hold all the proprieties belonging to the classRoom of a School or University </p>
+ * <h1>ClassRoom</h1>
+ * <p>Class used to hold all the proprieties belonging to the classRoom of a School or University </p>
  * <p>To hold all of these proprieties the class has some {@link String} and {@link Integer} final variables like the ones below</p>
  * <ul>
  *     <li>{@link String} Building</li>
@@ -98,8 +100,8 @@ public class Classroom {
     //endregion
 
     //region GETTERS
-/**
- * @return {@link Classroom#CHARACTERISTICS_LIST}
+/**Retrieves the Characteristics this ClassRoom has as a list of Booleans
+ * @return {@link Classroom#characteristics}
  * */
     public final LinkedList<Boolean> getCharacteristics() {
         return characteristics;
@@ -139,6 +141,7 @@ public class Classroom {
     public final int getNumberCharacteristics() {
         return numberCharacteristics;
     }
+
 /**
  *<p> Retrieves whether or not the classRoom fulfills the input characteristic</p>
  * <p> If the input characteristic is not in the static {@link Classroom#CHARACTERISTICS_LIST} the method throws {@link IllegalArgumentException} </p>
@@ -146,15 +149,61 @@ public class Classroom {
  * @param characteristic a String that represents a characteristic the classRoom may have, like if it is a Lab for example, the full list can be seen here {@link Classroom#CHARACTERISTICS_LIST}
  * @return <b>true</b> if classRoom fulfills the characteristic and <b>false</b> if it doesn't
  * */
-    public final boolean hasCharacteristic(final String characteristic) throws IllegalArgumentException{
-        for(int i = 0; i< Classroom.CHARACTERISTICS_LIST.length; i++){
-            if(Classroom.CHARACTERISTICS_LIST[i].equals(characteristic)){
+    public final boolean hasCharacteristic(final String characteristic) throws IllegalArgumentException {
+        for (int i = 0; i < Classroom.CHARACTERISTICS_LIST.length; i++) {
+            if (Classroom.CHARACTERISTICS_LIST[i].equals(characteristic)) {
                 return this.characteristics.get(i);
             }
         }
         throw new IllegalArgumentException();
     }
+/**
+ *<p> Same as {@link Classroom#hasCharacteristic(String)} but for a List of Characteristics</p>
+ *
+ * @param characteristics a List of Strings that represents a characteristic the classRoom may have, like if it is a Lab for example, the full list can be seen here {@link Classroom#CHARACTERISTICS_LIST}
+ * @return <b>true</b> if classRoom fulfills the characteristic and <b>false</b> if it doesn't
+ * */
+    public final boolean hasALLCharacteristics(final List<String> characteristics) throws IllegalArgumentException{
+        boolean result= true;
+        for(String characteristic: characteristics){
+            result = result && this.hasCharacteristic(characteristic);
+        }
+        return result;
+    }
 
+    /**
+     *<p> Method to check wether the classroom is located in the specified building or not</p>
+     *
+     * @param building a String representing the building where the classRoom is located
+     * @return <b>true</b> if  {@link Classroom#building} is equal to the given parameter and <b>false</b> if it is not equal
+     * */
+    public final boolean isInBuilding(final String building) {
+        return this.building.equals(building);
+    }
+
+    /**
+     *<p> Same as {@link Classroom#isInBuilding(String)} but for a List of Buildings</p>
+     *
+     * @param buildings a List of Strings representing the buildings where the classRoom can be located in
+     * @return <b>true</b> if  {@link Classroom#building} is equal to the given parameter and <b>false</b> if it is not equal
+     * */
+    public final boolean isInANYBuilding(final List<String> buildings) {
+        boolean result = false;
+        for(int i = 0; i< buildings.size() && !result ;i++){
+            result = result || this.isInBuilding(buildings.get(i));
+        }
+        return result;
+    }
+
+    /**
+     *<p> Method to check wether the classroom's name is equal to the given one </p>
+     *
+     * @param name a String representing the building where the classRoom is located
+     * @return <b>true</b> if  {@link Classroom#classroomName} is equal to the given parameter and <b>false</b> if it is not equal
+     * */
+    public final boolean isNamed(final String name) {
+        return this.classroomName.equals(name);
+    }
     //endregion
 
     @Override
