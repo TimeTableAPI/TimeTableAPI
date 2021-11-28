@@ -5,9 +5,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pt.iscte.asd.projectN3.group11</groupId>
+    <groupId>pt.iscte.asd.projectn3.group11</groupId>
     <artifactId>ADS_Project_3</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <build>
         <plugins>
             <plugin>

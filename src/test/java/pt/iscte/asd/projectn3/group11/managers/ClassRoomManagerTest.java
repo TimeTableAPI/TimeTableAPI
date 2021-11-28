@@ -1,9 +1,9 @@
-package pt.iscte.asd.projectN3.group11.Managers;
+package pt.iscte.asd.projectn3.group11.managers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pt.iscte.asd.projectN3.group11.loaders.ClassRoomLoader;
-import pt.iscte.asd.projectN3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
+import pt.iscte.asd.projectn3.group11.models.Classroom;
 
 import java.util.LinkedList;
 import java.util.List;
