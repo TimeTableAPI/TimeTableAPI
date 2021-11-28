@@ -12,6 +12,7 @@ public class ClassRoomManager {
 		this.classrooms = (LinkedList<Classroom>) classrooms;
 	}
 
+	//region GETTERS
 	public final List<Classroom> getWithCapacity(int  capacity){
 		final LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x :this.classrooms){
@@ -69,4 +70,5 @@ public class ClassRoomManager {
 		}
 		return result;
 	}
+	//endregion GETTERS
 }
