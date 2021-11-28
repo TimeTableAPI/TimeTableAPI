@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>ClassRoom is a class used to hold all the proprieties belonging to the classRoom of a School or University </p>
+ * <h1>ClassRoom</h1>
+ * <p>Class used to hold all the proprieties belonging to the classRoom of a School or University </p>
  * <p>To hold all of these proprieties the class has some {@link String} and {@link Integer} final variables like the ones below</p>
  * <ul>
  *     <li>{@link String} Building</li>
@@ -99,8 +100,8 @@ public class Classroom {
     //endregion
 
     //region GETTERS
-/**
- * @return {@link Classroom#CHARACTERISTICS_LIST}
+/**Retrieves the Characteristics this ClassRoom has as a list of Booleans
+ * @return {@link Classroom#characteristics}
  * */
     public final LinkedList<Boolean> getCharacteristics() {
         return characteristics;

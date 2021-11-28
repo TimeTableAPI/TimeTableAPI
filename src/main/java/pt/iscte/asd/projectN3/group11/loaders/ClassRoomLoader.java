@@ -15,7 +15,6 @@ public class ClassRoomLoader {
 
 	/**
 	 * Loads a Classroom csv file.
-	 *
 	 * @param path path to the classroom csv.
 	 * @return List of classrooms
 	 */
