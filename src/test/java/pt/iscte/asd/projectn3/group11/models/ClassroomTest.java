@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectN3.group11.models;
+package pt.iscte.asd.projectn3.group11.models;
 
 import org.junit.jupiter.api.Test;
 

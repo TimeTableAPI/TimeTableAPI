@@ -1,8 +1,8 @@
-package pt.iscte.asd.projectN3.group11.loaders;
+package pt.iscte.asd.projectn3.group11.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import pt.iscte.asd.projectN3.group11.models.Class;
+import pt.iscte.asd.projectn3.group11.models.Class;
 
 import java.io.IOException;
 import java.io.Reader;
