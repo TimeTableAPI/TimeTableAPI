@@ -43,3 +43,16 @@ public class Controller {
         return new ResponseEntity(HttpStatus.OK);
     }
 }
+
+/*
+ JSON FOR POSTMAN TESTS
+
+ {
+"building":"Ala Autónoma (ISCTE-IUL)",
+"classroomName":"Auditório Afonso de Barros",
+"normalCapacity":80,
+"examCapacity":39,
+"numberCharacteristics":4,
+"characteristics":[false,false,false]
+}
+* */
