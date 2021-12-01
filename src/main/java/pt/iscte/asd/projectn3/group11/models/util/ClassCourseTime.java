@@ -61,6 +61,9 @@ public enum ClassCourseTime {
             dec --;
         }
         String hours = String.valueOf(dec/2 + 7);
+        if (hours.length() == 1){
+            hours = "0"+hours;
+        }
         return hours + ":" + minutes + ":" + "00";
     }
 
