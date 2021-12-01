@@ -1,6 +1,6 @@
 package pt.iscte.asd.projectn3.group11.models.util;
 
-public class ClassCourseDate {
+public class ClassCourseDate implements Comparable {
 
     private final int NOTHING = -1;
     private final int day;
@@ -57,9 +57,9 @@ public class ClassCourseDate {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + day;
-        result = prime * result + month;
-        result = prime * result + year;
+        result = result * prime + year;
+        result = result * prime + month;
+        result = result * prime + day;
         return result;
     }
 
@@ -76,5 +76,10 @@ public class ClassCourseDate {
             return true;
 
         return false;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.hashCode() - o.hashCode();
     }
 }
