@@ -13,8 +13,8 @@ public class BasicAlgorithmService implements IAlgorithmService {
     public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
         System.out.println("BASIC_ALGORITHM::EXECUTE");
 
-        HashMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> classCoursedateMap = initializeClassCourseDateMap(classCourses);
-        HashMap<ClassCourseDate, EnumMap<ClassCourseTime, List<Classroom>>> classRoomdateMap = initializeClassRoomDateMap(classCoursedateMap);
+        TreeMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> classCoursedateMap = initializeClassCourseDateMap(classCourses);
+        TreeMap<ClassCourseDate, EnumMap<ClassCourseTime, List<Classroom>>> classRoomdateMap = initializeClassRoomDateMap(classCoursedateMap);
 
         for(Map.Entry<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> classCourseOfDay: classCoursedateMap.entrySet())
         {
@@ -30,8 +30,8 @@ public class BasicAlgorithmService implements IAlgorithmService {
         }
     }
 
-    private HashMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> initializeClassCourseDateMap(List<ClassCourse> classCourses) {
-        HashMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> classCoursedateMap = new HashMap<>();
+    private TreeMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> initializeClassCourseDateMap(List<ClassCourse> classCourses) {
+        TreeMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> classCoursedateMap = new TreeMap<>();
         for(ClassCourse classCourse: classCourses)
         {
             classCoursedateMap.computeIfAbsent(classCourse.getDate(), k -> new EnumMap<ClassCourseTime, List<ClassCourse>>(ClassCourseTime.class));
@@ -42,8 +42,8 @@ public class BasicAlgorithmService implements IAlgorithmService {
         return classCoursedateMap;
     }
 
-    private HashMap<ClassCourseDate, EnumMap<ClassCourseTime, List<Classroom>>> initializeClassRoomDateMap(HashMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> classCoursedateMap) {
-        HashMap<ClassCourseDate, EnumMap<ClassCourseTime, List<Classroom>>>classRoomDateMap = new HashMap<>();
+    private TreeMap<ClassCourseDate, EnumMap<ClassCourseTime, List<Classroom>>> initializeClassRoomDateMap(TreeMap<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> classCoursedateMap) {
+        TreeMap<ClassCourseDate, EnumMap<ClassCourseTime, List<Classroom>>>classRoomDateMap = new TreeMap<>();
 
         for (Map.Entry<ClassCourseDate, EnumMap<ClassCourseTime, List<ClassCourse>>> date : classCoursedateMap.entrySet()) {
             for (Map.Entry<ClassCourseTime, List<ClassCourse>> hour : date.getValue().entrySet()) {
