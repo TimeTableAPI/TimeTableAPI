@@ -1,33 +1,24 @@
-package pt.iscte.asd.projectn3.group11.managers;
+package pt.iscte.asd.projectn3.group11.services;
 
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
 import java.util.LinkedList;
 import java.util.List;
 
-	/**
-	 * <h1>Manager of ClassRooms</h1>
-	 * <p>Encapsulates our list of {@link Classroom}</p>
-	 * <p>Provides Getters for specific ClassRooms</p>
-	 */
-public class ClassRoomManager {
-
-	final LinkedList<Classroom> classrooms;
-
-	public ClassRoomManager(List<Classroom> classrooms) {
-		this.classrooms = (LinkedList<Classroom>) classrooms;
-	}
-
-	//region GETTERS
+/**
+ * <h1>ClassRoom service</h1>
+ * <p>Provides Getters for specific ClassRooms</p>
+ */
+public class ClassroomService {
 
 	/**
 	 * Getter for specified capacity
 	 * @param capacity integer
 	 * @return  {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 * */
-	public final List<Classroom> getWithCapacity(int  capacity){
+	public static final List<Classroom> getWithCapacity(List<Classroom> classrooms, int capacity){
 		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x :this.classrooms){
+		for (Classroom x :classrooms){
 			if (x.getNormalCapacity() >= capacity){
 				result.add(x);
 			}
@@ -39,9 +30,9 @@ public class ClassRoomManager {
 	 * @param capacity integer
 	 * @return  {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 * */
-	public final List<Classroom> getWithExamCapacity(int  capacity){
+	public static final List<Classroom> getWithExamCapacity(List<Classroom> classrooms, int capacity){
 		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x :this.classrooms){
+		for (Classroom x :classrooms){
 			if (x.getExamCapacity() >= capacity){
 				result.add(x);
 			}
@@ -53,9 +44,9 @@ public class ClassRoomManager {
 	 * @param characteristics List<String>
 	 * @return  {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 * */
-	public final List<Classroom> getWithCharacteristics(List<String> characteristics){
+	public static final List<Classroom> getWithCharacteristics(List<Classroom> classrooms, List<String> characteristics){
 		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x :this.classrooms){
+		for (Classroom x :classrooms){
 			if (x.hasALLCharacteristics(characteristics )){
 				result.add(x);
 			}
@@ -68,9 +59,9 @@ public class ClassRoomManager {
 	 * @param characteristic String
 	 * @return  {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 * */
-	public final List<Classroom> getWithCharacteristic(String characteristic){
+	public static final List<Classroom> getWithCharacteristic(List<Classroom> classrooms, String characteristic){
 		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x :this.classrooms){
+		for (Classroom x :classrooms){
 				if (x.hasCharacteristic(characteristic )){
 					result.add(x);
 				}
@@ -83,9 +74,9 @@ public class ClassRoomManager {
 	 * @param building String
 	 * @return  {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 * */
-	public final List<Classroom> getInBuilding(String building){
+	public static final List<Classroom> getInBuilding(List<Classroom> classrooms, String building){
 		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x :this.classrooms){
+		for (Classroom x :classrooms){
 			if (x.isInBuilding(building)){
 				result.add(x);
 			}
@@ -98,14 +89,13 @@ public class ClassRoomManager {
 	 * @param buildings List<String>
 	 * @return  {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 * */
-	public final List<Classroom> getInAnyBuilding(List<String> buildings){
+	public static final List<Classroom> getInAnyBuilding(List<Classroom> classrooms, List<String> buildings){
 		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x :this.classrooms){
+		for (Classroom x :classrooms){
 			if (x.isInANYBuilding(buildings)){
 				result.add(x);
 			}
 		}
 		return result;
 	}
-	//endregion GETTERS
 }

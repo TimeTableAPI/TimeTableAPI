@@ -2,7 +2,9 @@ package pt.iscte.asd.projectn3.group11.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import pt.iscte.asd.projectn3.group11.models.Class;
+import pt.iscte.asd.projectn3.group11.models.ClassCourse;
+import pt.iscte.asd.projectn3.group11.models.util.ClassCourseDate;
+import pt.iscte.asd.projectn3.group11.models.util.ClassCourseTime;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -11,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class ClassLoader {
+public class ClassCourseLoader {
     //region LOADERS
 
     /**
@@ -19,9 +21,9 @@ public class ClassLoader {
      * @param path path to the classroom csv.
      * @return List of classrooms
      */
-    public static final LinkedList<Class> load(final String path)
+    public static final LinkedList<ClassCourse> load(final String path)
     {
-        final LinkedList<Class> classes = new LinkedList<>();
+        final LinkedList<ClassCourse> classCourses = new LinkedList<>();
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
@@ -39,15 +41,20 @@ public class ClassLoader {
                 final String shiftsWithFreeSpots = nextRecord[5];
                 final String shiftsWithMoreThanTheCapacity = nextRecord[6];
                 final String weekday = nextRecord[7];
-                final String beginningHour = nextRecord[8];
-                final String endHour = nextRecord[9];
-                final String monthDay = nextRecord[10];
+                final String beginningHourString = nextRecord[8];
+                final String endHourString = nextRecord[9];
+                final String dateString = nextRecord[10];
                 final String askedCharacteristics = nextRecord[11];
                 final String classroom = nextRecord[12];
-                final String capacity = nextRecord[13];
+                final String capacityString = nextRecord[13];
                 final String realCharacteristics = nextRecord[14];
 
-                Class aClass = new Class.Builder().
+                final int capacity = capacityString.isEmpty() ? -1 : Integer.parseInt(capacityString);
+                final ClassCourseTime beginningHour = ClassCourseTime.stringToClassTime(beginningHourString);
+                final ClassCourseTime endHour = ClassCourseTime.stringToClassTime(endHourString);
+                final ClassCourseDate date = new ClassCourseDate(dateString);
+
+                ClassCourse classCourse = new ClassCourse.Builder().
                         courses(Arrays.asList(course.split(", "))).
                         units(Arrays.asList(unit.split(", "))).
                         shift(shift).
@@ -58,21 +65,21 @@ public class ClassLoader {
                         weekday(weekday).
                         beginningHour(beginningHour).
                         endHour(endHour).
-                        monthDay(monthDay).
+                        date(date).
                         askedCharacteristics(askedCharacteristics).
                         classroom(classroom).
                         capacity(capacity).
                         realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
                         build();
 
-                System.out.println(aClass);
-                classes.add(aClass);
+                System.out.println(classCourse);
+                classCourses.add(classCourse);
             }
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-        return classes;
+        return classCourses;
     }
 
     //endregion
