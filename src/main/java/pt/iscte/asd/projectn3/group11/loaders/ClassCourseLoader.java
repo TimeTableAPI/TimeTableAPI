@@ -54,26 +54,31 @@ public class ClassCourseLoader {
                 final ClassCourseTime endHour = ClassCourseTime.stringToClassTime(endHourString);
                 final ClassCourseDate date = new ClassCourseDate(dateString);
 
-                ClassCourse classCourse = new ClassCourse.Builder().
-                        courses(Arrays.asList(course.split(", "))).
-                        units(Arrays.asList(unit.split(", "))).
-                        shift(shift).
-                        classesOfCourse(Arrays.asList(classOfCourse.split(", "))).
-                        numberOfStudentsInClass(Integer.parseInt(studentNum)).
-                        shiftsWithFreeSpots(Integer.parseInt(shiftsWithFreeSpots)).
-                        shiftsWithMoreThanTheCapacity(Integer.parseInt(shiftsWithMoreThanTheCapacity)).
-                        weekday(weekday).
-                        beginningHour(beginningHour).
-                        endHour(endHour).
-                        date(date).
-                        askedCharacteristics(askedCharacteristics).
-                        classroom(classroom).
-                        capacity(capacity).
-                        realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
-                        build();
+                for( int i =beginningHour.getId() ; i< endHour.getId();i++){
+                    ClassCourseTime begginingTime = ClassCourseTime.getById(i);
+                    ClassCourseTime endTime = ClassCourseTime.getById(i+1);
 
-                System.out.println(classCourse);
-                classCourses.add(classCourse);
+                    ClassCourse classCourse = new ClassCourse.Builder().
+                            courses(Arrays.asList(course.split(", "))).
+                            units(Arrays.asList(unit.split(", "))).
+                            shift(shift).
+                            classesOfCourse(Arrays.asList(classOfCourse.split(", "))).
+                            numberOfStudentsInClass(Integer.parseInt(studentNum)).
+                            shiftsWithFreeSpots(Integer.parseInt(shiftsWithFreeSpots)).
+                            shiftsWithMoreThanTheCapacity(Integer.parseInt(shiftsWithMoreThanTheCapacity)).
+                            weekday(weekday).
+                            beginningHour(begginingTime).
+                            endHour(endTime).
+                            date(date).
+                            askedCharacteristics(askedCharacteristics).
+                            classroom(classroom).
+                            capacity(capacity).
+                            realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
+                            build();
+                    System.out.println(classCourse);
+                    classCourses.add(classCourse);
+                }
+
             }
 
         } catch (IOException | CsvValidationException e) {

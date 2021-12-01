@@ -54,6 +54,7 @@ public class ClassCourseLoaderTest {
     @org.junit.jupiter.api.Test
     void load()
     {
+        //TODO enhance
         ClassCourse classCourseTest = ClassCourseLoader.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
         assertEquals(classCourseTest.getCourses(), classCourse.getCourses());
         assertEquals(classCourseTest.getUnits(), classCourse.getUnits());

@@ -43,11 +43,13 @@ public enum ClassCourseTime {
     ClassCourseTime(int id) {
         this.id = id;
     }
+    public static ClassCourseTime getById(int id) {
+        return ClassCourseTime.values()[id];
+    }
 
     public int getId() {
         return id;
     }
-
     @Override
     public String toString()
     {
