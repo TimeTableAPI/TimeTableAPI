@@ -70,7 +70,7 @@ public class ClassCourseLoader {
                             beginningHour(begginingTime).
                             endHour(endTime).
                             date(date).
-                            askedCharacteristics(askedCharacteristics).
+                            askedCharacteristics(Arrays.asList((askedCharacteristics).split(","))).
                             classroom(classroom).
                             capacity(capacity).
                             realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).

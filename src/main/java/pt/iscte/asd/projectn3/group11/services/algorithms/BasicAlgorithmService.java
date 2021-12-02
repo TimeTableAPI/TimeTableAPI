@@ -30,7 +30,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
                 for(ClassCourse classCourse : classCourseOfDayOfTime.getValue() ){
                     System.out.println(classCourse.getAskedCharacteristics());
 
-                    ClassroomService.getWithCharacteristic(classrooms,classCourse.getAskedCharacteristics());
+                    //ClassroomService.getWithCharacteristic(classrooms,classCourse.getAskedCharacteristics());
 
                 }
             }
