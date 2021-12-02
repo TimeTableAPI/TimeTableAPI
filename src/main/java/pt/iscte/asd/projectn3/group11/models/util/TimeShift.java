@@ -1,6 +1,7 @@
 package pt.iscte.asd.projectn3.group11.models.util;
 
 public enum TimeShift {
+    NOTHING(0),
     HOUR_07H00(1),
     HOUR_07H30(2),
     HOUR_08H00(3),
@@ -35,8 +36,8 @@ public enum TimeShift {
     HOUR_22H30(32),
     HOUR_23H00(33),
     HOUR_23H30(34),
-    HOUR_24H00(35),
-    NOTHING(-1);
+    HOUR_24H00(35);
+
 
     private final int id;
 
@@ -44,7 +45,8 @@ public enum TimeShift {
         this.id = id;
     }
     public static TimeShift getById(int id) {
-        return TimeShift.values()[id];
+        final TimeShift[] values = TimeShift.values();
+        return values[id];
     }
 
     public int getId() {
@@ -54,17 +56,20 @@ public enum TimeShift {
     public String toString()
     {
         int dec = this.id;
-        String minutes = "00";
-        if(this.id % 2 == 0)
-        {
-            minutes = "30";
-            dec --;
+        if(dec == -1) {
+            return "Nothing";
+        }else{
+            String minutes = "00";
+            if (this.id % 2 == 0) {
+                minutes = "30";
+                dec--;
+            }
+            String hours = String.valueOf(dec / 2 + 7);
+            if (hours.length() == 1) {
+                hours = "0" + hours;
+            }
+            return hours + ":" + minutes + ":" + "00";
         }
-        String hours = String.valueOf(dec/2 + 7);
-        if (hours.length() == 1){
-            hours = "0"+hours;
-        }
-        return hours + ":" + minutes + ":" + "00";
     }
 
     public static TimeShift stringToClassTime(String timeString)
