@@ -45,7 +45,6 @@ public class ClassCourseLoaderTest {
                 endHour(endHour).
                 date(date).
                 askedCharacteristics(askedCharacteristics).
-                classroom(classroom).
                 capacity(capacity).
                 realCharacteristics(realCharacteristics).
                 build();

@@ -15,7 +15,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
         System.out.println("BASIC_ALGORITHM::EXECUTE");
 
         TreeMap<Date, EnumMap<TimeShift, List<ClassCourse>>> classCoursedateMap = initializeClassCourseDateMap(classCourses);
-        TreeMap<Date, EnumMap<TimeShift, List<Classroom>>> classRoomdateMap = initializeClassRoomDateMap(classCoursedateMap);
+        TreeMap<Date, EnumMap<TimeShift, List<Classroom>>> classRoomAvailabilityMap = initializeClassRoomDateMap(classCoursedateMap);
 
         for(Map.Entry<Date, EnumMap<TimeShift, List<ClassCourse>>> classCourseOfDay: classCoursedateMap.entrySet())
         {
@@ -30,11 +30,23 @@ public class BasicAlgorithmService implements IAlgorithmService {
                 for(ClassCourse classCourse : classCourseOfDayOfTime.getValue() ){
                     System.out.println(classCourse.getAskedCharacteristics());
 
-                    //ClassroomService.getWithCharacteristic(classrooms,classCourse.getAskedCharacteristics());
+                    List<Classroom> suitableClassRooms = ClassroomService.getWithCapacity(classrooms,classCourse.getCapacity());
 
+                    for(Classroom classroom:suitableClassRooms){
+                        if(checkClassRoomAvailability(classroom, currDate,currHour,classRoomAvailabilityMap)){
+                            classRoomAvailabilityMap.get(currDate).get(currHour).add(classroom);
+                            classCourse.setClassroom(classroom);
+                            break;
+                        }
+                    }
                 }
             }
         }
+        System.out.println(classCoursedateMap);
+
+    }
+    private boolean checkClassRoomAvailability(Classroom classRoom,Date date ,TimeShift timeShift ,TreeMap<Date, EnumMap<TimeShift, List<Classroom>>> classRoomAvailabilityMap){
+        return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
     }
 
     private TreeMap<Date, EnumMap<TimeShift, List<ClassCourse>>> initializeClassCourseDateMap(List<ClassCourse> classCourses) {

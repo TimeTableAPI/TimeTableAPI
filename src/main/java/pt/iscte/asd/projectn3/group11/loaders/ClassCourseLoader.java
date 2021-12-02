@@ -71,7 +71,6 @@ public class ClassCourseLoader {
                             endHour(endTime).
                             date(date).
                             askedCharacteristics(Arrays.asList((askedCharacteristics).split(","))).
-                            classroom(classroom).
                             capacity(capacity).
                             realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
                             build();
