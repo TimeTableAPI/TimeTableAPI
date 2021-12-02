@@ -1,8 +1,8 @@
 package pt.iscte.asd.projectn3.group11.loaders;
 
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
-import pt.iscte.asd.projectn3.group11.models.util.ClassCourseDate;
-import pt.iscte.asd.projectn3.group11.models.util.ClassCourseTime;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,9 +25,9 @@ public class ClassCourseLoaderTest {
         final int shiftsWithFreeSpots = 0;
         final int shiftsWithMoreThanTheCapacity = 0;
         final String weekday = "Seg";
-        final ClassCourseTime beginningHour = ClassCourseTime.stringToClassTime("11:00:00");
-        final ClassCourseTime endHour = ClassCourseTime.stringToClassTime("13:00:00");
-        final ClassCourseDate date = new ClassCourseDate("23-11-2015");
+        final TimeShift beginningHour = TimeShift.stringToClassTime("11:00:00");
+        final TimeShift endHour = TimeShift.stringToClassTime("13:00:00");
+        final Date date = new Date("23-11-2015");
         final String askedCharacteristics = "Sala de Aulas normal";
         final String classroom = "";
         final int capacity = 50;

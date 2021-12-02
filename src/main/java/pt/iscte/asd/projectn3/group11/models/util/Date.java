@@ -1,19 +1,19 @@
 package pt.iscte.asd.projectn3.group11.models.util;
 
-public class ClassCourseDate implements Comparable {
+public class Date implements Comparable {
 
     private final int NOTHING = -1;
     private final int day;
     private final int month;
     private final int year;
 
-    public ClassCourseDate(int day, int month, int year) {
+    public Date(int day, int month, int year) {
         this.day = day;
         this.month = month;
         this.year = year;
     }
 
-    public ClassCourseDate(String date)
+    public Date(String date)
     {
         if(date.isEmpty())
         {
@@ -71,7 +71,7 @@ public class ClassCourseDate implements Comparable {
             return false;
         if(getClass() != obj.getClass())
             return false;
-        final ClassCourseDate other = (ClassCourseDate) obj;
+        final Date other = (Date) obj;
         if(other.day == this.day && other.month == this.month && other.year == this.year)
             return true;
 

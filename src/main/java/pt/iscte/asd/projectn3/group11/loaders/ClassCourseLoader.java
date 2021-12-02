@@ -3,8 +3,8 @@ package pt.iscte.asd.projectn3.group11.loaders;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
-import pt.iscte.asd.projectn3.group11.models.util.ClassCourseDate;
-import pt.iscte.asd.projectn3.group11.models.util.ClassCourseTime;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -50,13 +50,13 @@ public class ClassCourseLoader {
                 final String realCharacteristics = nextRecord[14];
 
                 final int capacity = capacityString.isEmpty() ? -1 : Integer.parseInt(capacityString);
-                final ClassCourseTime beginningHour = ClassCourseTime.stringToClassTime(beginningHourString);
-                final ClassCourseTime endHour = ClassCourseTime.stringToClassTime(endHourString);
-                final ClassCourseDate date = new ClassCourseDate(dateString);
+                final TimeShift beginningHour = TimeShift.stringToClassTime(beginningHourString);
+                final TimeShift endHour = TimeShift.stringToClassTime(endHourString);
+                final Date date = new Date(dateString);
 
                 for( int i =beginningHour.getId() ; i< endHour.getId();i++){
-                    ClassCourseTime begginingTime = ClassCourseTime.getById(i);
-                    ClassCourseTime endTime = ClassCourseTime.getById(i+1);
+                    TimeShift begginingTime = TimeShift.getById(i);
+                    TimeShift endTime = TimeShift.getById(i+1);
 
                     ClassCourse classCourse = new ClassCourse.Builder().
                             courses(Arrays.asList(course.split(", "))).
