@@ -1,6 +1,6 @@
 package pt.iscte.asd.projectn3.group11.models.util;
 
-public enum ClassCourseTime {
+public enum TimeShift {
     HOUR_07H00(1),
     HOUR_07H30(2),
     HOUR_08H00(3),
@@ -40,11 +40,11 @@ public enum ClassCourseTime {
 
     private final int id;
 
-    ClassCourseTime(int id) {
+    TimeShift(int id) {
         this.id = id;
     }
-    public static ClassCourseTime getById(int id) {
-        return ClassCourseTime.values()[id];
+    public static TimeShift getById(int id) {
+        return TimeShift.values()[id];
     }
 
     public int getId() {
@@ -67,7 +67,7 @@ public enum ClassCourseTime {
         return hours + ":" + minutes + ":" + "00";
     }
 
-    public static ClassCourseTime stringToClassTime(String timeString)
+    public static TimeShift stringToClassTime(String timeString)
     {
         if(timeString.isEmpty()) return NOTHING;
 
@@ -84,11 +84,11 @@ public enum ClassCourseTime {
         }
 
 
-        for(ClassCourseTime classCourseTime : ClassCourseTime.values())
+        for(TimeShift timeShift : TimeShift.values())
         {
-            if(classCourseTime.id == id)
+            if(timeShift.id == id)
             {
-                return classCourseTime;
+                return timeShift;
             }
         }
         throw new IllegalArgumentException("CLASS_TIME_DOESNT_EXIST");

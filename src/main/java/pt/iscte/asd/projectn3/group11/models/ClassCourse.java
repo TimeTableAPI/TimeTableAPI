@@ -1,8 +1,8 @@
 package pt.iscte.asd.projectn3.group11.models;
 
 
-import pt.iscte.asd.projectn3.group11.models.util.ClassCourseDate;
-import pt.iscte.asd.projectn3.group11.models.util.ClassCourseTime;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,9 +19,9 @@ public class ClassCourse {
     private final int shiftsWithFreeSpots;
     private final int shiftsWithMoreThanTheCapacity;
     private final String weekday;
-    private final ClassCourseTime beginningHour;
-    private final ClassCourseTime endHour;
-    private final ClassCourseDate date;
+    private final TimeShift beginningHour;
+    private final TimeShift endHour;
+    private final Date date;
     private final String askedCharacteristics;
     private String classroom;
     private final int capacity;
@@ -43,6 +43,7 @@ public class ClassCourse {
         this.beginningHour = builder.beginningHour;
         this.endHour = builder.endHour;
         this.date = builder.date;
+        //TODO change to list or ENUM
         this.askedCharacteristics = builder.askedCharacteristics;
         this.classroom = builder.classroom;
         this.capacity = builder.capacity;
@@ -62,9 +63,9 @@ public class ClassCourse {
         private int shiftsWithFreeSpots;
         private int shiftsWithMoreThanTheCapacity;
         private String weekday;
-        private ClassCourseTime beginningHour;
-        private ClassCourseTime endHour;
-        private ClassCourseDate date;
+        private TimeShift beginningHour;
+        private TimeShift endHour;
+        private Date date;
         private String askedCharacteristics;
         private String classroom;
         private int capacity;
@@ -110,17 +111,17 @@ public class ClassCourse {
             return this;
         }
 
-        public Builder beginningHour (ClassCourseTime beginningHour ){
+        public Builder beginningHour (TimeShift beginningHour ){
             this.beginningHour = beginningHour;
             return this;
         }
 
-        public Builder endHour (ClassCourseTime endHour ){
+        public Builder endHour (TimeShift endHour ){
             this.endHour = endHour;
             return this;
         }
 
-        public Builder date (ClassCourseDate date){
+        public Builder date (Date date){
             this.date = date;
             return this;
         }
@@ -222,7 +223,7 @@ public class ClassCourse {
      * Gets beginning hour of the class.
      * @return {@link ClassCourse#beginningHour}
      */
-    public final ClassCourseTime getBeginningHour() {
+    public final TimeShift getBeginningHour() {
         return beginningHour;
     }
 
@@ -230,7 +231,7 @@ public class ClassCourse {
      * Gets end hour.
      * @return {@link ClassCourse#endHour}
      */
-    public final ClassCourseTime getEndHour() {
+    public final TimeShift getEndHour() {
         return endHour;
     }
 
@@ -238,7 +239,7 @@ public class ClassCourse {
      * Gets date.
      * @return {@link ClassCourse#date}
      */
-    public final ClassCourseDate getDate() {
+    public final Date getDate() {
         return date;
     }
 
