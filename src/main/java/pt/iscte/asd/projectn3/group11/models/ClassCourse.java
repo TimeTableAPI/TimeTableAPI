@@ -22,7 +22,7 @@ public class ClassCourse {
     private final TimeShift beginningHour;
     private final TimeShift endHour;
     private final Date date;
-    private final String askedCharacteristics;
+    private final LinkedList<String> askedCharacteristics;
     private String classroom;
     private final int capacity;
     private final LinkedList<String> realCharacteristics;
@@ -43,7 +43,6 @@ public class ClassCourse {
         this.beginningHour = builder.beginningHour;
         this.endHour = builder.endHour;
         this.date = builder.date;
-        //TODO change to list or ENUM
         this.askedCharacteristics = builder.askedCharacteristics;
         this.classroom = builder.classroom;
         this.capacity = builder.capacity;
@@ -66,7 +65,7 @@ public class ClassCourse {
         private TimeShift beginningHour;
         private TimeShift endHour;
         private Date date;
-        private String askedCharacteristics;
+        private LinkedList<String> askedCharacteristics;
         private String classroom;
         private int capacity;
         private LinkedList<String> realCharacteristics;
@@ -126,8 +125,8 @@ public class ClassCourse {
             return this;
         }
 
-        public Builder askedCharacteristics (String askedCharacteristics ){
-            this.askedCharacteristics = askedCharacteristics;
+        public Builder askedCharacteristics (List<String> askedCharacteristics ){
+            this.askedCharacteristics = new LinkedList<>(askedCharacteristics);
             return this;
         }
 
@@ -247,7 +246,7 @@ public class ClassCourse {
      * Gets asked characteristics.
      * @return {@link ClassCourse#askedCharacteristics}
      */
-    public final String getAskedCharacteristics() {
+    public final LinkedList<String> getAskedCharacteristics() {
         return askedCharacteristics;
     }
 

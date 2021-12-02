@@ -28,7 +28,7 @@ public class ClassCourseLoaderTest {
         final TimeShift beginningHour = TimeShift.stringToClassTime("11:00:00");
         final TimeShift endHour = TimeShift.stringToClassTime("13:00:00");
         final Date date = new Date("23-11-2015");
-        final String askedCharacteristics = "Sala de Aulas normal";
+        final List<String> askedCharacteristics = Collections.singletonList("Sala de Aulas normal");
         final String classroom = "";
         final int capacity = 50;
         final List<String> realCharacteristics = Arrays.asList("Sala Aulas Mestrado Plus", "Horário sala visível portal público", "Sala Aulas Mestrado", "Sala de Aulas normal");
