@@ -23,9 +23,9 @@ public class ClassCourse {
     private final TimeShift endHour;
     private final Date date;
     private final LinkedList<String> askedCharacteristics;
-    private String classroom;
     private final int capacity;
     private final LinkedList<String> realCharacteristics;
+    private Classroom classroom;
 
     //endregion
 
@@ -44,9 +44,9 @@ public class ClassCourse {
         this.endHour = builder.endHour;
         this.date = builder.date;
         this.askedCharacteristics = builder.askedCharacteristics;
-        this.classroom = builder.classroom;
         this.capacity = builder.capacity;
         this.realCharacteristics = builder.realCharacteristics;
+        this.classroom = builder.classroom;
     }
 
     //endregion
@@ -66,9 +66,9 @@ public class ClassCourse {
         private TimeShift endHour;
         private Date date;
         private LinkedList<String> askedCharacteristics;
-        private String classroom;
         private int capacity;
         private LinkedList<String> realCharacteristics;
+        private Classroom classroom;
 
         public Builder courses (List<String> courses ){
             this.courses = new LinkedList<>(courses);
@@ -130,7 +130,7 @@ public class ClassCourse {
             return this;
         }
 
-        public Builder classroom (String classroom ){
+        public Builder classroom (Classroom classroom ){
             this.classroom = classroom;
             return this;
         }
@@ -254,7 +254,7 @@ public class ClassCourse {
      * Gets classroom.
      * @return {@link ClassCourse#classroom}
      */
-    public final String getClassroom() {
+    public final Classroom getClassroom() {
         return classroom;
     }
 
@@ -276,7 +276,7 @@ public class ClassCourse {
 
     //endregion
 
-    public void setClassroom(String classroom) {
+    public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
     }
 
