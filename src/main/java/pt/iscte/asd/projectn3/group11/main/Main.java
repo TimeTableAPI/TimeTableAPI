@@ -18,6 +18,23 @@ public class Main {
         List<Classroom> classrooms = ClassroomLoader.load(SAMPLE_CSV_FILE_CLASSROOM_PATH);
         Context context = new Context(classCourses, classrooms, new BasicAlgorithmService());
         context.resolve();
-
+        System.out.println(classCourses);
+        System.out.println(classesWithRoomPercentage(classCourses));
     }
+
+    static double classesWithRoomPercentage(List<ClassCourse> classes){
+        if (classes.size() > 0){
+            double counter = 0;
+            for (ClassCourse classCourse : classes) {
+                if (classCourse.getClassroom() != null) {
+                    counter++;
+                }
+            }
+            final double percentage = counter / classes.size();
+            return percentage;
+        }else {
+            return 0;
+        }
+    }
+
 }

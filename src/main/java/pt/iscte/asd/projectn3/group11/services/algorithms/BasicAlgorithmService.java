@@ -20,15 +20,15 @@ public class BasicAlgorithmService implements IAlgorithmService {
         for(Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCourseOfDay: classCoursedateMap.entrySet())
         {
             Date currDate = classCourseOfDay.getKey();
-            System.out.println(currDate + " -> " + classCourseOfDay.getValue().size());
+            //System.out.println(currDate + " -> " + classCourseOfDay.getValue().size());
 
             for(Map.Entry<TimeShift, HashSet<ClassCourse>> classCourseOfDayOfTime : classCourseOfDay.getValue().entrySet())
             {
                 TimeShift currHour = classCourseOfDayOfTime.getKey();
 
-                System.out.println(currHour + " -> " + classCourseOfDayOfTime.getValue().size());
+                //System.out.println(currHour + " -> " + classCourseOfDayOfTime.getValue().size());
                 for(ClassCourse classCourse : classCourseOfDayOfTime.getValue() ){
-                    System.out.println(classCourse.getAskedCharacteristics());
+                    //System.out.println(classCourse.getAskedCharacteristics());
 
                     List<Classroom> suitableClassRooms = ClassroomService.getWithCapacity(classrooms,classCourse.getCapacity());
 
@@ -42,7 +42,6 @@ public class BasicAlgorithmService implements IAlgorithmService {
                 }
             }
         }
-        System.out.println(classCoursedateMap);
 
     }
     private boolean checkClassRoomAvailability(Classroom classRoom,Date date ,TimeShift timeShift ,TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap){
