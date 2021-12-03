@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<h1 th:text="${projectTitle}">Title</h1>
+<h2>Members</h2>
+<table>
+    <tr th:each="member : ${teamMembers}">
+        <td th:text="${member}">Member</td>
+    </tr>
+</table>
+
+</body>
+</html>
