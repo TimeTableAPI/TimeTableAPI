@@ -3,6 +3,7 @@ package pt.iscte.asd.projectn3.group11.services.algorithms;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.Operations;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import pt.iscte.asd.projectn3.group11.services.ClassroomService;
 
@@ -33,7 +34,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
                             .capacity(classCourse.getCapacity())
                             .characteristics(classCourse.getAskedCharacteristics())
                             .build();
-                    List<Classroom> suitableClassRooms = ClassroomService.get(classrooms, requestInformation);
+                    List<Classroom> suitableClassRooms = ClassroomService.get(classrooms, requestInformation, Operations.OR);
 
 
                     for (Classroom classroom : suitableClassRooms) {
