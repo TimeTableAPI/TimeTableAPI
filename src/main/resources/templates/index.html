@@ -2,16 +2,21 @@
 <html lang="en" xmlns:th="https://www.thymeLeaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>Software and Design Arquitecture</title>
 </head>
+
 <body>
-<h1 th:text="${projectTitle}">Title</h1>
+<h1>Software and Design Arquitecture</h1>
+
 <h2>Members</h2>
 <table>
     <tr th:each="member : ${teamMembers}">
         <td th:text="${member}">Member</td>
     </tr>
 </table>
+<p>
+    <a href="classrooms.html" th:href="@{/classrooms}">ClassRooms</a>
+</p>
 
 </body>
 </html>

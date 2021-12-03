@@ -32,7 +32,6 @@ public class Classroom {
     //region MEMBERS
 
     private final LinkedList<Boolean> characteristics;
-
     private final String building;
     private final String classroomName;
     private final int normalCapacity;
