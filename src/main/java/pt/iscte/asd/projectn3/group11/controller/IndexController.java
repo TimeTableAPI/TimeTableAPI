@@ -2,11 +2,14 @@ package pt.iscte.asd.projectn3.group11.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
-@org.springframework.web.bind.annotation.RestController
-public class Controller {
+@Controller
+public class IndexController {
 
 
     public static final String CLASSROOMPATH = "/classroom";
@@ -17,8 +20,11 @@ public class Controller {
      * @return "start"
      */
     @RequestMapping("/")
-    public String index() {
-        return "start";
+    public String index(Model model) {
+
+        model.addAttribute("projectTitle", "Software and Design Arquitecture");
+        model.addAttribute("teamMembers", new String[]{"Afonso Costa Vale", "João ALmeida", "Saroj Duwadi"});
+        return "index";
     }
 
     @GetMapping(value = CLASSROOMPATH)
