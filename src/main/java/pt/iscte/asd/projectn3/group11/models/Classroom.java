@@ -155,7 +155,7 @@ public class Classroom {
                 return this.characteristics.get(i);
             }
         }
-        throw new IllegalArgumentException();
+        return false;
     }
 /**
  *<p> Same as {@link Classroom#hasCharacteristic(String)} but for a List of Characteristics</p>
