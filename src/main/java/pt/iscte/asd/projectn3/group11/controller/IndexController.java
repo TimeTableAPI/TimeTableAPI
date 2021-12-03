@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
 @Controller
@@ -22,15 +23,15 @@ public class IndexController {
     @RequestMapping("/")
     public String index(Model model) {
 
-        model.addAttribute("projectTitle", "Software and Design Arquitecture");
         model.addAttribute("teamMembers", new String[]{"Afonso Costa Vale", "João ALmeida", "Saroj Duwadi"});
         return "index";
     }
 
-    @GetMapping(value = CLASSROOMPATH)
-    public ResponseEntity fetchAllClassRooms() {
-        return new ResponseEntity(HttpStatus.OK);
-        //return "ClassRooms";
+    @GetMapping(value = "classrooms")
+    public String fetchAllClassRooms(Model model) {
+        //return new ResponseEntity(HttpStatus.OK);
+        model.addAttribute("classrooms", ClassRoomLoader.classrooms);
+        return "classrooms";
     }
 
     @GetMapping(value = CLASSROOMPATH + "/{id}/")

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Software and Design Arquitecture</title>
+</head>
+<body>
+<h1>Software and Design Arquitecture</h1>
+<p>
+    <a href="index.html" th:href="@{/}">Return to index</a>
+</p>
+<table>
+    <tr>
+        <th>building</th>
+        <th>classroomName</th>
+        <th>normalCapacity</th>
+        <th>examCapacity</th>
+        <th>numberCharacteristics</th>
+        <th>characteristics</th>
+    </tr>
+    <tr th:each="classroom : ${classrooms}">
+        <td th:text="${classroom.building}">Member</td>
+        <td th:text="${classroom.classroomName}">Member</td>
+        <td th:text="${classroom.normalCapacity}">Member</td>
+        <td th:text="${classroom.examCapacity}">Member</td>
+        <td th:text="${classroom.numberCharacteristics  }">Member</td>
+        <td th:text="${classroom.characteristics}">Member</td>
+    </tr>
+</table>
+
+
+</body>
+</html>
