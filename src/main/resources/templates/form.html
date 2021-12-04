@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+</head>
+<body>
+
+<form th:object="${file}" th:method="POST">
+    <p>Class <input type="input" name="classCourse" th:field="*{classCourse}"/></p>
+    <p>ClassRoom <input type="input" name="classRoom" th:field="*{classRoom}"/></p>
+    <p><input type="submit" name="Submit" value="Submit"/></p>
+
+</form>
+
+<div th:if="${classCourse!= null && !#strings.isEmpty(classCourse) }">
+    ClassCourse <p th:text="${classCourse}"></p>
+</div>
+<div th:if="${classRoom!= null && NOT #strings.isEmpty(classRoom) }">
+    ClassRoom <p th:text="${classRoom}"></p>
+</div>
+
+</body>
+</html>
