@@ -11,7 +11,6 @@ public class Class {
     private final LinkedList<String> courses;
     private final LinkedList<String> units;
     private final String shift;
-    private final LinkedList<String> classesOfCourse;
     private final int numberOfStudentsInClass;
     private final int shiftsWithFreeSpots;
     private final int shiftsWithMoreThanTheCapacity;
@@ -23,6 +22,7 @@ public class Class {
     private final String classroom;
     private final String capacity;
     private final LinkedList<String> realCharacteristics;
+    private final LinkedList<String> classesOfCourse;
 
     //endregion
 

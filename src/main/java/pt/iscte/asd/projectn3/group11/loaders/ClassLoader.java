@@ -14,14 +14,15 @@ import java.util.LinkedList;
 public class ClassLoader {
     //region LOADERS
 
+    public final static LinkedList<Class> classes = new LinkedList<>();
+
     /**
      * Loads a Class csv file.
+     *
      * @param path path to the classroom csv.
      * @return List of classrooms
      */
-    public static final LinkedList<Class> load(final String path)
-    {
-        final LinkedList<Class> classes = new LinkedList<>();
+    public static final LinkedList<Class> load(final String path) {
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)

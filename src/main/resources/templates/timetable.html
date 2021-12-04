@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeLeaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Timetable</title>
+</head>
+<body>
+
+<header th:insert="fragments/headerFooter.html :: header"></header>
+<footer th:insert="fragments/headerFooter.html :: footer"></footer>
+
+<table>
+    <tr>
+        <th>courses</th>
+        <th>units</th>
+        <th>shift</th>
+        <th>numberOfStudentsInClass</th>
+        <th>shiftsWithFreeSpots</th>
+        <th>shiftsWithMoreThanTheCapacity</th>
+        <th>weekday</th>
+        <th>beginningHour</th>
+        <th>endHour</th>
+        <th>monthDay</th>
+        <th>askedCharacteristics</th>
+        <th>classroom</th>
+        <th>capacity</th>
+        <th>realCharacteristics</th>
+        <th>classesOfCourse</th>
+    </tr>
+    <tr th:each="classCourse : ${timetable}">
+        <td th:text="${classCourse.courses}">courses</td>
+        <td th:text="${classCourse.units}">units</td>
+        <td th:text="${classCourse.shift}">shift</td>
+        <td th:text="${classCourse.numberOfStudentsInClass}">numberOfStudentsInClass</td>
+        <td th:text="${classCourse.shiftsWithFreeSpots  }">shiftsWithFreeSpots</td>
+        <td th:text="${classCourse.shiftsWithMoreThanTheCapacity}">shiftsWithMoreThanTheCapacity</td>
+        <td th:text="${classCourse.weekday}">weekday</td>
+        <td th:text="${classCourse.beginningHour}">beginningHour</td>
+        <td th:text="${classCourse.endHour}">endHour</td>
+        <td th:text="${classCourse.monthDay}">monthDay</td>
+        <td th:text="${classCourse.askedCharacteristics}">askedCharacteristics</td>
+        <td th:text="${classCourse.classroom}">classroom</td>
+        <td th:text="${classCourse.capacity}">capacity</td>
+        <td th:text="${classCourse.realCharacteristics}">realCharacteristics</td>
+        <td th:text="${classCourse.classesOfCourse}">classesOfCourse</td>
+    </tr>
+</table>
+
+
+</body>
+</html>

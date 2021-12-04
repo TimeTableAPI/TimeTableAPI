@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pt.iscte.asd.projectn3.group11.loaders.ClassLoader;
 import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
@@ -41,10 +42,11 @@ public class IndexController {
         return "classrooms";
     }
 
-    @GetMapping(value = CLASSROOMPATH + "/{id}/")
-    public ResponseEntity fetchClassRoomById(@PathVariable("id") String id) {
-        return new ResponseEntity(HttpStatus.OK);
-        //return "ClassRoom with id" + id;
+    @GetMapping(value = "timetable")
+    public String fetchTimeTable(Model model) {
+        //return new ResponseEntity(HttpStatus.OK);
+        model.addAttribute("timetable", ClassLoader.classes);
+        return "timetable";
     }
 
     @PostMapping(value = CLASSROOMPATH, consumes = "application/json", produces = "application/json")
