@@ -4,14 +4,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.UploadedFile;
+import pt.iscte.asd.projectn3.group11.models.FormResponse;
+import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Controller
 public class IndexController {
@@ -56,35 +59,39 @@ public class IndexController {
 
     @GetMapping(value = "/form")
     public String getForm(Model model) {
-        UploadedFile uploadedFile = new UploadedFile();
-        model.addAttribute("file", uploadedFile);
+        FormResponse formResponse = new FormResponse();
+        model.addAttribute("response", formResponse);
         return "form";
     }
 
     @PostMapping(value = "/form")
-    public String submitForm(@ModelAttribute(name = "file") UploadedFile uploadedFile, Model model) {
-        String classCourse = uploadedFile.getClassCourse();
-        String classRoom = uploadedFile.getClassRoom();
+    public String submitForm(@ModelAttribute(name = "response") FormResponse formResponse, Model model) {
+        String classCourse = formResponse.getClassCourse();
+        String classRoom = formResponse.getClassRoom();
         model.addAttribute("classCourse", classCourse);
         model.addAttribute("classRoom", classRoom);
         return "form";
     }
-/*
-    @PostMapping(value = "/form")
-    public String submitForm(HttpServletRequest request, Model model) {
-        String classCourse = request.getParameter("classCourse");
-        String classRoom = request.getParameter("classRoom");
-        if (classCourse == null) {
-            classCourse = "";
+
+    @PostMapping(value = "/upload")
+    public String submitFileForm(@RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) {
+        // check if file is empty
+        if (file.isEmpty()) {
+            attributes.addFlashAttribute("message", "Please select a file to upload.");
+            return "redirect:/form";
         }
-        if (classRoom == null) {
-            classRoom = "";
+
+        // normalize the file path
+        try {
+            FileUploadService.uploadFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        model.addAttribute("classCourse", classCourse);
-        model.addAttribute("classRoom", classRoom);
-        return "form";
+        // return success response
+        attributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + '!');
+
+        return "redirect:/form";
     }
-    */
 }
 
 /*

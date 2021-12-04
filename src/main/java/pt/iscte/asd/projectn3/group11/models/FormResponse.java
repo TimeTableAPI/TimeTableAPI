@@ -1,15 +1,15 @@
 package pt.iscte.asd.projectn3.group11.models;
 
-public class UploadedFile {
+public class FormResponse {
 
     private String classCourse;
     private String classRoom;
 
-    public UploadedFile() {
+    public FormResponse() {
         super();
     }
 
-    public UploadedFile(String classcourse, String classRoom) {
+    public FormResponse(String classcourse, String classRoom) {
         this.classCourse = classcourse;
         this.classRoom = classRoom;
     }
