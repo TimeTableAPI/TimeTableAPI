@@ -7,12 +7,21 @@
 <body>
 <header th:insert="fragments/headerFooter.html :: header"></header>
 
-<form th:object="${file}" th:method="POST">
+<form th:object="${response}" th:method="POST">
     <p>Class <input type="input" name="classCourse" th:field="*{classCourse}"/></p>
     <p>ClassRoom <input type="input" name="classRoom" th:field="*{classRoom}"/></p>
     <p><input type="submit" name="Submit" value="Submit"/></p>
 
 </form>
+
+<p th:text="${message}" th:if="${message ne null}"></p>
+<form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+    <div>
+        <input type="file" name="file">
+    </div>
+    <button type="submit">Upload File</button>
+</form>
+
 
 <div th:if="${classCourse!= null && !#strings.isEmpty(classCourse) }">
     ClassCourse <p th:text="${classCourse}"></p>
