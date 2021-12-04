@@ -1,10 +1,7 @@
 package pt.iscte.asd.projectn3.group11.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
@@ -18,4 +15,6 @@ public class FileUploadController {
         FileUploadService.uploadFile(file);
 
     }
+
+
 }

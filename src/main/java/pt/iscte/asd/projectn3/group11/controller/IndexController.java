@@ -4,10 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.models.UploadedFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class IndexController {
@@ -16,7 +20,7 @@ public class IndexController {
     public static final String CLASSROOMPATH = "/classroom";
 
     /**
-     * Handles the root (/)endpoint and return astart page.
+     * Handles the root (/)endpoint and return start page.
      *
      * @return "start"
      */
@@ -49,6 +53,38 @@ public class IndexController {
     public ResponseEntity deleteClassRoom(@PathVariable("id") String id) {
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/form")
+    public String getForm(Model model) {
+        UploadedFile uploadedFile = new UploadedFile();
+        model.addAttribute("file", uploadedFile);
+        return "form";
+    }
+
+    @PostMapping(value = "/form")
+    public String submitForm(@ModelAttribute(name = "file") UploadedFile uploadedFile, Model model) {
+        String classCourse = uploadedFile.getClassCourse();
+        String classRoom = uploadedFile.getClassRoom();
+        model.addAttribute("classCourse", classCourse);
+        model.addAttribute("classRoom", classRoom);
+        return "form";
+    }
+/*
+    @PostMapping(value = "/form")
+    public String submitForm(HttpServletRequest request, Model model) {
+        String classCourse = request.getParameter("classCourse");
+        String classRoom = request.getParameter("classRoom");
+        if (classCourse == null) {
+            classCourse = "";
+        }
+        if (classRoom == null) {
+            classRoom = "";
+        }
+        model.addAttribute("classCourse", classCourse);
+        model.addAttribute("classRoom", classRoom);
+        return "form";
+    }
+    */
 }
 
 /*
