@@ -30,7 +30,8 @@ public class BasicAlgorithmService implements IAlgorithmService {
                 for(ClassCourse classCourse : classCourseOfDayOfTime.getValue() ){
                     //System.out.println(classCourse.getAskedCharacteristics());
 
-                    List<Classroom> suitableClassRooms = ClassroomService.getWithCapacity(classrooms,classCourse.getCapacity());
+                    //List<Classroom> suitableClassRooms = ClassroomService.getWithCapacity(classrooms,classCourse.getCapacity());
+                    List<Classroom> suitableClassRooms = ClassroomService.getWithCharacteristics(classrooms,classCourse.getAskedCharacteristics());
 
                     for(Classroom classroom:suitableClassRooms){
                         if(checkClassRoomAvailability(classroom, currDate,currHour,classRoomAvailabilityMap)){
