@@ -22,6 +22,7 @@ public class IndexController {
 
 
     public static final String CLASSROOMPATH = "/classroom";
+//region home
 
     /**
      * Handles the root (/)endpoint and return start page.
@@ -35,18 +36,13 @@ public class IndexController {
         return "index";
     }
 
+    //endregion
+//region classrooms
     @GetMapping(value = "classrooms")
     public String fetchAllClassRooms(Model model) {
         //return new ResponseEntity(HttpStatus.OK);
         model.addAttribute("classrooms", ClassRoomLoader.classrooms);
         return "classrooms";
-    }
-
-    @GetMapping(value = "timetable")
-    public String fetchTimeTable(Model model) {
-        //return new ResponseEntity(HttpStatus.OK);
-        model.addAttribute("timetable", ClassLoader.classes);
-        return "timetable";
     }
 
     @PostMapping(value = CLASSROOMPATH, consumes = "application/json", produces = "application/json")
@@ -59,6 +55,18 @@ public class IndexController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    //endregion
+//region timetable
+    @GetMapping(value = "timetable")
+    public String fetchTimeTable(Model model) {
+        //return new ResponseEntity(HttpStatus.OK);
+        model.addAttribute("timetable", ClassLoader.classes);
+        return "timetable";
+
+    }
+
+    //endregion
+//region form
     @GetMapping(value = "/form")
     public String getForm(Model model) {
         FormResponse formResponse = new FormResponse();
@@ -94,6 +102,7 @@ public class IndexController {
 
         return "redirect:/form";
     }
+//endregion
 }
 
 /*
