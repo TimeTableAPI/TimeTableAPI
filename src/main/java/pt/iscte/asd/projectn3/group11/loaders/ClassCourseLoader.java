@@ -3,7 +3,7 @@ package pt.iscte.asd.projectn3.group11.loaders;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.web.multipart.MultipartFile;
-import pt.iscte.asd.projectn3.group11.models.Class;
+import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
 import java.io.*;
@@ -12,11 +12,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
-public class ClassLoader {
+public class ClassCourseLoader {
 
-    public final static LinkedList<Class> classes = new LinkedList<>();
+    public final static LinkedList<ClassCourse> CLASS_COURSES = new LinkedList<>();
 
     //region Loader
 
@@ -26,7 +25,7 @@ public class ClassLoader {
      * @param path path to the classroom csv.
      * @return List of classrooms
      */
-    public static final LinkedList<Class> load(final String path) {
+    public static final LinkedList<ClassCourse> load(final String path) {
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
@@ -36,7 +35,7 @@ public class ClassLoader {
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-        return classes;
+        return CLASS_COURSES;
     }
 
     /**
@@ -45,7 +44,7 @@ public class ClassLoader {
      * @param file object containing the csv for the Classes.
      * @return List of classrooms
      */
-    public static final LinkedList<Class> load(final File file) {
+    public static final LinkedList<ClassCourse> load(final File file) {
         try (
                 final Reader reader = new FileReader(file);
                 final CSVReader csvReader = new CSVReader(reader)
@@ -54,9 +53,9 @@ public class ClassLoader {
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
-            return classes;
+            return CLASS_COURSES;
         }
-        return classes;
+        return CLASS_COURSES;
     }
 
     /**
@@ -65,7 +64,7 @@ public class ClassLoader {
      * @param multipartFile object containing the csv for the Classes.
      * @return List of classrooms
      */
-    public static final LinkedList<Class> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
+    public static final LinkedList<ClassCourse> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
         File file;
         if (toDisk) {
             file = new File(FileUploadService.UPLOADED_FILES_LOCATION + multipartFile.getOriginalFilename());
@@ -76,8 +75,8 @@ public class ClassLoader {
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(multipartFile.getBytes());
         fos.close();
-        ClassLoader.load(file);
-        return classes;
+        ClassCourseLoader.load(file);
+        return CLASS_COURSES;
     }
 
     private static void extractClass(CSVReader csvReader) throws IOException, CsvValidationException {
@@ -102,7 +101,7 @@ public class ClassLoader {
             final String capacity = nextRecord[13];
             final String realCharacteristics = nextRecord[14];
 
-            Class aClass = new Class.Builder().
+            ClassCourse aClassCourse = new ClassCourse.Builder().
                     courses(Arrays.asList(course.split(", "))).
                     units(Arrays.asList(unit.split(", "))).
                     shift(shift).
@@ -120,13 +119,13 @@ public class ClassLoader {
                     realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
                     build();
 
-            System.out.println(aClass);
-            classes.add(aClass);
+            System.out.println(aClassCourse);
+            CLASS_COURSES.add(aClassCourse);
         }
     }
 
     public static void clear() {
-        ClassLoader.classes.clear();
+        ClassCourseLoader.CLASS_COURSES.clear();
     }
     //endregion
 
@@ -137,8 +136,8 @@ public class ClassLoader {
             File myObj = new File(temp.toUri());
             //if (myObj.createNewFile()) {
             try (FileWriter writer = new FileWriter(myObj)) {
-                writer.write(String.join(",", Class.HEADER));
-                for (Class classCourse : ClassLoader.classes) {
+                writer.write(String.join(",", ClassCourse.HEADER));
+                for (ClassCourse classCourse : ClassCourseLoader.CLASS_COURSES) {
                     writer.write(classCourse.toCSVString());
                     writer.write("\n");
                 }

@@ -1,7 +1,7 @@
 package pt.iscte.asd.projectn3.group11.loaders;
 
 import org.junit.jupiter.api.Test;
-import pt.iscte.asd.projectn3.group11.models.Class;
+import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import java.util.List;
 import static java.lang.Math.min;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ClassLoaderTest {
+public class ClassCourseLoaderTest {
     private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/test/resources/classTest.csv";
-    private static Class aClass;
+    private static ClassCourse aClassCourse;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -34,7 +34,7 @@ public class ClassLoaderTest {
         final String classroom = "";
         final String capacity = "50";
         final List<String> realCharacteristics = Arrays.asList("Sala Aulas Mestrado Plus", "Horário sala visível portal público", "Sala Aulas Mestrado", "Sala de Aulas normal");
-        aClass = new Class.Builder().
+        aClassCourse = new ClassCourse.Builder().
                 courses(courses).
                 units(units).
                 shift(shift).
@@ -55,21 +55,21 @@ public class ClassLoaderTest {
 
     @org.junit.jupiter.api.Test
     void load() {
-        Class classTest = ClassLoader.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
-        assertEquals(classTest.getCourses(), aClass.getCourses());
-        assertEquals(classTest.getUnits(), aClass.getUnits());
-        assertEquals(classTest.getClassesOfCourse(), aClass.getClassesOfCourse());
-        assertEquals(classTest.getNumberOfStudentsInClass(), aClass.getNumberOfStudentsInClass());
-        assertEquals(classTest.getShiftsWithFreeSpots(), aClass.getShiftsWithFreeSpots());
-        assertEquals(classTest.getShiftsWithMoreThanTheCapacity(), aClass.getShiftsWithMoreThanTheCapacity());
-        assertEquals(classTest.getWeekday(), aClass.getWeekday());
-        assertEquals(classTest.getBeginningHour(), aClass.getBeginningHour());
-        assertEquals(classTest.getEndHour(), aClass.getEndHour());
-        assertEquals(classTest.getMonthDay(), aClass.getMonthDay());
-        assertEquals(classTest.getAskedCharacteristics(), aClass.getAskedCharacteristics());
-        assertEquals(classTest.getClassroom(), aClass.getClassroom());
-        assertEquals(classTest.getCapacity(), aClass.getCapacity());
-        assertEquals(classTest.getRealCharacteristics(), aClass.getRealCharacteristics());
+        ClassCourse classCourseTest = ClassCourseLoader.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
+        assertEquals(classCourseTest.getCourses(), aClassCourse.getCourses());
+        assertEquals(classCourseTest.getUnits(), aClassCourse.getUnits());
+        assertEquals(classCourseTest.getClassesOfCourse(), aClassCourse.getClassesOfCourse());
+        assertEquals(classCourseTest.getNumberOfStudentsInClass(), aClassCourse.getNumberOfStudentsInClass());
+        assertEquals(classCourseTest.getShiftsWithFreeSpots(), aClassCourse.getShiftsWithFreeSpots());
+        assertEquals(classCourseTest.getShiftsWithMoreThanTheCapacity(), aClassCourse.getShiftsWithMoreThanTheCapacity());
+        assertEquals(classCourseTest.getWeekday(), aClassCourse.getWeekday());
+        assertEquals(classCourseTest.getBeginningHour(), aClassCourse.getBeginningHour());
+        assertEquals(classCourseTest.getEndHour(), aClassCourse.getEndHour());
+        assertEquals(classCourseTest.getMonthDay(), aClassCourse.getMonthDay());
+        assertEquals(classCourseTest.getAskedCharacteristics(), aClassCourse.getAskedCharacteristics());
+        assertEquals(classCourseTest.getClassroom(), aClassCourse.getClassroom());
+        assertEquals(classCourseTest.getCapacity(), aClassCourse.getCapacity());
+        assertEquals(classCourseTest.getRealCharacteristics(), aClassCourse.getRealCharacteristics());
     }
 
     @Test
@@ -80,12 +80,12 @@ public class ClassLoaderTest {
     @Test
     void export() {
         try {
-            LinkedList<Class> classes = ClassLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
-            File file = ClassLoader.export();
-            LinkedList<Class> classesExported = ClassLoader.load(file);
+            LinkedList<ClassCourse> classCourses = ClassCourseLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
+            File file = ClassCourseLoader.export();
+            LinkedList<ClassCourse> classesExported = ClassCourseLoader.load(file);
 
-            for (int i = 0; i < min(classes.size(), classesExported.size()); i++) {
-                assertEquals(classes.get(i), classesExported.get(i));
+            for (int i = 0; i < min(classCourses.size(), classesExported.size()); i++) {
+                assertEquals(classCourses.get(i), classesExported.get(i));
             }
 
 

@@ -4,7 +4,7 @@ package pt.iscte.asd.projectn3.group11.models;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Class {
+public class ClassCourse {
     public static final String[] HEADER = {
             "Curso",
             "Unidade de execução",
@@ -43,7 +43,7 @@ public class Class {
 
     //region CONSTRUCTORS
 
-    private Class(Builder builder) {
+    private ClassCourse(Builder builder) {
         this.courses = builder.courses;
         this.units = builder.units;
         this.shift = builder.shift;
@@ -157,8 +157,8 @@ public class Class {
             return this;
         }
 
-        public Class build() {
-            return new Class(this);
+        public ClassCourse build() {
+            return new ClassCourse(this);
         }
     }
 
@@ -169,7 +169,7 @@ public class Class {
     /**
      * Gets Course.
      *
-     * @return {@link Class#courses}
+     * @return {@link ClassCourse#courses}
      */
     public final LinkedList<String> getCourses() {
         return courses;
@@ -178,7 +178,7 @@ public class Class {
     /**
      * Gets Unit.
      *
-     * @return {@link Class#units}
+     * @return {@link ClassCourse#units}
      */
     public final LinkedList<String> getUnits() {
         return units;
@@ -187,7 +187,7 @@ public class Class {
     /**
      * Gets Shift.
      *
-     * @return {@link Class#shift}
+     * @return {@link ClassCourse#shift}
      */
     public final String getShift() {
         return shift;
@@ -196,7 +196,7 @@ public class Class {
     /**
      * Gets Class of course.
      *
-     * @return {@link Class#classesOfCourse}
+     * @return {@link ClassCourse#classesOfCourse}
      */
     public final LinkedList<String> getClassesOfCourse() {
         return classesOfCourse;
@@ -205,7 +205,7 @@ public class Class {
     /**
      * Gets the number of students.
      *
-     * @return {@link Class#numberOfStudentsInClass}
+     * @return {@link ClassCourse#numberOfStudentsInClass}
      */
     public final int getNumberOfStudentsInClass() {
         return numberOfStudentsInClass;
@@ -214,7 +214,7 @@ public class Class {
     /**
      * Gets Shifts with free spots.
      *
-     * @return {@link Class#shiftsWithFreeSpots}
+     * @return {@link ClassCourse#shiftsWithFreeSpots}
      */
     public final int getShiftsWithFreeSpots() {
         return shiftsWithFreeSpots;
@@ -223,7 +223,7 @@ public class Class {
     /**
      * Gets Shifts with more students than the capacity.
      *
-     * @return {@link Class#shiftsWithMoreThanTheCapacity}
+     * @return {@link ClassCourse#shiftsWithMoreThanTheCapacity}
      */
     public final int getShiftsWithMoreThanTheCapacity() {
         return shiftsWithMoreThanTheCapacity;
@@ -232,7 +232,7 @@ public class Class {
     /**
      * Gets weekday.
      *
-     * @return {@link Class#weekday}
+     * @return {@link ClassCourse#weekday}
      */
     public final String getWeekday() {
         return weekday;
@@ -241,7 +241,7 @@ public class Class {
     /**
      * Gets beginning hour of the class.
      *
-     * @return {@link Class#beginningHour}
+     * @return {@link ClassCourse#beginningHour}
      */
     public final String getBeginningHour() {
         return beginningHour;
@@ -250,7 +250,7 @@ public class Class {
     /**
      * Gets end hour.
      *
-     * @return {@link Class#endHour}
+     * @return {@link ClassCourse#endHour}
      */
     public final String getEndHour() {
         return endHour;
@@ -259,7 +259,7 @@ public class Class {
     /**
      * Gets moth day.
      *
-     * @return {@link Class#monthDay}
+     * @return {@link ClassCourse#monthDay}
      */
     public final String getMonthDay() {
         return monthDay;
@@ -268,7 +268,7 @@ public class Class {
     /**
      * Gets asked characteristics.
      *
-     * @return {@link Class#askedCharacteristics}
+     * @return {@link ClassCourse#askedCharacteristics}
      */
     public final String getAskedCharacteristics() {
         return askedCharacteristics;
@@ -277,7 +277,7 @@ public class Class {
     /**
      * Gets classroom.
      *
-     * @return {@link Class#classroom}
+     * @return {@link ClassCourse#classroom}
      */
     public final String getClassroom() {
         return classroom;
@@ -286,7 +286,7 @@ public class Class {
     /**
      * Gets capacity.
      *
-     * @return {@link Class#capacity}
+     * @return {@link ClassCourse#capacity}
      */
     public final String getCapacity() {
         return capacity;
@@ -295,7 +295,7 @@ public class Class {
     /**
      * Gets real characteristics
      *
-     * @return {@link Class#realCharacteristics}
+     * @return {@link ClassCourse#realCharacteristics}
      */
     public final LinkedList<String> getRealCharacteristics() {
         return realCharacteristics;

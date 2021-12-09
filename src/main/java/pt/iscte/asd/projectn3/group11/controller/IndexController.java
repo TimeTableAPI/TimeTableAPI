@@ -10,9 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pt.iscte.asd.projectn3.group11.loaders.ClassLoader;
+import pt.iscte.asd.projectn3.group11.loaders.ClassCourseLoader;
 import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
-import pt.iscte.asd.projectn3.group11.models.Class;
+import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
@@ -66,14 +66,14 @@ public class IndexController {
 //region timetable
     @GetMapping(value = TIMETABLEPATH)
     public String fetchTimeTable(Model model) {
-        model.addAttribute("timetable", ClassLoader.classes);
+        model.addAttribute("timetable", ClassCourseLoader.CLASS_COURSES);
         return "timetable";
     }
 
     @GetMapping(value = TIMETABLEPATH + "/download")
     public ResponseEntity<Resource> downloadTimeTable(Model model) {
         try {
-            File file = ClassLoader.export();
+            File file = ClassCourseLoader.export();
 
             try {
                 InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
@@ -114,21 +114,21 @@ public class IndexController {
         try {
             //FileUploadService.uploadFile(file_classes);
             //FileUploadService.uploadFile(file_classrooms);
-            ClassLoader.clear();
+            ClassCourseLoader.clear();
             ClassRoomLoader.clear();
 
-            LinkedList<Class> loadedClasses = ClassLoader.load(file_classes, false);
+            LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoader.load(file_classes, false);
             LinkedList<Classroom> loadedClassRooms = ClassRoomLoader.load(file_classrooms, false);
             attributes.addFlashAttribute("message", "You successfully uploaded\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
 
-            model.addAttribute("timetable", loadedClasses);
+            model.addAttribute("timetable", loadedClassCourses);
 
             // return success response
             return "timetable";
         } catch (IOException e) {
             attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
             e.printStackTrace();
-            model.addAttribute("timetable", ClassLoader.classes);
+            model.addAttribute("timetable", ClassCourseLoader.CLASS_COURSES);
             return "redirect:/" + TIMETABLEPATH;
         }
 
