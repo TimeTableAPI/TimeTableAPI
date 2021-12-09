@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Software and Design Arquitecture</title>
+</head>
+<body>
+<header th:insert="fragments/headerFooter.html :: header"></header>
+
+<h2>Members</h2>
+<table>
+    <ul th:each="member : ${teamMembers}">
+        <li th:text="${member}">Member</li>
+    </ul>
+</table>
+
+<footer th:insert="fragments/headerFooter.html :: footer"></footer>
+</body>
+</html>

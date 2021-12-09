@@ -3,13 +3,15 @@ package pt.iscte.asd.projectn3.group11.loaders;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
-
+import org.junit.jupiter.api.Test;
+import pt.iscte.asd.projectn3.group11.models.ClassCourse;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static java.lang.Math.min;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClassCourseLoaderTest {
@@ -17,6 +19,7 @@ public class ClassCourseLoaderTest {
     private static ClassCourse classCourse1;
     private static ClassCourse classCourse2;
     private static LinkedList<ClassCourse> loadedClassCourses ;
+    private static ClassCourse aClassCourse;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp()
@@ -39,6 +42,9 @@ public class ClassCourseLoaderTest {
         final TimeShift shift1 = TimeShift.stringToClassTime("11:00:00");
         final TimeShift shift2 = TimeShift.stringToClassTime("11:30:00");
         final TimeShift shift3 = TimeShift.stringToClassTime("12:00:00");
+        final String beginningHour = "11:00:00";
+        final String endHour = "13:00:00";
+        final String monthDay = "23-11-2015";
         classCourse1 = new ClassCourse.Builder().
                 courses(courses).
                 units(units).
@@ -101,6 +107,24 @@ public class ClassCourseLoaderTest {
 
     }
 
+    @Test
+    void clear() {
+
+    }
+
+    @Test
+    void export() {
+        try {
+            LinkedList<ClassCourse> classCourses = ClassCourseLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
+            File file = ClassCourseLoader.export();
+            LinkedList<ClassCourse> classesExported = ClassCourseLoader.load(file);
+            for (int i = 0; i < min(classCourses.size(), classesExported.size()); i++) {
+                assertEquals(classCourses.get(i), classesExported.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
+    }
 }

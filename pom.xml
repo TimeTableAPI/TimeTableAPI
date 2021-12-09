@@ -44,7 +44,6 @@
             <artifactId>opencsv</artifactId>
             <version>5.5.2</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -52,7 +51,13 @@
             <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
-
+        <!--region Thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!--endregion -->
+        <!--region Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -67,5 +72,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!--endregion -->
     </dependencies>
 </project>

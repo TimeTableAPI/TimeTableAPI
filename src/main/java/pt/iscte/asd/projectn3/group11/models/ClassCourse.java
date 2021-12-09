@@ -1,20 +1,32 @@
 package pt.iscte.asd.projectn3.group11.models;
-
-
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
-
 import java.util.LinkedList;
 import java.util.List;
 
 public class ClassCourse {
 
+    public static final String[] HEADER = {
+            "Curso",
+            "Unidade de execução",
+            "Turno",
+            "Turma",
+            "Inscritos no turno (no 1º semestre é baseado em estimativas)",
+            "Turnos com capacidade superior à capacidade das características das salas",
+            "Turno com inscrições superiores à capacidade das salas",
+            "Dia da Semana",
+            "Início",
+            "Fim",
+            "Dia",
+            "Características da sala pedida para a aula",
+            "Sala da aula,Lotação",
+            "Características reais da sala",
+    };
     //region MEMBERS
 
     private final LinkedList<String> courses;
     private final LinkedList<String> units;
     private final String shift;
-    private final LinkedList<String> classesOfCourse;
     private final int numberOfStudentsInClass;
     private final int shiftsWithFreeSpots;
     private final int shiftsWithMoreThanTheCapacity;
@@ -26,6 +38,7 @@ public class ClassCourse {
     private final int capacity;
     private final LinkedList<String> realCharacteristics;
     private Classroom classroom;
+    private final LinkedList<String> classesOfCourse;
 
     //endregion
 
@@ -35,7 +48,7 @@ public class ClassCourse {
         this.courses = builder.courses;
         this.units = builder.units;
         this.shift = builder.shift;
-        this.classesOfCourse =  builder.classesOfCourse;
+        this.classesOfCourse = builder.classesOfCourse;
         this.numberOfStudentsInClass = builder.numberOfStudentsInClass;
         this.shiftsWithFreeSpots = builder.shiftsWithFreeSpots;
         this.shiftsWithMoreThanTheCapacity = builder.shiftsWithMoreThanTheCapacity;
@@ -53,7 +66,7 @@ public class ClassCourse {
 
     //region BUILDER
 
-    public static class Builder{
+    public static class Builder {
         private LinkedList<String> courses;
         private LinkedList<String> units;
         private String shift;
@@ -70,42 +83,42 @@ public class ClassCourse {
         private LinkedList<String> realCharacteristics;
         private Classroom classroom;
 
-        public Builder courses (List<String> courses ){
+        public Builder courses(List<String> courses) {
             this.courses = new LinkedList<>(courses);
             return this;
         }
 
-        public Builder units (List<String> units ){
+        public Builder units(List<String> units) {
             this.units = new LinkedList<>(units);
             return this;
         }
 
-        public Builder shift (String shift ){
+        public Builder shift(String shift) {
             this.shift = shift;
             return this;
         }
 
-        public Builder classesOfCourse (List<String> classesOfCourse ){
+        public Builder classesOfCourse(List<String> classesOfCourse) {
             this.classesOfCourse = new LinkedList<>(classesOfCourse);
             return this;
         }
 
-        public Builder numberOfStudentsInClass (int numberOfStudentsInClass ){
+        public Builder numberOfStudentsInClass(int numberOfStudentsInClass) {
             this.numberOfStudentsInClass = numberOfStudentsInClass;
             return this;
         }
 
-        public Builder shiftsWithFreeSpots (int shiftsWithFreeSpots ){
+        public Builder shiftsWithFreeSpots(int shiftsWithFreeSpots) {
             this.shiftsWithFreeSpots = shiftsWithFreeSpots;
             return this;
         }
 
-        public Builder shiftsWithMoreThanTheCapacity (int shiftsWithMoreThanTheCapacity ){
+        public Builder shiftsWithMoreThanTheCapacity(int shiftsWithMoreThanTheCapacity) {
             this.shiftsWithMoreThanTheCapacity = shiftsWithMoreThanTheCapacity;
             return this;
         }
 
-        public Builder weekday (String weekday ){
+        public Builder weekday(String weekday) {
             this.weekday = weekday;
             return this;
         }
@@ -140,12 +153,12 @@ public class ClassCourse {
             return this;
         }
 
-        public Builder realCharacteristics (List<String> realCharacteristics ){
+        public Builder realCharacteristics(List<String> realCharacteristics) {
             this.realCharacteristics = new LinkedList<>(realCharacteristics);
             return this;
         }
 
-        public ClassCourse build(){
+        public ClassCourse build() {
             return new ClassCourse(this);
         }
     }
@@ -299,6 +312,25 @@ public class ClassCourse {
                 ", capacity='" + capacity + '\'' +
                 ", realCharacteristics=" + realCharacteristics +
                 '}';
+    }
+
+    public final String toCSVString() {
+        return courses +
+                "," + String.join("," , units) +
+                ",'" + shift + '\'' +
+                "," + classesOfCourse +
+                ",'" + numberOfStudentsInClass + '\'' +
+                ",'" + shiftsWithFreeSpots + '\'' +
+                ",'" + shiftsWithMoreThanTheCapacity + '\'' +
+                ",'" + weekday + '\'' +
+                ",'" + beginningHour + '\'' +
+                ",'" + endHour + '\'' +
+                ",'" + date + '\'' +
+                ",'" + askedCharacteristics + '\'' +
+                ",'" + classroom + '\'' +
+                ",'" + capacity + '\'' +
+                "," + realCharacteristics
+                ;
     }
 
 }
