@@ -1,10 +1,13 @@
 package pt.iscte.asd.projectn3.group11.models;
 
 
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
+
 import java.util.LinkedList;
 import java.util.List;
 
-public class Class {
+public class ClassCourse {
 
     //region MEMBERS
 
@@ -16,19 +19,19 @@ public class Class {
     private final int shiftsWithFreeSpots;
     private final int shiftsWithMoreThanTheCapacity;
     private final String weekday;
-    private final String beginningHour;
-    private final String endHour;
-    private final String monthDay;
-    private final String askedCharacteristics;
-    private final String classroom;
-    private final String capacity;
+    private final TimeShift beginningHour;
+    private final TimeShift endHour;
+    private final Date date;
+    private final LinkedList<String> askedCharacteristics;
+    private final int capacity;
     private final LinkedList<String> realCharacteristics;
+    private Classroom classroom;
 
     //endregion
 
     //region CONSTRUCTORS
 
-    private Class(Builder builder) {
+    private ClassCourse(Builder builder) {
         this.courses = builder.courses;
         this.units = builder.units;
         this.shift = builder.shift;
@@ -39,11 +42,11 @@ public class Class {
         this.weekday = builder.weekday;
         this.beginningHour = builder.beginningHour;
         this.endHour = builder.endHour;
-        this.monthDay = builder.monthDay;
+        this.date = builder.date;
         this.askedCharacteristics = builder.askedCharacteristics;
-        this.classroom = builder.classroom;
         this.capacity = builder.capacity;
         this.realCharacteristics = builder.realCharacteristics;
+        this.classroom = builder.classroom;
     }
 
     //endregion
@@ -59,13 +62,13 @@ public class Class {
         private int shiftsWithFreeSpots;
         private int shiftsWithMoreThanTheCapacity;
         private String weekday;
-        private String beginningHour;
-        private String endHour;
-        private String monthDay;
-        private String askedCharacteristics;
-        private String classroom;
-        private String capacity;
+        private TimeShift beginningHour;
+        private TimeShift endHour;
+        private Date date;
+        private LinkedList<String> askedCharacteristics;
+        private int capacity;
         private LinkedList<String> realCharacteristics;
+        private Classroom classroom;
 
         public Builder courses (List<String> courses ){
             this.courses = new LinkedList<>(courses);
@@ -107,32 +110,32 @@ public class Class {
             return this;
         }
 
-        public Builder beginningHour (String beginningHour ){
+        public Builder beginningHour (TimeShift beginningHour ){
             this.beginningHour = beginningHour;
             return this;
         }
 
-        public Builder endHour (String endHour ){
+        public Builder endHour (TimeShift endHour ){
             this.endHour = endHour;
             return this;
         }
 
-        public Builder monthDay (String monthDay ){
-            this.monthDay = monthDay;
+        public Builder date (Date date){
+            this.date = date;
             return this;
         }
 
-        public Builder askedCharacteristics (String askedCharacteristics ){
-            this.askedCharacteristics = askedCharacteristics;
+        public Builder askedCharacteristics (List<String> askedCharacteristics ){
+            this.askedCharacteristics = new LinkedList<>(askedCharacteristics);
             return this;
         }
 
-        public Builder classroom (String classroom ){
+        public Builder classroom (Classroom classroom ){
             this.classroom = classroom;
             return this;
         }
 
-        public Builder capacity (String capacity ){
+        public Builder capacity (int capacity ){
             this.capacity = capacity;
             return this;
         }
@@ -142,8 +145,8 @@ public class Class {
             return this;
         }
 
-        public Class build(){
-            return new Class(this);
+        public ClassCourse build(){
+            return new ClassCourse(this);
         }
     }
 
@@ -153,7 +156,7 @@ public class Class {
 
     /**
      * Gets Course.
-     * @return {@link Class#courses}
+     * @return {@link ClassCourse#courses}
      */
     public final LinkedList<String> getCourses() {
         return courses;
@@ -161,7 +164,7 @@ public class Class {
 
     /**
      * Gets Unit.
-     * @return {@link Class#units}
+     * @return {@link ClassCourse#units}
      */
     public final LinkedList<String> getUnits() {
         return units;
@@ -169,7 +172,7 @@ public class Class {
 
     /**
      * Gets Shift.
-     * @return {@link Class#shift}
+     * @return {@link ClassCourse#shift}
      */
     public final String getShift() {
         return shift;
@@ -177,7 +180,7 @@ public class Class {
 
     /**
      * Gets Class of course.
-     * @return {@link Class#classesOfCourse}
+     * @return {@link ClassCourse#classesOfCourse}
      */
     public final LinkedList<String> getClassesOfCourse() {
         return classesOfCourse;
@@ -185,7 +188,7 @@ public class Class {
 
     /**
      * Gets the number of students.
-     * @return {@link Class#numberOfStudentsInClass}
+     * @return {@link ClassCourse#numberOfStudentsInClass}
      */
     public final int getNumberOfStudentsInClass() {
         return numberOfStudentsInClass;
@@ -193,7 +196,7 @@ public class Class {
 
     /**
      * Gets Shifts with free spots.
-     * @return {@link Class#shiftsWithFreeSpots}
+     * @return {@link ClassCourse#shiftsWithFreeSpots}
      */
     public final int getShiftsWithFreeSpots() {
         return shiftsWithFreeSpots;
@@ -201,7 +204,7 @@ public class Class {
 
     /**
      * Gets Shifts with more students than the capacity.
-     * @return {@link Class#shiftsWithMoreThanTheCapacity}
+     * @return {@link ClassCourse#shiftsWithMoreThanTheCapacity}
      */
     public final int getShiftsWithMoreThanTheCapacity() {
         return shiftsWithMoreThanTheCapacity;
@@ -209,7 +212,7 @@ public class Class {
 
     /**
      * Gets weekday.
-     * @return {@link Class#weekday}
+     * @return {@link ClassCourse#weekday}
      */
     public final String getWeekday() {
         return weekday;
@@ -217,61 +220,65 @@ public class Class {
 
     /**
      * Gets beginning hour of the class.
-     * @return {@link Class#beginningHour}
+     * @return {@link ClassCourse#beginningHour}
      */
-    public final String getBeginningHour() {
+    public final TimeShift getBeginningHour() {
         return beginningHour;
     }
 
     /**
      * Gets end hour.
-     * @return {@link Class#endHour}
+     * @return {@link ClassCourse#endHour}
      */
-    public final String getEndHour() {
+    public final TimeShift getEndHour() {
         return endHour;
     }
 
     /**
-     * Gets moth day.
-     * @return {@link Class#monthDay}
+     * Gets date.
+     * @return {@link ClassCourse#date}
      */
-    public final String getMonthDay() {
-        return monthDay;
+    public final Date getDate() {
+        return date;
     }
 
     /**
      * Gets asked characteristics.
-     * @return {@link Class#askedCharacteristics}
+     * @return {@link ClassCourse#askedCharacteristics}
      */
-    public final String getAskedCharacteristics() {
+    public final LinkedList<String> getAskedCharacteristics() {
         return askedCharacteristics;
     }
 
     /**
      * Gets classroom.
-     * @return {@link Class#classroom}
+     * @return {@link ClassCourse#classroom}
      */
-    public final String getClassroom() {
+    public final Classroom getClassroom() {
         return classroom;
     }
 
     /**
      * Gets capacity.
-     * @return {@link Class#capacity}
+     * @return {@link ClassCourse#capacity}
      */
-    public final String getCapacity() {
+    public final int getCapacity() {
         return capacity;
     }
 
     /**
      * Gets real characteristics
-     * @return {@link Class#realCharacteristics}
+     * @return {@link ClassCourse#realCharacteristics}
      */
     public final LinkedList<String> getRealCharacteristics() {
         return realCharacteristics;
     }
 
     //endregion
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
 
     @Override
     public final String toString() {
@@ -286,7 +293,7 @@ public class Class {
                 ", weekday='" + weekday + '\'' +
                 ", beginningHour='" + beginningHour + '\'' +
                 ", endHour='" + endHour + '\'' +
-                ", monthDay='" + monthDay + '\'' +
+                ", date='" + date + '\'' +
                 ", askedCharacteristics='" + askedCharacteristics + '\'' +
                 ", classroom='" + classroom + '\'' +
                 ", capacity='" + capacity + '\'' +

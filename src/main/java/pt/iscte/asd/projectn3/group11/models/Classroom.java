@@ -137,7 +137,7 @@ public class Classroom {
                 return this.characteristics.get(i);
             }
         }
-        throw new IllegalArgumentException();
+        return false;
     }
 
     /**
