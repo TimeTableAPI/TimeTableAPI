@@ -1,8 +1,8 @@
-package pt.iscte.asd.projectn3.group11.managers;
+package pt.iscte.asd.projectn3.group11.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
+import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
 import java.util.LinkedList;
@@ -10,15 +10,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ClassRoomManagerTest {
+class ClassroomServiceTest {
 	private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/test/resources/classRoomTest.csv";
 	private List<Classroom> classRoomsTestList;
-	private ClassRoomManager classRoomManager;
 
 	@BeforeEach
 	void setUp() {
-		classRoomsTestList = ClassRoomLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
-		classRoomManager = new ClassRoomManager(classRoomsTestList);
+		classRoomsTestList = ClassroomLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
 	}
 
 	@Test
@@ -29,7 +27,7 @@ class ClassRoomManagerTest {
 			add(classRoomsTestList.get(3));
 		}};
 
-		assertIterableEquals(expectedClassRooms, classRoomManager.getWithCapacity(50));
+		assertIterableEquals(expectedClassRooms, ClassroomService.getWithCapacity(classRoomsTestList,50));
 	}
 
 	@Test
@@ -39,7 +37,7 @@ class ClassRoomManagerTest {
 			add(classRoomsTestList.get(1));
 		}};
 
-		assertIterableEquals(expectedClassRooms, classRoomManager.getWithExamCapacity(15));
+		assertIterableEquals(expectedClassRooms, ClassroomService.getWithExamCapacity(classRoomsTestList,15));
 	}
 
 	@Test
@@ -53,7 +51,7 @@ class ClassRoomManagerTest {
 			add(classRoomsTestList.get(1));
 		}};
 
-		assertIterableEquals(expectedClassRooms, classRoomManager.getWithCharacteristics(desiredCharacteristics));
+		assertIterableEquals(expectedClassRooms, ClassroomService.getWithCharacteristics(classRoomsTestList, desiredCharacteristics));
 	}
 
 	@Test
@@ -65,7 +63,7 @@ class ClassRoomManagerTest {
 			add(classRoomsTestList.get(3));
 		}};
 
-		assertIterableEquals(expectedClassRooms, classRoomManager.getWithCharacteristic("Arq 6"));
+		assertIterableEquals(expectedClassRooms, ClassroomService.getWithCharacteristic(classRoomsTestList, "Arq 6"));
 
 	}
 
@@ -77,7 +75,7 @@ class ClassRoomManagerTest {
 			add(classRoomsTestList.get(2));
 		}};
 
-		assertIterableEquals(expectedClassRooms, classRoomManager.getInBuilding("Edifício 1"));
+		assertIterableEquals(expectedClassRooms, ClassroomService.getInBuilding(classRoomsTestList,"Edifício 1"));
 
 	}
 
@@ -93,7 +91,7 @@ class ClassRoomManagerTest {
 			add(classRoomsTestList.get(3));
 		}};
 
-		assertIterableEquals(expectedClassRooms, classRoomManager.getInAnyBuilding(desiredBuildings));
+		assertIterableEquals(expectedClassRooms, ClassroomService.getInAnyBuilding(classRoomsTestList, desiredBuildings));
 
 	}
 }
