@@ -3,7 +3,7 @@ package pt.iscte.asd.projectn3.group11.main;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import pt.iscte.asd.projectn3.group11.loaders.ClassLoader;
+import pt.iscte.asd.projectn3.group11.loaders.ClassCourseLoader;
 import pt.iscte.asd.projectn3.group11.loaders.ClassRoomLoader;
 
 import java.io.*;
@@ -15,10 +15,10 @@ public class Main {
     private static final String SAMPLE_CSV_FILE_CLASSROOM_PATH = "./src/main/resources/ADS - Caracterizacao das salas.csv";
 
     public static void main(String[] args) {
-        ClassLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
+        ClassCourseLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
         ClassRoomLoader.load(SAMPLE_CSV_FILE_CLASSROOM_PATH);
         try {
-            File exportedClasses = ClassLoader.export();
+            File exportedClasses = ClassCourseLoader.export();
             //output.write(exportedClasses);
         } catch (IOException e) {
             e.printStackTrace();

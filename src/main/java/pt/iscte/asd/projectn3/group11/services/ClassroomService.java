@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.managers;
+package pt.iscte.asd.projectn3.group11.services;
 
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
@@ -10,11 +10,11 @@ import java.util.List;
 	 * <p>Encapsulates our list of {@link Classroom}</p>
 	 * <p>Provides Getters for specific ClassRooms</p>
 	 */
-public class ClassRoomManager {
+public class ClassroomService {
 
 	final LinkedList<Classroom> classrooms;
 
-	public ClassRoomManager(List<Classroom> classrooms) {
+	public ClassroomService(List<Classroom> classrooms) {
 		this.classrooms = (LinkedList<Classroom>) classrooms;
 	}
 
