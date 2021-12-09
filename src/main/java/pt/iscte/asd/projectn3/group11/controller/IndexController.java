@@ -1,6 +1,9 @@
 package pt.iscte.asd.projectn3.group11.controller;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,9 @@ import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -64,6 +70,38 @@ public class IndexController {
         return "timetable";
     }
 
+    @GetMapping(value = TIMETABLEPATH + "/download")
+    public ResponseEntity<Resource> downloadTimeTable(Model model) {
+        try {
+            File file = ClassLoader.export();
+
+            try {
+                InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+                HttpHeaders header = new HttpHeaders();
+                header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=ExportedClasses.csv");
+                header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+                header.add("Pragma", "no-cache");
+                header.add("Expires", "0");
+
+                return ResponseEntity.ok()
+                        .headers(header)
+                        .contentLength(file.length())
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(resource);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return (ResponseEntity<Resource>) ResponseEntity.notFound();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return (ResponseEntity<Resource>) ResponseEntity.notFound();
+        }
+        //model.addAttribute("timetable", ClassLoader.classes);
+        //return "timetable";
+    }
+
     @PostMapping(value = TIMETABLEPATH + "/upload")
     public String timeTableUpload(@RequestParam("file_classes") MultipartFile file_classes, @RequestParam("file_classrooms") MultipartFile file_classrooms, RedirectAttributes attributes, Model model) {
         // check if file is empty
@@ -79,8 +117,8 @@ public class IndexController {
             ClassLoader.clear();
             ClassRoomLoader.clear();
 
-            LinkedList<Class> loadedClasses = ClassLoader.load(file_classes);
-            LinkedList<Classroom> loadedClassRooms = ClassRoomLoader.load(file_classrooms);
+            LinkedList<Class> loadedClasses = ClassLoader.load(file_classes, false);
+            LinkedList<Classroom> loadedClassRooms = ClassRoomLoader.load(file_classrooms, false);
             attributes.addFlashAttribute("message", "You successfully uploaded\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
 
             model.addAttribute("timetable", loadedClasses);
