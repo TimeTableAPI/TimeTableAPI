@@ -15,12 +15,14 @@
 </form>
 
 <p th:text="${message}" th:if="${message ne null}"></p>
-<form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+<br>
+<form method="post" th:action="@{/form/upload}" enctype="multipart/form-data">
     <div>
         <input type="file" name="file">
     </div>
     <button type="submit">Upload File</button>
 </form>
+<br>
 
 
 <div th:if="${classCourse!= null && !#strings.isEmpty(classCourse) }">

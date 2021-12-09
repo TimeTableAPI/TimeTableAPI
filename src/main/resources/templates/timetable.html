@@ -9,9 +9,42 @@
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
 </head>
 <body>
+<script th:inline="javascript">
+    function showhide(id) {
+       	var e = document.getElementById(id);
+       	e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+    }
 
+
+
+
+</script>
 <header th:insert="fragments/headerFooter.html :: header"></header>
 <footer th:insert="fragments/headerFooter.html :: footer"></footer>
+
+<a href="javascript:showhide('requestSection')">
+    <button>
+        Request Timetabling
+    </button>
+</a>
+<div id="requestSection" style="display:none">
+
+    <br>
+    <p th:text="${message}" th:if="${message ne null}"></p>
+    <form method="post" th:action="@{/timetable/upload}" enctype="multipart/form-data">
+        <div>
+            <p>
+                Classes <input type="file" name="file_classes"/>
+            </p>
+            <p>
+                Classrooms <input type="file" name="file_classrooms"/>
+            </p>
+            <button type="submit">Upload File</button>
+        </div>
+    </form>
+    <br>
+</div>
+
 <div id="timetable_tabulator"></div>
 <script th:inline="javascript">
 /*<![CDATA[*/
@@ -49,6 +82,9 @@
 
                 ]
             });
+
+
+
 
 </script>
 <!--
