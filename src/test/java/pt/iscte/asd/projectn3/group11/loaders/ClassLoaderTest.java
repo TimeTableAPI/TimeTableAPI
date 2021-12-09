@@ -1,11 +1,16 @@
 package pt.iscte.asd.projectn3.group11.loaders;
 
+import org.junit.jupiter.api.Test;
 import pt.iscte.asd.projectn3.group11.models.Class;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import static java.lang.Math.min;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ClassLoaderTest {
@@ -13,8 +18,7 @@ public class ClassLoaderTest {
     private static Class aClass;
 
     @org.junit.jupiter.api.BeforeEach
-    void setUp()
-    {
+    void setUp() {
         final List<String> courses = Arrays.asList("ISCTE-IUL", "LCP", "LHMC", "LP", "LS", "LS-PL", "MIA");
         final List<String> units = Collections.singletonList("Língua Espanhola");
         final String shift = "00670TP02";
@@ -50,8 +54,7 @@ public class ClassLoaderTest {
     }
 
     @org.junit.jupiter.api.Test
-    void load()
-    {
+    void load() {
         Class classTest = ClassLoader.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
         assertEquals(classTest.getCourses(), aClass.getCourses());
         assertEquals(classTest.getUnits(), aClass.getUnits());
@@ -67,5 +70,29 @@ public class ClassLoaderTest {
         assertEquals(classTest.getClassroom(), aClass.getClassroom());
         assertEquals(classTest.getCapacity(), aClass.getCapacity());
         assertEquals(classTest.getRealCharacteristics(), aClass.getRealCharacteristics());
+    }
+
+    @Test
+    void clear() {
+
+    }
+
+    @Test
+    void export() {
+        try {
+            LinkedList<Class> classes = ClassLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
+            File file = ClassLoader.export();
+            LinkedList<Class> classesExported = ClassLoader.load(file);
+
+            for (int i = 0; i < min(classes.size(), classesExported.size()); i++) {
+                assertEquals(classes.get(i), classesExported.get(i));
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

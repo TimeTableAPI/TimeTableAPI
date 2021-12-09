@@ -4,17 +4,21 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.Class;
+import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class ClassLoader {
-    //region LOADERS
 
     public final static LinkedList<Class> classes = new LinkedList<>();
+
+    //region Loader
 
     /**
      * Loads a Class csv file from given path.
@@ -61,8 +65,14 @@ public class ClassLoader {
      * @param multipartFile object containing the csv for the Classes.
      * @return List of classrooms
      */
-    public static final LinkedList<Class> load(final MultipartFile multipartFile) throws IOException {
-        File file = new File(multipartFile.getOriginalFilename());
+    public static final LinkedList<Class> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
+        File file;
+        if (toDisk) {
+            file = new File(FileUploadService.UPLOADED_FILES_LOCATION + multipartFile.getOriginalFilename());
+        } else {
+            Path temp = Files.createTempFile(multipartFile.getOriginalFilename(), ".csv");
+            file = new File(temp.toUri());
+        }
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(multipartFile.getBytes());
         fos.close();
@@ -118,6 +128,33 @@ public class ClassLoader {
     public static void clear() {
         ClassLoader.classes.clear();
     }
-
     //endregion
+
+    //region Exporter
+    public static File export() throws IOException {
+        try {
+            Path temp = Files.createTempFile("tempExportedClasses", ".csv");
+            File myObj = new File(temp.toUri());
+            //if (myObj.createNewFile()) {
+            try (FileWriter writer = new FileWriter(myObj)) {
+                writer.write(String.join(",", Class.HEADER));
+                for (Class classCourse : ClassLoader.classes) {
+                    writer.write(classCourse.toCSVString());
+                    writer.write("\n");
+                }
+
+            }
+            System.out.println("File created in:" + myObj.getAbsolutePath());
+            //} else {
+            //    System.out.println("File already exists.");
+            //}
+            return myObj;
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+//endregion
 }

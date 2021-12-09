@@ -4,9 +4,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,10 +64,17 @@ public class ClassRoomLoader {
      * Loads a Classroom List from a MultipartFile.
      *
      * @param multipartFile MultipartFile containing the classroom csv.
+     * @param toDisk
      * @return List of classrooms
      */
-    public static final LinkedList<Classroom> load(final MultipartFile multipartFile) throws IOException {
-        File file = new File(multipartFile.getOriginalFilename());
+    public static final LinkedList<Classroom> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
+        File file;
+        if (toDisk) {
+            file = new File(FileUploadService.UPLOADED_FILES_LOCATION + multipartFile.getOriginalFilename());
+        } else {
+            Path temp = Files.createTempFile(multipartFile.getOriginalFilename(), ".csv");
+            file = new File(temp.toUri());
+        }
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(multipartFile.getBytes());
         fos.close();

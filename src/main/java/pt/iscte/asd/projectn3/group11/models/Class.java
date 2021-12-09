@@ -5,7 +5,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Class {
-
+    public static final String[] HEADER = {
+            "Curso",
+            "Unidade de execução",
+            "Turno",
+            "Turma",
+            "Inscritos no turno (no 1º semestre é baseado em estimativas)",
+            "Turnos com capacidade superior à capacidade das características das salas",
+            "Turno com inscrições superiores à capacidade das salas",
+            "Dia da Semana",
+            "Início",
+            "Fim",
+            "Dia",
+            "Características da sala pedida para a aula",
+            "Sala da aula,Lotação",
+            "Características reais da sala",
+    };
     //region MEMBERS
 
     private final LinkedList<String> courses;
@@ -32,7 +47,7 @@ public class Class {
         this.courses = builder.courses;
         this.units = builder.units;
         this.shift = builder.shift;
-        this.classesOfCourse =  builder.classesOfCourse;
+        this.classesOfCourse = builder.classesOfCourse;
         this.numberOfStudentsInClass = builder.numberOfStudentsInClass;
         this.shiftsWithFreeSpots = builder.shiftsWithFreeSpots;
         this.shiftsWithMoreThanTheCapacity = builder.shiftsWithMoreThanTheCapacity;
@@ -50,7 +65,7 @@ public class Class {
 
     //region BUILDER
 
-    public static class Builder{
+    public static class Builder {
         private LinkedList<String> courses;
         private LinkedList<String> units;
         private String shift;
@@ -67,82 +82,82 @@ public class Class {
         private String capacity;
         private LinkedList<String> realCharacteristics;
 
-        public Builder courses (List<String> courses ){
+        public Builder courses(List<String> courses) {
             this.courses = new LinkedList<>(courses);
             return this;
         }
 
-        public Builder units (List<String> units ){
+        public Builder units(List<String> units) {
             this.units = new LinkedList<>(units);
             return this;
         }
 
-        public Builder shift (String shift ){
+        public Builder shift(String shift) {
             this.shift = shift;
             return this;
         }
 
-        public Builder classesOfCourse (List<String> classesOfCourse ){
+        public Builder classesOfCourse(List<String> classesOfCourse) {
             this.classesOfCourse = new LinkedList<>(classesOfCourse);
             return this;
         }
 
-        public Builder numberOfStudentsInClass (int numberOfStudentsInClass ){
+        public Builder numberOfStudentsInClass(int numberOfStudentsInClass) {
             this.numberOfStudentsInClass = numberOfStudentsInClass;
             return this;
         }
 
-        public Builder shiftsWithFreeSpots (int shiftsWithFreeSpots ){
+        public Builder shiftsWithFreeSpots(int shiftsWithFreeSpots) {
             this.shiftsWithFreeSpots = shiftsWithFreeSpots;
             return this;
         }
 
-        public Builder shiftsWithMoreThanTheCapacity (int shiftsWithMoreThanTheCapacity ){
+        public Builder shiftsWithMoreThanTheCapacity(int shiftsWithMoreThanTheCapacity) {
             this.shiftsWithMoreThanTheCapacity = shiftsWithMoreThanTheCapacity;
             return this;
         }
 
-        public Builder weekday (String weekday ){
+        public Builder weekday(String weekday) {
             this.weekday = weekday;
             return this;
         }
 
-        public Builder beginningHour (String beginningHour ){
+        public Builder beginningHour(String beginningHour) {
             this.beginningHour = beginningHour;
             return this;
         }
 
-        public Builder endHour (String endHour ){
+        public Builder endHour(String endHour) {
             this.endHour = endHour;
             return this;
         }
 
-        public Builder monthDay (String monthDay ){
+        public Builder monthDay(String monthDay) {
             this.monthDay = monthDay;
             return this;
         }
 
-        public Builder askedCharacteristics (String askedCharacteristics ){
+        public Builder askedCharacteristics(String askedCharacteristics) {
             this.askedCharacteristics = askedCharacteristics;
             return this;
         }
 
-        public Builder classroom (String classroom ){
+        public Builder classroom(String classroom) {
             this.classroom = classroom;
             return this;
         }
 
-        public Builder capacity (String capacity ){
+        public Builder capacity(String capacity) {
             this.capacity = capacity;
             return this;
         }
 
-        public Builder realCharacteristics (List<String> realCharacteristics ){
+        public Builder realCharacteristics(List<String> realCharacteristics) {
             this.realCharacteristics = new LinkedList<>(realCharacteristics);
             return this;
         }
 
-        public Class build(){
+        public Class build() {
             return new Class(this);
         }
     }
@@ -153,6 +168,7 @@ public class Class {
 
     /**
      * Gets Course.
+     *
      * @return {@link Class#courses}
      */
     public final LinkedList<String> getCourses() {
@@ -161,6 +177,7 @@ public class Class {
 
     /**
      * Gets Unit.
+     *
      * @return {@link Class#units}
      */
     public final LinkedList<String> getUnits() {
@@ -169,6 +186,7 @@ public class Class {
 
     /**
      * Gets Shift.
+     *
      * @return {@link Class#shift}
      */
     public final String getShift() {
@@ -177,6 +195,7 @@ public class Class {
 
     /**
      * Gets Class of course.
+     *
      * @return {@link Class#classesOfCourse}
      */
     public final LinkedList<String> getClassesOfCourse() {
@@ -185,6 +204,7 @@ public class Class {
 
     /**
      * Gets the number of students.
+     *
      * @return {@link Class#numberOfStudentsInClass}
      */
     public final int getNumberOfStudentsInClass() {
@@ -193,6 +213,7 @@ public class Class {
 
     /**
      * Gets Shifts with free spots.
+     *
      * @return {@link Class#shiftsWithFreeSpots}
      */
     public final int getShiftsWithFreeSpots() {
@@ -201,6 +222,7 @@ public class Class {
 
     /**
      * Gets Shifts with more students than the capacity.
+     *
      * @return {@link Class#shiftsWithMoreThanTheCapacity}
      */
     public final int getShiftsWithMoreThanTheCapacity() {
@@ -209,6 +231,7 @@ public class Class {
 
     /**
      * Gets weekday.
+     *
      * @return {@link Class#weekday}
      */
     public final String getWeekday() {
@@ -217,6 +240,7 @@ public class Class {
 
     /**
      * Gets beginning hour of the class.
+     *
      * @return {@link Class#beginningHour}
      */
     public final String getBeginningHour() {
@@ -225,6 +249,7 @@ public class Class {
 
     /**
      * Gets end hour.
+     *
      * @return {@link Class#endHour}
      */
     public final String getEndHour() {
@@ -233,6 +258,7 @@ public class Class {
 
     /**
      * Gets moth day.
+     *
      * @return {@link Class#monthDay}
      */
     public final String getMonthDay() {
@@ -241,6 +267,7 @@ public class Class {
 
     /**
      * Gets asked characteristics.
+     *
      * @return {@link Class#askedCharacteristics}
      */
     public final String getAskedCharacteristics() {
@@ -249,6 +276,7 @@ public class Class {
 
     /**
      * Gets classroom.
+     *
      * @return {@link Class#classroom}
      */
     public final String getClassroom() {
@@ -257,6 +285,7 @@ public class Class {
 
     /**
      * Gets capacity.
+     *
      * @return {@link Class#capacity}
      */
     public final String getCapacity() {
@@ -265,6 +294,7 @@ public class Class {
 
     /**
      * Gets real characteristics
+     *
      * @return {@link Class#realCharacteristics}
      */
     public final LinkedList<String> getRealCharacteristics() {
@@ -292,6 +322,25 @@ public class Class {
                 ", capacity='" + capacity + '\'' +
                 ", realCharacteristics=" + realCharacteristics +
                 '}';
+    }
+
+    public final String toCSVString() {
+        return courses +
+                "," + String.join("," , units) +
+                ",'" + shift + '\'' +
+                "," + classesOfCourse +
+                ",'" + numberOfStudentsInClass + '\'' +
+                ",'" + shiftsWithFreeSpots + '\'' +
+                ",'" + shiftsWithMoreThanTheCapacity + '\'' +
+                ",'" + weekday + '\'' +
+                ",'" + beginningHour + '\'' +
+                ",'" + endHour + '\'' +
+                ",'" + monthDay + '\'' +
+                ",'" + askedCharacteristics + '\'' +
+                ",'" + classroom + '\'' +
+                ",'" + capacity + '\'' +
+                "," + realCharacteristics
+                ;
     }
 
 }
