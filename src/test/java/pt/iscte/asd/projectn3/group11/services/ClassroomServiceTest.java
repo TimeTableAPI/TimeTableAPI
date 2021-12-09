@@ -56,15 +56,11 @@ class ClassroomServiceTest {
 
 	@Test
 	void getWithCharacteristic() {
-
-
 		LinkedList<Classroom> expectedClassRooms = new LinkedList<Classroom>(){{
 			add(classRoomsTestList.get(2));
 			add(classRoomsTestList.get(3));
 		}};
-
 		assertIterableEquals(expectedClassRooms, ClassroomService.getWithCharacteristic(classRoomsTestList, "Arq 6"));
-
 	}
 
 
@@ -74,9 +70,7 @@ class ClassroomServiceTest {
 			add(classRoomsTestList.get(1));
 			add(classRoomsTestList.get(2));
 		}};
-
 		assertIterableEquals(expectedClassRooms, ClassroomService.getInBuilding(classRoomsTestList,"Edifício 1"));
-
 	}
 
 	@Test
@@ -90,8 +84,6 @@ class ClassroomServiceTest {
 			add(classRoomsTestList.get(2));
 			add(classRoomsTestList.get(3));
 		}};
-
 		assertIterableEquals(expectedClassRooms, ClassroomService.getInAnyBuilding(classRoomsTestList, desiredBuildings));
-
 	}
 }

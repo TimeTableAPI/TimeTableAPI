@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeLeaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Timetable</title>
+
+    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+</head>
+<body>
+<script th:inline="javascript">
+    function showhide(id) {
+       	var e = document.getElementById(id);
+       	e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+    }
+
+
+
+
+</script>
+<header th:insert="fragments/headerFooter.html :: header"></header>
+<footer th:insert="fragments/headerFooter.html :: footer"></footer>
+
+<a href="javascript:showhide('requestSection')">
+    <button>
+        Request Timetabling
+    </button>
+</a>
+<div id="requestSection" style="display:none">
+
+    <br>
+    <p th:text="${message}" th:if="${message ne null}"></p>
+    <form method="post" th:action="@{/timetable/upload}" enctype="multipart/form-data">
+        <div>
+            <p>
+                Classes <input type="file" name="file_classes"/>
+            </p>
+            <p>
+                Classrooms <input type="file" name="file_classrooms"/>
+            </p>
+            <button type="submit">Upload File</button>
+        </div>
+    </form>
+    <br>
+</div>
+
+<div id="timetable_tabulator"></div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var timetablejs = /*[[${timetable}]]*/ null;
+/*]]>*/
+    var table = new Tabulator("#timetable_tabulator", {
+            data: timetablejs,
+            tooltips:true,            //show tool tips on cells
+            addRowPos:"top",          //when adding a new row, add it to the top of the table
+            history:true,             //allow undo and redo actions on the table
+            pagination:"local",       //paginate the data
+            paginationSize:20,         //allow 7 rows per page of data
+            movableColumns:true,      //allow column order to be changed
+            resizableRows:true,       //allow row order to be changed
+            initialSort:[             //set the initial sort order of the data
+                {column:"Building", dir:"asc"},
+            ],
+            //autoColumns:true,
+            columns:[
+                {title: "Courses", field: "courses", sorter: "string", headerFilter: "input",},
+                {title: "Units", field: "units", sorter: "string", headerFilter: "input",},
+                {title: "Shift", field: "shift", sorter: "string", headerFilter: "input",},
+                {title: "NumberOfStudentsInClass", field: "numberOfStudentsInClass", sorter: "string", headerFilter: "input",},
+                {title: "ShiftsWithFreeSpots", field: "shiftsWithFreeSpots", sorter: "string", headerFilter: "input",},
+                {title: "ShiftsWithMoreThanTheCapacity", field: "shiftsWithMoreThanTheCapacity", sorter: "string", headerFilter: "input",},
+                {title: "Weekday", field: "weekday", sorter: "string", headerFilter: "input",},
+                {title: "BeginningHour", field: "beginningHour", sorter: "string", headerFilter: "input",},
+                {title: "EndHour", field: "endHour", sorter: "string", headerFilter: "input",},
+                {title: "MonthDay", field: "monthDay", sorter: "string", headerFilter: "input",},
+                {title: "AskedCharacteristics", field: "askedCharacteristics", sorter: "string",headerFilter: "input",},
+                {title: "Classroom", field: "classroom", sorter: "int", headerFilter: "input",},
+                {title: "Capacity", field: "capacity", sorter: "int", headerFilter: "input",},
+                {title: "RealCharacteristics", field: "realCharacteristics", sorter: "int", headerFilter: "input",},
+                {title: "ClassesOfCourse", field: "classesOfCourse", sorter:"string",headerFilter: "input"},
+
+                ]
+            });
+
+
+
+
+</script>
+<a th:href="@{/timetable/download}">
+    <button>
+        Download Timetable
+    </button>
+</a>
+<!--
+<table>
+    <tr>
+        <th>courses</th>
+        <th>units</th>
+        <th>shift</th>
+        <th>numberOfStudentsInClass</th>
+        <th>shiftsWithFreeSpots</th>
+        <th>shiftsWithMoreThanTheCapacity</th>
+        <th>weekday</th>
+        <th>beginningHour</th>
+        <th>endHour</th>
+        <th>monthDay</th>
+        <th>askedCharacteristics</th>
+        <th>classroom</th>
+        <th>capacity</th>
+        <th>realCharacteristics</th>
+        <th>classesOfCourse</th>
+    </tr>
+    <tr th:each="classCourse : ${timetable}">
+        <td th:text="${classCourse.courses}">courses</td>
+        <td th:text="${classCourse.units}">units</td>
+        <td th:text="${classCourse.shift}">shift</td>
+        <td th:text="${classCourse.numberOfStudentsInClass}">numberOfStudentsInClass</td>
+        <td th:text="${classCourse.shiftsWithFreeSpots  }">shiftsWithFreeSpots</td>
+        <td th:text="${classCourse.shiftsWithMoreThanTheCapacity}">shiftsWithMoreThanTheCapacity</td>
+        <td th:text="${classCourse.weekday}">weekday</td>
+        <td th:text="${classCourse.beginningHour}">beginningHour</td>
+        <td th:text="${classCourse.endHour}">endHour</td>
+        <td th:text="${classCourse.monthDay}">monthDay</td>
+        <td th:text="${classCourse.askedCharacteristics}">askedCharacteristics</td>
+        <td th:text="${classCourse.classroom}">classroom</td>
+        <td th:text="${classCourse.capacity}">capacity</td>
+        <td th:text="${classCourse.realCharacteristics}">realCharacteristics</td>
+        <td th:text="${classCourse.classesOfCourse}">classesOfCourse</td>
+    </tr>
+</table>
+-->
+
+</body>
+</html>
