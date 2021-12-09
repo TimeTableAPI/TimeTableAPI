@@ -8,7 +8,10 @@ import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 
 import java.util.List;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Main {
     private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/main/resources/ADS - Exemplo de horario do 1o Semestre.csv";
     private static final String SAMPLE_CSV_FILE_CLASSROOM_PATH = "./src/main/resources/ADS - Caracterizacao das salas.csv";
@@ -19,6 +22,9 @@ public class Main {
         Context context = new Context(classCourses, classrooms, new BasicAlgorithmService());
         context.resolve();
         System.out.println(classesWithRoomPercentage(classCourses));
+
+        SpringApplication.run(Main.class, args);
+        System.out.println("Main App Started with SPRING");
     }
 
     static double classesWithRoomPercentage(List<ClassCourse> classes) {
