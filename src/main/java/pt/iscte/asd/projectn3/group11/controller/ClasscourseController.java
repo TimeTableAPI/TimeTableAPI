@@ -18,10 +18,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.loaders.ClassCourseLoader;
 import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 
 @Controller
 public class ClasscourseController {
@@ -76,6 +78,8 @@ public class ClasscourseController {
 
         // normalize the file path
         try {
+            attributes.addFlashAttribute("message", "You successfully uploaded\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
+
             //FileUploadService.uploadFile(file_classes);
             //FileUploadService.uploadFile(file_classrooms);
             ClassCourseLoader.clear();
@@ -83,7 +87,9 @@ public class ClasscourseController {
 
             LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoader.load(file_classes, false);
             LinkedList<Classroom> loadedClassRooms = ClassroomLoader.load(file_classrooms, false);
-            attributes.addFlashAttribute("message", "You successfully uploaded\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
+            Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
+            context.resolve();
+
 
             model.addAttribute("timetable", loadedClassCourses);
 
