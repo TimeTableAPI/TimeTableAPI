@@ -3,7 +3,7 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import java.util.LinkedList;
 import java.util.List;
-
+//TODO doc ClassCourse
 public class ClassCourse {
 
     public static final String[] HEADER = {
@@ -35,10 +35,11 @@ public class ClassCourse {
     private final TimeShift endHour;
     private final Date date;
     private final LinkedList<String> askedCharacteristics;
+    private final LinkedList<String> classesOfCourse;
     private final int capacity;
     private final LinkedList<String> realCharacteristics;
+
     private Classroom classroom;
-    private final LinkedList<String> classesOfCourse;
 
     //endregion
 
@@ -289,9 +290,15 @@ public class ClassCourse {
 
     //endregion
 
+    //region SETTERS
+
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
     }
+
+    //endregion
+
+    //region TOSTRINGS
 
     @Override
     public final String toString() {
@@ -315,22 +322,23 @@ public class ClassCourse {
     }
 
     public final String toCSVString() {
-        return courses +
-                "," + String.join("," , units) +
-                ",'" + shift + '\'' +
-                "," + classesOfCourse +
-                ",'" + numberOfStudentsInClass + '\'' +
-                ",'" + shiftsWithFreeSpots + '\'' +
-                ",'" + shiftsWithMoreThanTheCapacity + '\'' +
-                ",'" + weekday + '\'' +
-                ",'" + beginningHour + '\'' +
-                ",'" + endHour + '\'' +
-                ",'" + date + '\'' +
-                ",'" + askedCharacteristics + '\'' +
-                ",'" + classroom + '\'' +
-                ",'" + capacity + '\'' +
-                "," + realCharacteristics
+        return "\""+String.join(", ",courses) +"\""+
+                ",\"" + String.join(", " , units) +"\""+
+                "," + shift + "" +
+                ",\"" + String.join(", " , classesOfCourse) +"\""+
+                "," + numberOfStudentsInClass  +
+                "," + shiftsWithFreeSpots +
+                "," + shiftsWithMoreThanTheCapacity +
+                "," + weekday +
+                "," + beginningHour +
+                "," + endHour +
+                "," + date +
+                ",\"" + String.join(", ",askedCharacteristics) +"\""+
+                "," + ((classroom != null)?  classroom.getClassroomName(): "") +
+                "," + capacity +
+                ",\"" + String.join(", ",realCharacteristics) +"\""
                 ;
     }
+    //endregion
 
 }
