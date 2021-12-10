@@ -5,6 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
+@Controller
 public class ClasscourseController {
     public static final String TIMETABLEPATH = "/timetable";
 
