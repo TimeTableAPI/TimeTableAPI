@@ -1,10 +1,12 @@
 package pt.iscte.asd.projectn3.group11.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
 
+@Controller
 public class ClassroomController {
 
     public static final String CLASSROOMPATH = "/classrooms";
