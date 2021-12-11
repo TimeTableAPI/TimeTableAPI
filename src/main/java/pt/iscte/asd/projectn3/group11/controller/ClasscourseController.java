@@ -1,5 +1,7 @@
 package pt.iscte.asd.projectn3.group11.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -27,17 +29,22 @@ import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 
 @Controller
 public class ClasscourseController {
+    final static Logger logger = LoggerFactory.getLogger(ClasscourseController.class);
     public static final String TIMETABLEPATH = "/timetable";
 
     //region timetable
-    @GetMapping(value = ClasscourseController.TIMETABLEPATH)
+    @GetMapping(value = TIMETABLEPATH)
     public String fetchTimeTable(Model model) {
+        logger.info(TIMETABLEPATH+"::GET::Accessed");
+
         model.addAttribute("timetable", ClassCourseLoader.CLASS_COURSES);
         return "timetable";
     }
 
-    @GetMapping(value = ClasscourseController.TIMETABLEPATH + "/download")
+    @GetMapping(value = TIMETABLEPATH + "/download")
     public ResponseEntity<Resource> downloadTimeTable(Model model) {
+        logger.info(TIMETABLEPATH + "/download"+"::GET::Accessed");
+
         try {
             File file = ClassCourseLoader.export();
 
@@ -68,8 +75,10 @@ public class ClasscourseController {
         //return "timetable";
     }
 
-    @PostMapping(value = ClasscourseController.TIMETABLEPATH + "/upload")
+    @PostMapping(value = TIMETABLEPATH + "/upload")
     public String timeTableUpload(@RequestParam("file_classes") MultipartFile file_classes, @RequestParam("file_classrooms") MultipartFile file_classrooms, RedirectAttributes attributes, Model model) {
+        logger.info(TIMETABLEPATH + "/upload"+"::POST::Accessed");
+
         // check if file is empty
         if (file_classes.isEmpty() || file_classrooms.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");

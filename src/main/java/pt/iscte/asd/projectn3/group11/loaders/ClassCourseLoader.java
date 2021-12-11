@@ -2,6 +2,9 @@ package pt.iscte.asd.projectn3.group11.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import pt.iscte.asd.projectn3.group11.controller.ClassroomController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
@@ -17,6 +20,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class ClassCourseLoader {
+    final static Logger logger = LoggerFactory.getLogger(ClassCourseLoader.class);
+
     //region LOADERS
     public final static LinkedList<ClassCourse> CLASS_COURSES = new LinkedList<>();
 
@@ -35,7 +40,8 @@ public class ClassCourseLoader {
             extractClass(csvReader);
 
         } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
+            //e.printStackTrace();
         }
         return CLASS_COURSES;
     }
@@ -56,7 +62,8 @@ public class ClassCourseLoader {
             extractClass(csvReader);
 
         } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
+            //e.printStackTrace();
             return CLASS_COURSES;
         }
         return CLASS_COURSES;
@@ -130,7 +137,8 @@ public class ClassCourseLoader {
                         capacity(capacity).
                         realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
                         build();
-                System.out.println(aclassCourse);
+                logger.trace(aclassCourse.toString());
+                //System.out.println(aclassCourse);
                 CLASS_COURSES.add(aclassCourse);
             }
         }
@@ -155,14 +163,15 @@ public class ClassCourseLoader {
                 }
 
             }
-            System.out.println("File created in:" + myObj.getAbsolutePath());
+            logger.info("File created in:" + myObj.getAbsolutePath());
+            //System.out.println("File created in:" + myObj.getAbsolutePath());
             //} else {
             //    System.out.println("File already exists.");
             //}
             return myObj;
         } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
+            //e.printStackTrace();
             throw e;
         }
     }

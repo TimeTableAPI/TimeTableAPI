@@ -1,5 +1,7 @@
 package pt.iscte.asd.projectn3.group11.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +17,13 @@ import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
 @Controller
 public class FormController {
-
+    final static Logger logger = LoggerFactory.getLogger(FormController.class);
     public static final String FORMPATH = "/form";
 
     //region form
     @GetMapping(value = FORMPATH)
     public String getForm(Model model) {
+        logger.info(FORMPATH+"::GET::Accessed");
         FormResponse formResponse = new FormResponse();
         model.addAttribute("response", formResponse);
         return "form";
@@ -28,6 +31,7 @@ public class FormController {
 
     @PostMapping(value = FORMPATH)
     public String submitForm(@ModelAttribute(name = "response") FormResponse formResponse, Model model) {
+        logger.info(FORMPATH+"::POST::Accessed");
         String classCourse = formResponse.getClassCourse();
         String classRoom = formResponse.getClassRoom();
         model.addAttribute("classCourse", classCourse);
@@ -37,6 +41,7 @@ public class FormController {
 
     @PostMapping(value = FORMPATH + "/upload")
     public String submitFileForm(@RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) {
+        logger.info(FORMPATH + "/upload"+"::POST::Accessed");
         // check if file is empty
         if (file.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
