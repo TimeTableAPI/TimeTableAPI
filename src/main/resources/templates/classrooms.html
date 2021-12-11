@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ClassRooms</title>
+    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+</head>
+<body>
+<header th:insert="fragments/headerFooter.html :: header"></header>
+<footer th:insert="fragments/headerFooter.html :: footer"></footer>
+<div id="classrooms_tabulator"></div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var classroomsjs = /*[[${classrooms}]]*/ null;
+/*]]>*/
+    var table = new Tabulator("#classrooms_tabulator", {
+            data: classroomsjs,
+            tooltips:true,            //show tool tips on cells
+            addRowPos:"top",          //when adding a new row, add it to the top of the table
+            history:true,             //allow undo and redo actions on the table
+            pagination:"local",       //paginate the data
+            paginationSize:20,         //allow 7 rows per page of data
+            movableColumns:true,      //allow column order to be changed
+            resizableRows:true,       //allow row order to be changed
+            initialSort:[             //set the initial sort order of the data
+                {column:"Building", dir:"asc"},
+            ],
+            //autoColumns:true,
+            columns:[
+                {title: "Building",                 field: "building",              sorter: "string",headerFilter: "input",},
+                {title: "ClassroomName",            field: "classroomName",         sorter: "string",headerFilter: "input",},
+                {title: "NormalCapacity",           field: "normalCapacity",        sorter: "int",   headerFilter: "input",hozAlign: "left",},
+                {title: "ExamCapacity",             field: "examCapacity",          sorter: "int",   headerFilter: "input",hozAlign: "left",},
+                {title: "NumberCharacteristics",    field: "numberCharacteristics", sorter: "int",   headerFilter: "input",hozAlign: "left",},
+                {title: "Characteristics",          field: "characteristics",       sorter:"string"},
+
+                ]
+            });
+</script>
+<!--
+<table>
+    <tr>
+        <th>building</th>
+        <th>classroomName</th>
+        <th>normalCapacity</th>
+        <th>examCapacity</th>
+        <th>numberCharacteristics</th>
+        <th>characteristics</th>
+    </tr>
+    <tr th:each="classroom : ${classrooms}">
+        <td th:text="${classroom.building}">building</td>
+        <td th:text="${classroom.classroomName}">classroomName</td>
+        <td th:text="${classroom.normalCapacity}">normalCapacity</td>
+        <td th:text="${classroom.examCapacity}">examCapacity</td>
+        <td th:text="${classroom.numberCharacteristics  }">numberCharacteristics</td>
+        <td th:text="${classroom.characteristics}">characteristics</td>
+    </tr>
+</table>
+
+-->
+</body>
+</html>
