@@ -7,9 +7,9 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ClassRoomLoaderTest {
+public class ClassroomLoaderTest {
     private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/test/resources/classRoomTest.csv";
-    private static Classroom aClassRoom;
+    private static Classroom classroom;
     @org.junit.jupiter.api.BeforeEach
     void setUp()
     {
@@ -50,7 +50,7 @@ public class ClassRoomLoaderTest {
             false,//videoconferencia,
             false//Átrio
     ));
-        aClassRoom = new Classroom.Builder().
+        classroom = new Classroom.Builder().
                 building(building).
                 classroomName(classroomName).
                 normalCapacity(normalCapacity).
@@ -64,13 +64,13 @@ public class ClassRoomLoaderTest {
     @org.junit.jupiter.api.Test
     void load()
     {
-        Classroom classRoomTest = ClassRoomLoader.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
-        assertEquals(classRoomTest.getBuilding(), aClassRoom.getBuilding());
-        assertEquals(classRoomTest.getClassroomName(), aClassRoom.getClassroomName());
-        assertEquals(classRoomTest.getExamCapacity(), aClassRoom.getExamCapacity());
-        assertEquals(classRoomTest.getNormalCapacity(), aClassRoom.getNormalCapacity());
-        assertEquals(classRoomTest.getNumberCharacteristics(), aClassRoom.getNumberCharacteristics());
-        assertEquals(classRoomTest.getNormalCapacity(), aClassRoom.getNormalCapacity());
-        assertEquals(classRoomTest.getCharacteristics(), aClassRoom.getCharacteristics());
+        Classroom classRoomTest = ClassroomLoader.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
+        assertEquals(classRoomTest.getBuilding(), classroom.getBuilding());
+        assertEquals(classRoomTest.getClassroomName(), classroom.getClassroomName());
+        assertEquals(classRoomTest.getExamCapacity(), classroom.getExamCapacity());
+        assertEquals(classRoomTest.getNormalCapacity(), classroom.getNormalCapacity());
+        assertEquals(classRoomTest.getNumberCharacteristics(), classroom.getNumberCharacteristics());
+        assertEquals(classRoomTest.getNormalCapacity(), classroom.getNormalCapacity());
+        assertEquals(classRoomTest.getCharacteristics(), classroom.getCharacteristics());
     }
 }
