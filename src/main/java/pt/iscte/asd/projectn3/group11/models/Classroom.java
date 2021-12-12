@@ -24,7 +24,7 @@ import java.util.List;
  *
  * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
  */
-public class Classroom {
+public class  Classroom {
 
     public static final String[] HEADER = {
             "Edifício",
@@ -223,6 +223,22 @@ public class Classroom {
     public final boolean isNamed(final String name) {
         return this.classroomName.equals(name);
     }
+
+    /**
+     * <p>Method to parse the characteristics list in the Classroom form a List<bool> into a List<String> and return it.</p>
+     *
+     * @return List of characteristics the ClassRoom has
+     * */
+    public final List<String> getCharacteristicsToString(){
+        LinkedList<String> characteristisStringList = new LinkedList<>();
+        for (int i = 0; i< characteristics.size(); i++){
+            if(characteristics.get(i)){
+                characteristisStringList.add(CHARACTERISTICS_LIST[i]);
+            }
+        }
+        return characteristisStringList;
+    }
+
 
     @Override
     public final String toString() {

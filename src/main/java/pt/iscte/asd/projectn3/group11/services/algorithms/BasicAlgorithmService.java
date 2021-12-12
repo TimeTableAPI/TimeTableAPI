@@ -18,6 +18,20 @@ public class BasicAlgorithmService implements IAlgorithmService {
         TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = initializeClassCourseDateMap(classCourses);
         TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = initializeClassRoomDateMap(classCoursedateMap);
 
+        for( ClassCourse classCourse : classCourses){
+            ClassroomService.allocate(classCourse, classrooms ,classRoomAvailabilityMap, 0.5F);
+
+        }
+    }
+
+    /*
+    @Override
+    public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
+        System.out.println("BASIC_ALGORITHM::EXECUTE");
+
+        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = initializeClassCourseDateMap(classCourses);
+        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = initializeClassRoomDateMap(classCoursedateMap);
+
         for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCourseOfDay : classCoursedateMap.entrySet()) {
             Date currDate = classCourseOfDay.getKey();
             //System.out.println(currDate + " -> " + classCourseOfDay.getValue().size());
@@ -34,6 +48,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
                             .capacity(classCourse.getCapacity())
                             .characteristics(classCourse.getAskedCharacteristics())
                             .build();
+
                     List<Classroom> suitableClassRooms = ClassroomService.get(classrooms, requestInformation, Operations.OR);
 
 
@@ -48,19 +63,18 @@ public class BasicAlgorithmService implements IAlgorithmService {
             }
         }
 
-    }
-
-    private boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
+    }*/
+/*
+    private static boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
         return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
     }
-
+*/
     private TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> initializeClassCourseDateMap(List<ClassCourse> classCourses) {
         TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
         for (ClassCourse classCourse : classCourses) {
             classCoursedateMap.computeIfAbsent(classCourse.getDate(), k -> new EnumMap<TimeShift, HashSet<ClassCourse>>(TimeShift.class));
             classCoursedateMap.get(classCourse.getDate()).computeIfAbsent(classCourse.getBeginningHour(), k -> new HashSet<ClassCourse>());
             classCoursedateMap.get(classCourse.getDate()).get(classCourse.getBeginningHour()).add(classCourse);
-
         }
         return classCoursedateMap;
     }

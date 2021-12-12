@@ -19,9 +19,11 @@ public class ClassCourse {
             "Fim",
             "Dia",
             "Características da sala pedida para a aula",
-            "Sala da aula,Lotação",
+            "Sala da aula",
+            "Lotação",
             "Características reais da sala",
     };
+
     //region MEMBERS
 
     private final LinkedList<String> courses;
