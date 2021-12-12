@@ -1,12 +1,12 @@
 package pt.iscte.asd.projectn3.group11.services;
 
+import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.LogicOperation;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <h1>ClassRoom service</h1>
@@ -143,9 +143,42 @@ public class ClassroomService {
 
 	}
 
+	public static ClassCourse allocate(ClassCourse classCourse, List<Classroom> classrooms, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
+		Date date = classCourse.getDate();
+		TimeShift timeShift = classCourse.getBeginningHour();
+		for( Classroom classroom: classrooms){
+			if(checkClassRoomAvailability(classroom,date,timeShift,classRoomAvailabilityMap) &&
+					checkClassRoomFeatures(classroom, classCourse,percentageCharacteristicsNeeded)
+			){
+				classCourse.setClassroom(classroom);
+			}
+		}
+
+		return classCourse;
+	}
+
+	private static boolean checkClassRoomFeatures(Classroom classRoom, ClassCourse classCourse, Float percentageCharacteristicsNeeded) {
+		final boolean  capacity_bool = classRoom.getNormalCapacity() < classCourse.getNumberOfStudentsInClass();
+		int characteristics_counter = 0;
+		LinkedList<String> askedCharacteristics = classCourse.getAskedCharacteristics();
+		for(String classroomCharacteristic: classRoom.getCharacteristicsToString()){
+			if(askedCharacteristics.contains(classroomCharacteristic)){
+				characteristics_counter ++;
+			}
+		}
+		//boolean  characteristics_bool = classCourse.getAskedCharacteristics().containsAll(classRoom.getCharacteristicsToString());
+		final float includedCharacteristicsPercentage = (characteristics_counter / askedCharacteristics.size());
+		boolean  characteristics_bool = includedCharacteristicsPercentage > percentageCharacteristicsNeeded;
+
+		return capacity_bool && characteristics_bool;
+	}
+
+	private static boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
+		return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
+	}
+
 	//endregion
 	//region OPERATIONS
-
 	//region Request
 	public static final class RequestInformation {
 		final int capacity;

@@ -31,7 +31,6 @@ public class ClassCourseLoader {
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
-
             extractClass(csvReader);
 
         } catch (IOException | CsvValidationException e) {
