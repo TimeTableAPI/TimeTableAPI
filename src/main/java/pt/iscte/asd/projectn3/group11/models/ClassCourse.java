@@ -166,6 +166,68 @@ public class ClassCourse {
 
     //endregion
 
+    //region JSONTYPE
+
+    public static class ClassCourseJson{
+        public final LinkedList<String> courses;
+        public final LinkedList<String> units;
+        public final String shift;
+        public final String numberOfStudentsInClass;
+        public final String shiftsWithFreeSpots;
+        public final String shiftsWithMoreThanTheCapacity;
+        public final String weekday;
+        public final String beginningHour;
+        public final String endHour;
+        public final String date;
+        public final LinkedList<String> askedCharacteristics;
+        public final LinkedList<String> classesOfCourse;
+        public final String capacity;
+        public final LinkedList<String> realCharacteristics;
+
+        public String classroom;
+
+
+        public ClassCourseJson(LinkedList<String> courses, LinkedList<String> units, String shift, int numberOfStudentsInClass, int shiftsWithFreeSpots, int shiftsWithMoreThanTheCapacity, String weekday, TimeShift beginningHour, TimeShift endHour, Date date, LinkedList<String> askedCharacteristics, LinkedList<String> classesOfCourse, int capacity, LinkedList<String> realCharacteristics, Classroom classroom) {
+            this.courses = courses;
+            this.units = units;
+            this.shift = shift;
+            this.numberOfStudentsInClass = String.valueOf(numberOfStudentsInClass);
+            this.shiftsWithFreeSpots = String.valueOf(shiftsWithFreeSpots);
+            this.shiftsWithMoreThanTheCapacity = String.valueOf(shiftsWithMoreThanTheCapacity);
+            this.weekday = weekday;
+            this.beginningHour = beginningHour.toString();
+            this.endHour = endHour.toString();
+            this.date = date.toString();
+            this.askedCharacteristics = askedCharacteristics;
+            this.classesOfCourse = classesOfCourse;
+            this.classroom = (classroom != null)? classroom.getClassroomName() : "";
+            this.capacity = String.valueOf(capacity);
+            this.realCharacteristics = realCharacteristics;
+
+        }
+    }
+
+    public ClassCourseJson toJsonType() {
+        return new ClassCourseJson(
+                courses,
+                units,
+                shift,
+                numberOfStudentsInClass,
+                shiftsWithFreeSpots,
+                shiftsWithMoreThanTheCapacity,
+                weekday,
+                beginningHour,
+                endHour,
+                date,
+                askedCharacteristics,
+                classesOfCourse,
+                capacity,
+                realCharacteristics,
+                classroom
+        );
+    }
+    //endregion
+
     //region GETTERS
 
     /**
