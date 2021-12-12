@@ -36,8 +36,8 @@ public class ClassCourse {
     private final Date date;
     private final LinkedList<String> askedCharacteristics;
     private final LinkedList<String> classesOfCourse;
-    private final int capacity;
-    private final LinkedList<String> realCharacteristics;
+    private int capacity;
+    private LinkedList<String> realCharacteristics;
 
     private Classroom classroom;
 
@@ -356,6 +356,8 @@ public class ClassCourse {
 
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
+        capacity = classroom.getNormalCapacity();
+        realCharacteristics = (LinkedList<String>) classroom.getCharacteristicsToString();
     }
 
     //endregion
