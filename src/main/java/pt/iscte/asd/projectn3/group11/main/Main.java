@@ -5,6 +5,7 @@ import pt.iscte.asd.projectn3.group11.loaders.ClassCourseLoader;
 import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +27,7 @@ public class Main {
         context.resolve();
         System.out.println(classesWithRoomPercentage(classCourses));
 
+        System.out.println(TimetableEvaluationService.evaluateTimetable(classCourses));
         try {
             File exportedClasses = ClassCourseLoader.export();
             //output.write(exportedClasses);
