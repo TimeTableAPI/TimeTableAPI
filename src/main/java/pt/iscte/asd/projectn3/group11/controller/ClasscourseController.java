@@ -32,7 +32,11 @@ public class ClasscourseController {
     //region timetable
     @GetMapping(value = ClasscourseController.TIMETABLEPATH)
     public String fetchTimeTable(Model model) {
-        model.addAttribute("timetable", ClassCourseLoader.CLASS_COURSES);
+
+        LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+        ClassCourseLoader.CLASS_COURSES.stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+
+        model.addAttribute("timetable", loadedClassCoursesJSON);
         return "timetable";
     }
 
@@ -90,8 +94,10 @@ public class ClasscourseController {
             Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
             context.resolve();
 
+            LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            ClassCourseLoader.CLASS_COURSES.stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
 
-            model.addAttribute("timetable", loadedClassCourses);
+            model.addAttribute("timetable", loadedClassCoursesJSON);
 
             // return success response
             return "timetable";
