@@ -1,6 +1,7 @@
 package pt.iscte.asd.projectn3.group11.services;
 
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
+import pt.iscte.asd.projectn3.group11.models.util.MetricResult;
 import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.AllocationMetric;
 import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.CapacityMetric;
 import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.CharacteristicsMetric;
@@ -19,10 +20,13 @@ public class TimetableEvaluationService {
 			new CapacityMetric()
 	));
 
-	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> classCourseList){
-		Hashtable<String, Float> results = new Hashtable<>();
+	public static List<MetricResult> evaluateTimetable(List<ClassCourse> classCourseList){
+		List<MetricResult> results = new LinkedList<>();
 		for(MetricCalculator metric : METRICSLIST){
-			results.put(metric.getClass().getSimpleName(),metric.evaluate(classCourseList));
+			results.add(new MetricResult(
+					metric.getClass().getSimpleName(),
+					metric.evaluate(classCourseList)
+			));
 		}
 		return results;
 	}
