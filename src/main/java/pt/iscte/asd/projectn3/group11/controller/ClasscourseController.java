@@ -23,6 +23,7 @@ import pt.iscte.asd.projectn3.group11.loaders.ClassCourseLoader;
 import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 
 @Controller
@@ -33,6 +34,7 @@ public class ClasscourseController {
     @GetMapping(value = ClasscourseController.TIMETABLEPATH)
     public String fetchTimeTable(Model model) {
         model.addAttribute("timetable", ClassCourseLoader.CLASS_COURSES);
+        model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(ClassCourseLoader.CLASS_COURSES));
         return "timetable";
     }
 
@@ -92,6 +94,7 @@ public class ClasscourseController {
 
 
             model.addAttribute("timetable", loadedClassCourses);
+            model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(loadedClassCourses));
 
             // return success response
             return "timetable";

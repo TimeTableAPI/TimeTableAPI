@@ -12,16 +12,16 @@ public class CapacityMetric implements MetricCalculator {
 	 * */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList) {
-		float totalCapacity = 0f;
-		float totalStudents = 0f;
+		float totalClassCoursesWithClassroom = 0f;
+		float totalClassCoursesWithEnoughCapacity = 0f;
 		for(ClassCourse classCourse : classCourseList){
 			if(classCourse.getClassroom() != null){
-				final int classCapacity = classCourse.getCapacity();
-				final int numberOfStudentsInClass = classCourse.getNumberOfStudentsInClass();
-				if (classCapacity >0) totalCapacity += classCapacity;
-				if (numberOfStudentsInClass >0) totalStudents += numberOfStudentsInClass;
+				if(classCourse.getNumberOfStudentsInClass() > classCourse.getCapacity()){
+					totalClassCoursesWithEnoughCapacity++;
+				}
+				totalClassCoursesWithClassroom ++;
 			}
 		}
-		return totalStudents/totalCapacity ;
+		return totalClassCoursesWithEnoughCapacity/totalClassCoursesWithClassroom;
 	}
 }
