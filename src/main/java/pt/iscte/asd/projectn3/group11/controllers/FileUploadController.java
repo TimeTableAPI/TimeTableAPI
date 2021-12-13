@@ -1,6 +1,5 @@
-package pt.iscte.asd.projectn3.group11.controller;
+package pt.iscte.asd.projectn3.group11.controllers;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
