@@ -114,10 +114,9 @@ public class ClassCourseLoaderServiceTest {
 
     @Test
     void export() {
-        /*
         try {
             LinkedList<ClassCourse> classCourses = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
-            File file = ClassCourseLoaderService.export();
+            File file = ClassCourseLoaderService.export(classCourses);
             LinkedList<ClassCourse> classesExported = ClassCourseLoaderService.load(file);
             for (int i = 0; i < min(classCourses.size(), classesExported.size()); i++) {
                 assertEquals(classCourses.get(i), classesExported.get(i));
@@ -125,7 +124,6 @@ public class ClassCourseLoaderServiceTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
 
     }
 }
