@@ -14,10 +14,17 @@ public class FileUploadController {
     //endregion
 
     //region FILE_UPLOAD
+
+    /**
+     * Uploads a file
+     * @param file file
+     * @throws IOException
+     */
     @PostMapping(value = FILE_UPLOAD_PATH)
     public void uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         FileUploadService.uploadFile(file);
     }
+
     //endregion
 
 }
