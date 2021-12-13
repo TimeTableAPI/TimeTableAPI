@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ClassroomLoader {
 	//region LOADERS
-    public final static LinkedList<Classroom> classrooms = new LinkedList<>();
+    public final static LinkedList<Classroom> CLASSROOMS = new LinkedList<>();
     /**
      * Loads a Classroom List from a file in the given path.
      *
@@ -28,12 +28,12 @@ public class ClassroomLoader {
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
 
-            extractClassRooms(csvReader, classrooms);
+            extractClassRooms(csvReader, CLASSROOMS);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-        return classrooms;
+        return CLASSROOMS;
     }
 
     /**
@@ -48,13 +48,13 @@ public class ClassroomLoader {
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
 
-            extractClassRooms(csvReader, classrooms);
+            extractClassRooms(csvReader, CLASSROOMS);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
-            return classrooms;
+            return CLASSROOMS;
         }
-        return classrooms;
+        return CLASSROOMS;
     }
 
     /**
@@ -76,7 +76,7 @@ public class ClassroomLoader {
         fos.write(multipartFile.getBytes());
         fos.close();
         ClassroomLoader.load(file);
-        return classrooms;
+        return CLASSROOMS;
     }
 
     /**
@@ -120,7 +120,7 @@ public class ClassroomLoader {
     }
 
     public static void clear() {
-        ClassroomLoader.classrooms.clear();
+        ClassroomLoader.CLASSROOMS.clear();
     }
 
     //endregion

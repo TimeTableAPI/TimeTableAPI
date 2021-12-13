@@ -1,11 +1,13 @@
 package pt.iscte.asd.projectn3.group11.models.util.metricCalculators;
 
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
+import pt.iscte.asd.projectn3.group11.models.Classroom;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
-public class BadClassroomMetric implements MetricCalculator{
+public class GoodClassroomMetric implements MetricCalculator{
 
 	/**
 	 * <p>Metric to evaluate the quality of the assigned Classrooms compared to the characteristics the class needed.</p>
@@ -13,7 +15,7 @@ public class BadClassroomMetric implements MetricCalculator{
 	 * @return a float between 0 and 1 representing the percentage of characteristics that were fulfilled.
 	 * */
 	@Override
-	public float evaluate(List<ClassCourse> classCourseList) {
+	public float evaluate(List<ClassCourse> classCourseList, LinkedList<Classroom> classroomsList) {
 		float totalRealCharacteristics = 0f;
 		float totalAskedCharacteristics = 0f;
 		for(ClassCourse classCourse : classCourseList){

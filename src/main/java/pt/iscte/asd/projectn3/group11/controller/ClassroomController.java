@@ -14,7 +14,7 @@ public class ClassroomController {
     //region classrooms
     @GetMapping(value = CLASSROOMPATH)
     public String fetchAllClassRooms(Model model) {
-        model.addAttribute("classrooms", ClassroomLoader.classrooms);
+        model.addAttribute("classrooms", ClassroomLoader.CLASSROOMS);
         return "classrooms";
     }
 /*
