@@ -8,6 +8,8 @@ import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TimetableEvaluationService {
 
@@ -22,13 +24,29 @@ public class TimetableEvaluationService {
 
 	public static List<MetricResult> evaluateTimetable(List<ClassCourse> classCourseList, LinkedList<Classroom> classroomsList){
 		List<MetricResult> results = new LinkedList<>();
+		Queue<MetricResult> globalQueue = new ConcurrentLinkedQueue<MetricResult>();
+		List<Thread> threadList = new LinkedList<>();
+
 		for(MetricCalculator metric : METRICSLIST){
-			results.add(new MetricResult(
-					metric.getClass().getSimpleName(),
-					metric.evaluate(classCourseList,classroomsList)
-			));
+			Thread t1 = new Thread(() ->
+					globalQueue.add(new MetricResult(
+							metric.getClass().getSimpleName(),
+							metric.evaluate(classCourseList,classroomsList)
+							)
+					)
+			);
+			t1.start();
+			threadList.add(t1);
 		}
-		return results;
+
+		for (Thread thread : threadList){
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return new LinkedList<>(globalQueue);
 	}
 
 }
