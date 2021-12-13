@@ -11,7 +11,6 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import java.io.*;
 
 @ComponentScan({"pt.iscte.asd.projectn3.group11.controller"})
 @SpringBootApplication
@@ -26,7 +25,7 @@ public class Main {
         Context context = new Context(classCourses, classrooms, new BasicAlgorithmService());
         context.resolve();
 
-        System.out.println(TimetableEvaluationService.evaluateTimetable(classCourses));
+        System.out.println(TimetableEvaluationService.evaluateTimetable(classCourses, ClassroomLoader.CLASSROOMS));
 
         SpringApplication.run(Main.class, args);
         System.out.println("Main App Started with SPRING");

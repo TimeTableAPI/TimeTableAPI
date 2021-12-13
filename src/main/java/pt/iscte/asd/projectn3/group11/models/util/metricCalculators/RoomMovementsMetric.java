@@ -14,15 +14,19 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * */
 public class RoomMovementsMetric implements MetricCalculator{
 
+	/**
+	 * @param classCourseList
+	 * @param classroomsList
+	 * @return
+	 */
 	@Override
-	public float evaluate(List<ClassCourse> classCourseList) {
+	public float evaluate(List<ClassCourse> classCourseList, LinkedList<Classroom> classroomsList) {
 		final TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizedClassCourseByClass =
 				organizeClassCourseByClass(classCourseList, organizeClassCourseByDate(classCourseList));
 
 		int classMoveCounter = 0;
 		int nClassSameRoom = 0;
 
-		int uniqueClassRooms = 0;
 		LinkedList<Classroom> uniqueClassroomsList;
 
 		for(Map.Entry<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> dateEntry:organizedClassCourseByClass.entrySet()){

@@ -34,7 +34,7 @@ public class ClasscourseController {
     @GetMapping(value = ClasscourseController.TIMETABLEPATH)
     public String fetchTimeTable(Model model) {
         model.addAttribute("timetable", ClassCourseLoader.CLASS_COURSES);
-        model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(ClassCourseLoader.CLASS_COURSES));
+        model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(ClassCourseLoader.CLASS_COURSES, ClassroomLoader.CLASSROOMS));
         return "timetable";
     }
 
@@ -94,7 +94,7 @@ public class ClasscourseController {
 
 
             model.addAttribute("timetable", loadedClassCourses);
-            model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(loadedClassCourses));
+            model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(loadedClassCourses, loadedClassRooms ));
 
             // return success response
             return "timetable";
