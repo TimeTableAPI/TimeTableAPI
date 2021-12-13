@@ -17,7 +17,7 @@ public class IndexController {
      * @return "start"
      */
     @RequestMapping("/")
-    public String index(HttpServletResponse response, Model model) {
+    public String index(Model model) {
         model.addAttribute("teamMembers", new String[]{"Afonso Costa Vale", "João ALmeida", "Saroj Duwadi"});
         return "index";
     }
