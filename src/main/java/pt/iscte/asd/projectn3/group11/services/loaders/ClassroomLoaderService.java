@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.loaders;
+package pt.iscte.asd.projectn3.group11.services.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -13,9 +13,8 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ClassroomLoader {
-	//region LOADERS
-    public final static LinkedList<Classroom> classrooms = new LinkedList<>();
+public class ClassroomLoaderService {
+
     /**
      * Loads a Classroom List from a file in the given path.
      *
@@ -23,12 +22,13 @@ public class ClassroomLoader {
      * @return List of classrooms
      */
     public static final LinkedList<Classroom> load(final String path) {
+        LinkedList<Classroom> classrooms = new LinkedList<>();
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
 
-            extractClassRooms(csvReader, classrooms);
+            extract(csvReader, classrooms);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -43,16 +43,16 @@ public class ClassroomLoader {
      * @return List of classrooms
      */
     public static final LinkedList<Classroom> load(final File file) {
+        LinkedList<Classroom> classrooms = new LinkedList<>();
         try (
                 final Reader reader = new FileReader(file);
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
 
-            extractClassRooms(csvReader, classrooms);
+            extract(csvReader, classrooms);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
-            return classrooms;
         }
         return classrooms;
     }
@@ -75,7 +75,7 @@ public class ClassroomLoader {
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(multipartFile.getBytes());
         fos.close();
-        ClassroomLoader.load(file);
+        LinkedList<Classroom> classrooms = load(file);
         return classrooms;
     }
 
@@ -85,7 +85,7 @@ public class ClassroomLoader {
      * @param csvReader  reader to extract the data
      * @param classrooms list where the extracted classRooms will be appended
      */
-    private static void extractClassRooms(CSVReader csvReader, List<Classroom> classrooms) throws IOException, CsvValidationException {
+    private static void extract(CSVReader csvReader, List<Classroom> classrooms) throws IOException, CsvValidationException {
         final String[] headers = csvReader.readNext();
 
         String[] nextRecord;
@@ -119,9 +119,4 @@ public class ClassroomLoader {
         System.out.println("ClassRoomLoad.main::classRooms = " + classrooms);
     }
 
-    public static void clear() {
-        ClassroomLoader.classrooms.clear();
-    }
-
-    //endregion
 }

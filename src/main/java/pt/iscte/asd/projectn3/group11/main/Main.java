@@ -1,8 +1,8 @@
 package pt.iscte.asd.projectn3.group11.main;
 
 import pt.iscte.asd.projectn3.group11.Context;
-import pt.iscte.asd.projectn3.group11.loaders.ClassCourseLoader;
-import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
+import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
+import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
@@ -19,22 +19,8 @@ public class Main {
     private static final String SAMPLE_CSV_FILE_CLASSROOM_PATH = "./src/main/resources/ADS - Caracterizacao das salas.csv";
 
     public static void main(String[] args) {
-        List<ClassCourse> classCourses = ClassCourseLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
-        List<Classroom> classrooms = ClassroomLoader.load(SAMPLE_CSV_FILE_CLASSROOM_PATH);
-
-        Context context = new Context(classCourses, classrooms, new BasicAlgorithmService());
-        context.resolve();
-        System.out.println(classesWithRoomPercentage(classCourses));
-
-        try {
-            File exportedClasses = ClassCourseLoader.export();
-            //output.write(exportedClasses);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         SpringApplication.run(Main.class, args);
         System.out.println("Main App Started with SPRING");
-
     }
 
     static double classesWithRoomPercentage(List<ClassCourse> classes) {
