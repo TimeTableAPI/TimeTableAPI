@@ -34,9 +34,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ClassCourseController {
 
+    //region PATH_CONSTANTS
     public static final String TIMETABLE_PATH = "/timetable";
+    //endregion
 
-    //region timetable
+    //region TIMETABLE
     @GetMapping(value = ClassCourseController.TIMETABLE_PATH)
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
 
@@ -49,7 +51,9 @@ public class ClassCourseController {
 
         return "timetable";
     }
+    //endregion
 
+    //region TIMETABLE_DOWNLOAD
     @GetMapping(value = ClassCourseController.TIMETABLE_PATH + "/download")
     public ResponseEntity<Resource> downloadTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
 
@@ -86,7 +90,9 @@ public class ClassCourseController {
             return (ResponseEntity<Resource>) ResponseEntity.notFound();
         }
     }
+    //endregion
 
+    //region TIMETABLE_UPDATE
     @PostMapping(value = ClassCourseController.TIMETABLE_PATH + "/upload")
     public String timeTableUpload(HttpServletResponse response, HttpServletRequest request, @RequestParam("file_classes") MultipartFile file_classes, @RequestParam("file_classrooms") MultipartFile file_classrooms, RedirectAttributes attributes, Model model) {
         // check if file is empty
@@ -99,9 +105,6 @@ public class ClassCourseController {
         try {
             attributes.addFlashAttribute("message", "You successfully uploaded\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
 
-            //FileUploadService.uploadFile(file_classes);
-            //FileUploadService.uploadFile(file_classrooms);
-
             LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(file_classes, false);
             LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load(file_classrooms, false);
             Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
@@ -112,12 +115,10 @@ public class ClassCourseController {
 
             model.addAttribute("timetable", loadedClassCourses);
 
-            // return success response
             return "timetable";
         } catch (IOException e) {
             attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
             e.printStackTrace();
-            //model.addAttribute("timetable", ClassCourseLoaderService.CLASS_COURSES);
             return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
         }
 
@@ -125,6 +126,5 @@ public class ClassCourseController {
     }
 
     //endregion
-
 
 }
