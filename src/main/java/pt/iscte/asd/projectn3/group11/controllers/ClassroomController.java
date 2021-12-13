@@ -16,9 +16,11 @@ import java.util.UUID;
 @Controller
 public class ClassroomController {
 
+    //region PATH_CONSTANTS
     public static final String CLASSROOM_PATH = "/classrooms";
+    //endregion
 
-    //region classrooms
+    //region CLASSROOM
     @GetMapping(value = CLASSROOM_PATH)
     public String fetchAllClassRooms(HttpServletResponse response, HttpServletRequest request, Model model) {
 
@@ -31,17 +33,5 @@ public class ClassroomController {
 
         return "classrooms";
     }
-/*
-    @PostMapping(value = CLASSROOMPATH, consumes = "application/json", produces = "application/json")
-    public Classroom createClassRoom(@RequestBody Classroom classroom) {
-        return classroom;
-    }
-
-    @DeleteMapping(CLASSROOMPATH + "/{id}/")
-    public ResponseEntity deleteClassRoom(@PathVariable("id") String id) {
-        return new ResponseEntity(HttpStatus.OK);
-    }*/
-
     //endregion
-
 }
