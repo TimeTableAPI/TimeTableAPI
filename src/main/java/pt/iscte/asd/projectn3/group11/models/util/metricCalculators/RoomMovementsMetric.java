@@ -10,11 +10,9 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
 import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByDate;
 
 /**
- * <p>Evaluator to evaluate the Mobility of the timetable</p>
- * <p>What mobility means is if there is a class where the students need to change classroom in the middle</p>
- * <p>So the returned value from the {@link #evaluate(List)} is a percentage of classes where you dont move rooms, that way the highes the better </p>
+ * <p>Metric that calculates the percentage of classes where the students don't have to move mid-Class</p>
  * */
-public class MobilityMetric implements MetricCalculator{
+public class RoomMovementsMetric implements MetricCalculator{
 
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList) {

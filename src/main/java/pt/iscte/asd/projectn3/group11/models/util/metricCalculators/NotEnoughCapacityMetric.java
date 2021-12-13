@@ -4,9 +4,11 @@ import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 
 import java.util.List;
 
-public class CapacityMetric implements MetricCalculator {
+public class NotEnoughCapacityMetric implements MetricCalculator {
+
 	/**
 	 * <p>Metric to evaluate the capacity of the assigned Classrooms compared to the number of students in each class.</p>
+	 * <p>The <b>bigger</b> the result the better.</p>
 	 *
 	 * @return a float between 0 and 1 representing the percentage of classes with enough capacity.
 	 * */
