@@ -10,6 +10,7 @@ public class SessionsService {
     private static final HashMap<UUID, Context> SESSIONS = new HashMap<>();
     private static int SESSION_NUM = 0;
 
+    //region SESSION_CONTEXT
     /**
      * Puts a session on a UUID
      * @param uuid UUID of the session
@@ -48,7 +49,9 @@ public class SessionsService {
     {
         return SESSIONS.containsKey(uuid);
     }
+    //endregion
 
+    //region SESSION_NUM
     /**
      * Increases the number of sessions
      */
@@ -73,4 +76,5 @@ public class SessionsService {
     {
         return SESSION_NUM;
     }
+    //endregion
 }
