@@ -21,6 +21,14 @@ public class ClassroomController {
     //endregion
 
     //region CLASSROOM
+
+    /**
+     * Fetched Classrooms.
+     * @param response response
+     * @param request request
+     * @param model model
+     * @return html filled with the variables
+     */
     @GetMapping(value = CLASSROOM_PATH)
     public String fetchAllClassRooms(HttpServletResponse response, HttpServletRequest request, Model model) {
 
