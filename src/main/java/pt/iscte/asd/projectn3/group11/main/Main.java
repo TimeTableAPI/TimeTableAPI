@@ -15,8 +15,6 @@ import java.io.*;
 @ComponentScan({"pt.iscte.asd.projectn3.group11.controller"})
 @SpringBootApplication
 public class Main {
-    private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/main/resources/ADS - Exemplo de horario do 1o Semestre.csv";
-    private static final String SAMPLE_CSV_FILE_CLASSROOM_PATH = "./src/main/resources/ADS - Caracterizacao das salas.csv";
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
