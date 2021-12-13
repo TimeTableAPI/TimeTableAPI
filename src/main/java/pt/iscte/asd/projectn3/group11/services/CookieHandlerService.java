@@ -9,6 +9,7 @@ public class CookieHandlerService {
 
     private static final String ID_NAME = "id";
 
+    //region PUBLIC_HANDLER
     /**
      * Gets or Generates a UUID for a session
      * @param request request
@@ -21,7 +22,9 @@ public class CookieHandlerService {
         if(cookie == null || cookie.getValue() == null) cookie = CookieHandlerService.addIdCookie(response);
         return UUID.fromString(cookie.getValue());
     }
+    //endregion
 
+    //region INTERNAL_ID_COOKIE
     /**
      * Adds or sets the Id cookie
      * @param  response response
@@ -56,7 +59,9 @@ public class CookieHandlerService {
     {
         return getCookie(request, ID_NAME);
     }
+    //endregion
 
+    //region INTERNAL_GENERAL
     /**
      * Adds a generic cookie
      * @param response response
@@ -105,5 +110,5 @@ public class CookieHandlerService {
         }
         return null;
     }
-
+    //endregion
 }
