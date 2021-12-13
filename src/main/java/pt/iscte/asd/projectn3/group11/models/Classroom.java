@@ -224,6 +224,20 @@ public class Classroom {
         return this.classroomName.equals(name);
     }
 
+    /**
+     * <p>Method to parse the characteristics list in the Classroom form a List<bool> into a List<String> and return it.</p>
+     *
+     * @return List of characteristics the ClassRoom has
+     * */
+    public final List<String> getCharacteristicsToString(){
+        LinkedList<String> characteristisStringList = new LinkedList<>();
+        for (int i = 0; i< characteristics.size(); i++){
+            if(characteristics.get(i)){
+                characteristisStringList.add(CHARACTERISTICS_LIST[i]);
+            }
+        }
+        return characteristisStringList;
+    }
     @Override
     public final String toString() {
         return "ClassRoom{" +

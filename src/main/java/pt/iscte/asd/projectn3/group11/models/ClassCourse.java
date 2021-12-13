@@ -3,6 +3,8 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+
 //TODO doc ClassCourse
 public class ClassCourse {
 
@@ -36,8 +38,8 @@ public class ClassCourse {
     private final Date date;
     private final LinkedList<String> askedCharacteristics;
     private final LinkedList<String> classesOfCourse;
-    private final int capacity;
-    private final LinkedList<String> realCharacteristics;
+    private int capacity;
+    private LinkedList<String> realCharacteristics;
 
     private Classroom classroom;
 
@@ -294,6 +296,8 @@ public class ClassCourse {
 
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
+        capacity = classroom.getNormalCapacity();
+        realCharacteristics = (LinkedList<String>) classroom.getCharacteristicsToString();
     }
 
     //endregion
@@ -319,6 +323,49 @@ public class ClassCourse {
                 ", capacity='" + capacity + '\'' +
                 ", realCharacteristics=" + realCharacteristics +
                 '}';
+    }
+
+
+    /**
+     * <p>Equals method for Comparing ClassCourses</p>
+     * <p>Uses all of the variables minus the startTime and EndTime. This way two classes back to back are considered equal</p>
+     *
+     * */
+    @Override
+    public boolean equals(Object o) {
+        //if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassCourse that = (ClassCourse) o;
+        return getNumberOfStudentsInClass() == that.getNumberOfStudentsInClass() &&
+                getShiftsWithFreeSpots() == that.getShiftsWithFreeSpots() &&
+                getShiftsWithMoreThanTheCapacity() == that.getShiftsWithMoreThanTheCapacity() &&
+                getUnits().equals(that.getUnits()) && getShift().equals(that.getShift()) &&
+                getWeekday().equals(that.getWeekday()) && getDate().equals(that.getDate()) &&
+                getAskedCharacteristics().equals(that.getAskedCharacteristics()) &&
+                getClassesOfCourse().equals(that.getClassesOfCourse()
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getCourses(),
+                getUnits(),
+                getShift(),
+                getNumberOfStudentsInClass(),
+                getShiftsWithFreeSpots(),
+                getShiftsWithMoreThanTheCapacity(),
+                getWeekday(),
+                getDate(),
+                getBeginningHour(),
+                getEndHour(),
+                getAskedCharacteristics(),
+                getClassesOfCourse(),
+                getClassroom(),
+                getCapacity(),
+                getRealCharacteristics()
+        );
     }
 
     public final String toCSVString() {

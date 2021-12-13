@@ -1,12 +1,12 @@
 package pt.iscte.asd.projectn3.group11.services;
 
+import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.LogicOperation;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <h1>ClassRoom service</h1>
@@ -16,6 +16,7 @@ public class ClassroomService {
 
 	public static final int INFINITY = 999999999;
 
+	//region GETTERS
 	/**
 	 * Getter for specified capacity
 	 *
@@ -143,8 +144,72 @@ public class ClassroomService {
 
 	}
 
+
 	//endregion
-	//region OPERATIONS
+
+	//region ORGANIZER
+
+	/**
+	 *
+	 * */
+	public static  TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(
+			List<ClassCourse> classCourses,
+			TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap
+	) {
+		TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
+		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
+
+	    for (ClassCourse classCourse : classCourses) {
+		    classCourseMap.computeIfAbsent(classCourse.getDate(), k -> new HashMap<>());
+
+			boolean foundClassInMap = false;
+			for(ClassCourse classCourseInMap : classCourseMap.get(classCourse.getDate()).keySet() ){
+				if(classCourseInMap.equals(classCourse)){
+					classCourseMap.get(classCourse.getDate()).get(classCourseInMap).add(classCourse);
+					foundClassInMap = true;
+					break;
+				}
+			}
+		    if(!foundClassInMap){
+			    classCourseMap.get(classCourse.getDate()).computeIfAbsent(classCourse, k -> new HashSet<>());
+				classCourseMap.get(classCourse.getDate()).get(classCourse).add(classCourse);
+		    }
+
+	    }
+	    return classCourseMap;
+	}
+
+	/**
+	 *
+	 * */
+	public static  TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizeClassCourseByDate(List<ClassCourse> classCourses) {
+	    TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
+	    for (ClassCourse classCourse : classCourses) {
+	        classCoursedateMap.computeIfAbsent(classCourse.getDate(), k -> new EnumMap<TimeShift, HashSet<ClassCourse>>(TimeShift.class));
+	        classCoursedateMap.get(classCourse.getDate()).computeIfAbsent(classCourse.getBeginningHour(), k -> new HashSet<ClassCourse>());
+	        classCoursedateMap.get(classCourse.getDate()).get(classCourse.getBeginningHour()).add(classCourse);
+	    }
+	    return classCoursedateMap;
+	}
+
+	/**
+	 *
+	 *
+	 * */
+	public static TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> organizeClassroomByDate(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap) {
+	    TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
+
+	    for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> date : classCoursedateMap.entrySet()) {
+	        for (Map.Entry<TimeShift, HashSet<ClassCourse>> hour : date.getValue().entrySet()) {
+	            classRoomDateMap.computeIfAbsent(date.getKey(), k -> new EnumMap<TimeShift, HashSet<Classroom>>(TimeShift.class));
+	            classRoomDateMap.get(date.getKey()).computeIfAbsent(hour.getKey(), k -> new HashSet<Classroom>());
+	        }
+	    }
+	    return classRoomDateMap;
+	}
+
+
+	//endregion
 
 	//region Request
 	public static final class RequestInformation {

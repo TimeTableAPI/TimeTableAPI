@@ -2,10 +2,7 @@ package pt.iscte.asd.projectn3.group11.services;
 
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.util.MetricResult;
-import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.AllocationMetric;
-import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.CapacityMetric;
-import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.CharacteristicsMetric;
-import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.MetricCalculator;
+import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.*;
 
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -14,10 +11,12 @@ import java.util.List;
 
 public class TimetableEvaluationService {
 
-	public static final LinkedList<MetricCalculator> METRICSLIST = new LinkedList<MetricCalculator>(Arrays.asList(
+	public static final LinkedList<MetricCalculator> METRICSLIST = new LinkedList<>(Arrays.asList(
 			new CharacteristicsMetric(),
 			new AllocationMetric(),
-			new CapacityMetric()
+			new CapacityMetric(),
+			new MobilityMetric()
+
 	));
 
 	public static List<MetricResult> evaluateTimetable(List<ClassCourse> classCourseList){

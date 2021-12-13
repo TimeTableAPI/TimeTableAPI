@@ -25,15 +25,9 @@ public class Main {
 
         Context context = new Context(classCourses, classrooms, new BasicAlgorithmService());
         context.resolve();
-        System.out.println(classesWithRoomPercentage(classCourses));
 
         System.out.println(TimetableEvaluationService.evaluateTimetable(classCourses));
-        try {
-            File exportedClasses = ClassCourseLoader.export();
-            //output.write(exportedClasses);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         SpringApplication.run(Main.class, args);
         System.out.println("Main App Started with SPRING");
 
