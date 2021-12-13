@@ -16,9 +16,11 @@ import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 @Controller
 public class FormController {
 
+    //region PATH_CONSTANTS
     public static final String FORM_PATH = "/form";
+    //endregion
 
-    //region form
+    //region FORM
     @GetMapping(value = FORM_PATH)
     public String getForm(Model model) {
         FormResponse formResponse = new FormResponse();
@@ -34,7 +36,9 @@ public class FormController {
         model.addAttribute("classRoom", classRoom);
         return "form";
     }
+    //endregion
 
+    //region FORM_UPLOAD
     @PostMapping(value = FORM_PATH + "/upload")
     public String submitFileForm(@RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) {
         // check if file is empty
@@ -54,6 +58,6 @@ public class FormController {
 
         return "redirect:/form";
     }
-//endregion
+    //endregion
 
 }
