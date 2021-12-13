@@ -15,8 +15,8 @@ public class BasicAlgorithmService implements IAlgorithmService {
     public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
         System.out.println("BASIC_ALGORITHM::EXECUTE");
 
-        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = initializeClassCourseDateMap(classCourses);
-        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = initializeClassRoomDateMap(classCoursedateMap);
+        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
+        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap);
 
         for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCourseOfDay : classCoursedateMap.entrySet()) {
             Date currDate = classCourseOfDay.getKey();
@@ -54,28 +54,4 @@ public class BasicAlgorithmService implements IAlgorithmService {
         return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
     }
 
-    private TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> initializeClassCourseDateMap(List<ClassCourse> classCourses) {
-        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
-        for (ClassCourse classCourse : classCourses) {
-            classCoursedateMap.computeIfAbsent(classCourse.getDate(), k -> new EnumMap<TimeShift, HashSet<ClassCourse>>(TimeShift.class));
-            classCoursedateMap.get(classCourse.getDate()).computeIfAbsent(classCourse.getBeginningHour(), k -> new HashSet<ClassCourse>());
-            classCoursedateMap.get(classCourse.getDate()).get(classCourse.getBeginningHour()).add(classCourse);
-
-        }
-        return classCoursedateMap;
-    }
-
-    private TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> initializeClassRoomDateMap(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap) {
-        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
-
-        for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> date : classCoursedateMap.entrySet()) {
-            for (Map.Entry<TimeShift, HashSet<ClassCourse>> hour : date.getValue().entrySet()) {
-                System.out.println();
-                classRoomDateMap.computeIfAbsent(date.getKey(), k -> new EnumMap<TimeShift, HashSet<Classroom>>(TimeShift.class));
-                classRoomDateMap.get(date.getKey()).computeIfAbsent(hour.getKey(), k -> new HashSet<Classroom>());
-            }
-
-        }
-        return classRoomDateMap;
-    }
 }
