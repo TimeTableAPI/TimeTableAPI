@@ -9,6 +9,12 @@ public class CookieHandlerService {
 
     private static final String ID_NAME = "id";
 
+    /**
+     * Gets or Generates a UUID for a session
+     * @param request request
+     * @param response response
+     * @return UUID of the session
+     */
     public static UUID getUUID(HttpServletRequest request, HttpServletResponse response)
     {
         Cookie cookie = CookieHandlerService.getIdCookie(request);
@@ -16,6 +22,11 @@ public class CookieHandlerService {
         return UUID.fromString(cookie.getValue());
     }
 
+    /**
+     * Adds or sets the Id cookie
+     * @param  response response
+     * @return id Cookie
+     */
     private static Cookie addIdCookie(HttpServletResponse response)
     {
         UUID id = UUID.randomUUID();
@@ -27,16 +38,32 @@ public class CookieHandlerService {
         return cookie;
     }
 
+    /**
+     * Removes the Id cookie
+     * @param response response
+     */
     private static void removeIdCookie(HttpServletResponse response)
     {
         removeCookie(response, ID_NAME);
     }
 
+    /**
+     * Gets the Id cookie
+     * @param request request
+     * @return id Cookie
+     */
     private static Cookie getIdCookie(HttpServletRequest request)
     {
         return getCookie(request, ID_NAME);
     }
 
+    /**
+     * Adds a generic cookie
+     * @param response response
+     * @param name name of the cookie
+     * @param value value of the cookie
+     * @return the cookie
+     */
     private static Cookie addCookie(HttpServletResponse response, final String name, final String value)
     {
         final Cookie cookie = new Cookie(name, value);
@@ -46,6 +73,11 @@ public class CookieHandlerService {
         return cookie;
     }
 
+    /**
+     * Removes a generic cookie
+     * @param response response
+     * @param name name of the cookie to remove
+     */
     private static void removeCookie(HttpServletResponse response, final String name)
     {
         final Cookie cookie = new Cookie(name, null);
@@ -55,6 +87,12 @@ public class CookieHandlerService {
         response.addCookie(cookie);
     }
 
+    /**
+     * Gets a cookie from a given name
+     * @param request request
+     * @param name name of the cookie
+     * @return the cookie
+     */
     private static Cookie getCookie(HttpServletRequest request, final String name)
     {
         final Cookie[] cookies = request.getCookies();
