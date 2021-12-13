@@ -33,10 +33,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ClassCourseController {
-    public static final String TIMETABLEPATH = "/timetable";
+
+    public static final String TIMETABLE_PATH = "/timetable";
 
     //region timetable
-    @GetMapping(value = ClassCourseController.TIMETABLEPATH)
+    @GetMapping(value = ClassCourseController.TIMETABLE_PATH)
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
 
         UUID uuid = CookieHandlerService.getUUID(request, response);
@@ -49,7 +50,7 @@ public class ClassCourseController {
         return "timetable";
     }
 
-    @GetMapping(value = ClassCourseController.TIMETABLEPATH + "/download")
+    @GetMapping(value = ClassCourseController.TIMETABLE_PATH + "/download")
     public ResponseEntity<Resource> downloadTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
 
         UUID uuid = CookieHandlerService.getUUID(request, response);
@@ -86,12 +87,12 @@ public class ClassCourseController {
         }
     }
 
-    @PostMapping(value = ClassCourseController.TIMETABLEPATH + "/upload")
+    @PostMapping(value = ClassCourseController.TIMETABLE_PATH + "/upload")
     public String timeTableUpload(HttpServletResponse response, HttpServletRequest request, @RequestParam("file_classes") MultipartFile file_classes, @RequestParam("file_classrooms") MultipartFile file_classrooms, RedirectAttributes attributes, Model model) {
         // check if file is empty
         if (file_classes.isEmpty() || file_classrooms.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:/" + ClassCourseController.TIMETABLEPATH;
+            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
         }
 
         // normalize the file path
@@ -117,7 +118,7 @@ public class ClassCourseController {
             attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + file_classes.getOriginalFilename() + "and" + file_classrooms.getOriginalFilename() + '!');
             e.printStackTrace();
             //model.addAttribute("timetable", ClassCourseLoaderService.CLASS_COURSES);
-            return "redirect:/" + ClassCourseController.TIMETABLEPATH;
+            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
         }
 
 

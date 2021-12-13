@@ -16,10 +16,10 @@ import java.util.UUID;
 @Controller
 public class ClassroomController {
 
-    public static final String CLASSROOMPATH = "/classrooms";
+    public static final String CLASSROOM_PATH = "/classrooms";
 
     //region classrooms
-    @GetMapping(value = CLASSROOMPATH)
+    @GetMapping(value = CLASSROOM_PATH)
     public String fetchAllClassRooms(HttpServletResponse response, HttpServletRequest request, Model model) {
 
         UUID uuid = CookieHandlerService.getUUID(request, response);

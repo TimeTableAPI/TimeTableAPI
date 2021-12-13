@@ -16,17 +16,17 @@ import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 @Controller
 public class FormController {
 
-    public static final String FORMPATH = "/form";
+    public static final String FORM_PATH = "/form";
 
     //region form
-    @GetMapping(value = FORMPATH)
+    @GetMapping(value = FORM_PATH)
     public String getForm(Model model) {
         FormResponse formResponse = new FormResponse();
         model.addAttribute("response", formResponse);
         return "form";
     }
 
-    @PostMapping(value = FORMPATH)
+    @PostMapping(value = FORM_PATH)
     public String submitForm(@ModelAttribute(name = "response") FormResponse formResponse, Model model) {
         String classCourse = formResponse.getClassCourse();
         String classRoom = formResponse.getClassRoom();
@@ -35,7 +35,7 @@ public class FormController {
         return "form";
     }
 
-    @PostMapping(value = FORMPATH + "/upload")
+    @PostMapping(value = FORM_PATH + "/upload")
     public String submitFileForm(@RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) {
         // check if file is empty
         if (file.isEmpty()) {
