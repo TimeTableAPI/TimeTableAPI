@@ -3,6 +3,11 @@ package pt.iscte.asd.projectn3.group11.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pt.iscte.asd.projectn3.group11.services.CookiesHandlerService;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class IndexController {
@@ -15,7 +20,7 @@ public class IndexController {
      * @return "start"
      */
     @RequestMapping("/")
-    public String index(Model model) {
+    public String index(HttpServletResponse response, Model model) {
         model.addAttribute("teamMembers", new String[]{"Afonso Costa Vale", "João ALmeida", "Saroj Duwadi"});
         return "index";
     }
