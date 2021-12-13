@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.controller;
+package pt.iscte.asd.projectn3.group11.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.services.CookiesHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
-import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;

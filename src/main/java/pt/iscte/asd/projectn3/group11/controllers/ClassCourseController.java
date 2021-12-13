@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.controller;
+package pt.iscte.asd.projectn3.group11.controllers;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
