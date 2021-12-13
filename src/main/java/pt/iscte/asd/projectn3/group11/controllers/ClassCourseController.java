@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 import pt.iscte.asd.projectn3.group11.Context;
-import pt.iscte.asd.projectn3.group11.services.CookiesHandlerService;
+import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
@@ -39,7 +39,7 @@ public class ClassCourseController {
     @GetMapping(value = ClassCourseController.TIMETABLEPATH)
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
 
-        UUID uuid = CookiesHandlerService.getUUID(request, response);
+        UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
             Context context = SessionsService.getContext(uuid);
@@ -52,7 +52,7 @@ public class ClassCourseController {
     @GetMapping(value = ClassCourseController.TIMETABLEPATH + "/download")
     public ResponseEntity<Resource> downloadTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
 
-        UUID uuid = CookiesHandlerService.getUUID(request, response);
+        UUID uuid = CookieHandlerService.getUUID(request, response);
         if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
 
         Context context = SessionsService.getContext(uuid);
@@ -106,7 +106,7 @@ public class ClassCourseController {
             Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
             context.computeSolutionWithAlgorithm();
 
-            UUID uuid = CookiesHandlerService.getUUID(request, response);
+            UUID uuid = CookieHandlerService.getUUID(request, response);
             SessionsService.putSession(uuid, context);
 
             model.addAttribute("timetable", loadedClassCourses);

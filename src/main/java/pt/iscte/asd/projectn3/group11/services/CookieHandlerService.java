@@ -5,14 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-public class CookiesHandlerService {
+public class CookieHandlerService {
 
     private static final String ID_NAME = "id";
 
     public static UUID getUUID(HttpServletRequest request, HttpServletResponse response)
     {
-        Cookie cookie = CookiesHandlerService.getIdCookie(request);
-        if(cookie == null || cookie.getValue() == null) cookie = CookiesHandlerService.addIdCookie(response);
+        Cookie cookie = CookieHandlerService.getIdCookie(request);
+        if(cookie == null || cookie.getValue() == null) cookie = CookieHandlerService.addIdCookie(response);
         return UUID.fromString(cookie.getValue());
     }
 
