@@ -9,14 +9,15 @@ import java.io.IOException;
 @RestController
 public class FileUploadController {
 
+    //region PATH_CONSTANTS
     public static final String FILE_UPLOAD_PATH = "/uploadrest";
+    //endregion
 
+    //region FILE_UPLOAD
     @PostMapping(value = FILE_UPLOAD_PATH)
     public void uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         FileUploadService.uploadFile(file);
-
-
     }
-
+    //endregion
 
 }
