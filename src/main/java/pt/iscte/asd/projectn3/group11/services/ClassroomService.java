@@ -150,12 +150,32 @@ public class ClassroomService {
 	//region ORGANIZER
 
 	/**
-	 *
-	 * */
-	public static  TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(
-			List<ClassCourse> classCourses,
-			TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap
-	) {
+	 * <p>Organizes a List of ClassCourses into a TreeMap organized by Date which is then organized by ClassCourseStudentGroups </p>
+	 * @param classCourses List<ClassCourse>
+	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
+	 */
+	public static  TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizeClassCourseByClassStudents(List<ClassCourse> classCourses) {
+		TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
+		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
+
+	    for (ClassCourse classCourse : classCourses) {
+		    classCourseMap.computeIfAbsent(classCourse.getDate(), k -> new HashMap<>());
+
+				for (String s :	classCourse.getClassesOfCourse()) {
+					classCourseMap.get(classCourse.getDate()).computeIfAbsent(s, k -> new HashSet<>());
+					classCourseMap.get(classCourse.getDate()).get(s).add(classCourse);
+				}
+			}
+
+	    return classCourseMap;
+	}
+
+	/**
+	 * <p>Organizes a List of ClassCourses into a TreeMap organized by Date which is then organized by ClassCourse </p>
+	 * @param classCourses List<ClassCourse>
+	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
+	 */
+	public static  TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(List<ClassCourse> classCourses) {
 		TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
 		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
 
@@ -174,14 +194,15 @@ public class ClassroomService {
 			    classCourseMap.get(classCourse.getDate()).computeIfAbsent(classCourse, k -> new HashSet<>());
 				classCourseMap.get(classCourse.getDate()).get(classCourse).add(classCourse);
 		    }
-
 	    }
 	    return classCourseMap;
 	}
 
 	/**
-	 *
-	 * */
+	 * <p>Organizes a List of ClassCourses into a TreeMap organized by Date which is then organized by TimeShift </p>
+	 * @param classCourses List<ClassCourse>
+	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>
+	 */
 	public static  TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizeClassCourseByDate(List<ClassCourse> classCourses) {
 	    TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
 	    for (ClassCourse classCourse : classCourses) {
@@ -193,9 +214,13 @@ public class ClassroomService {
 	}
 
 	/**
-	 *
-	 *
-	 * */
+	 * <p>Creates a framework for organizing Classrooms based on a List of ClassCourses </p>
+	 * <p> The framwework is a TreeMap organized by Date wihch is then organized by TimeShift </p>
+	 * <p>
+	 * @param classCoursedateMap TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>
+	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>>
+	 * </p>
+	 */
 	public static TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> organizeClassroomByDate(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap) {
 	    TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
 
