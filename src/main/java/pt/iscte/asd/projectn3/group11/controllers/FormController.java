@@ -22,13 +22,27 @@ public class FormController {
     //endregion
 
     //region FORM
+
+    /**
+     * Gets the form
+     * @param model model
+     * @return html
+     */
     @GetMapping(value = FORM_PATH)
     public String getForm(Model model) {
         FormResponse formResponse = new FormResponse();
         model.addAttribute("response", formResponse);
         return "form";
     }
+    //endregion
 
+    //region FORM_UPLOAD
+    /**
+     * Submits form
+     * @param formResponse form response
+     * @param model model
+     * @return html
+     */
     @PostMapping(value = FORM_PATH)
     public String submitForm(@ModelAttribute(name = "response") FormResponse formResponse, Model model) {
         String classCourse = formResponse.getClassCourse();
@@ -37,9 +51,14 @@ public class FormController {
         model.addAttribute("classRoom", classRoom);
         return "form";
     }
-    //endregion
 
-    //region FORM_UPLOAD
+    /**
+     * Submits file form
+     * @param file file
+     * @param attributes attributes
+     * @param model model
+     * @return html
+     */
     @PostMapping(value = FORM_PATH + "/upload")
     public String submitFileForm(@RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) {
         // check if file is empty
