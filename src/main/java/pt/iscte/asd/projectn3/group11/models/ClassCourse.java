@@ -3,7 +3,8 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import java.util.LinkedList;
 import java.util.List;
-//TODO doc ClassCourse
+
+
 public class ClassCourse {
 
     public static final String[] HEADER = {
@@ -292,13 +293,17 @@ public class ClassCourse {
 
     //region SETTERS
 
+    /**
+     * Sets the classroom.
+     * @param classroom classroom to set
+     */
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
     }
 
     //endregion
 
-    //region TOSTRINGS
+    //region TO_STRINGS
 
     @Override
     public final String toString() {
@@ -321,7 +326,11 @@ public class ClassCourse {
                 '}';
     }
 
-    public final String toCSVString() {
+    /**
+     * Transforms Class course to csv file entry.
+     * @return string of csv file entry.
+     */
+    public final String toCSVEntry() {
         return "\""+String.join(", ",courses) +"\""+
                 ",\"" + String.join(", " , units) +"\""+
                 "," + shift + "" +
