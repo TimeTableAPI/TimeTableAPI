@@ -142,7 +142,7 @@ public class ClassCourseLoaderService {
             try (FileWriter writer = new FileWriter(myObj)) {
                 writer.write(String.join(",", ClassCourse.HEADER));
                 for (ClassCourse classCourse : classCourses) {
-                    writer.write(classCourse.toCSVString());
+                    writer.write(classCourse.toCSVEntry());
                     writer.write("\n");
                 }
 
