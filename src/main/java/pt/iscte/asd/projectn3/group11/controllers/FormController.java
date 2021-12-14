@@ -13,6 +13,7 @@ import java.io.IOException;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
+@Deprecated
 @Controller
 public class FormController {
 
@@ -44,7 +45,7 @@ public class FormController {
         // check if file is empty
         if (file.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:/form";
+            return "redirect:" + FORM_PATH;
         }
 
         // normalize the file path
@@ -56,7 +57,7 @@ public class FormController {
         // return success response
         attributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + '!');
 
-        return "redirect:/form";
+        return "redirect:" + FORM_PATH;
     }
     //endregion
 
