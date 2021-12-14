@@ -15,25 +15,35 @@ public class Date implements Comparable {
 
     public Date(String date)
     {
+        int year1;
+        int month1;
+        int day1;
         if(date.isEmpty())
         {
-            this.day = NOTHING;
-            this.month = NOTHING;
-            this.year = NOTHING;
-            return;
-        }
+            day1 = NOTHING;
+            month1 = NOTHING;
+            year1 = NOTHING;
 
-        try
-        {
-            this.day = Integer.parseInt(date.split("-")[0]);
-            this.month = Integer.parseInt(date.split("-")[1]);
-            this.year = Integer.parseInt(date.split("-")[2]);
-        }
-        catch (Exception e)
-        {
-            throw new IllegalArgumentException("DATE_IN_WRONG_FORMAT");
-        }
+        }else {
 
+            try {
+                day1 = Integer.parseInt(date.split("-")[0]);
+                month1 = Integer.parseInt(date.split("-")[1]);
+                year1 = Integer.parseInt(date.split("-")[2]);
+            } catch (Exception e) {
+                try {
+                    day1 = Integer.parseInt(date.split("/")[0]);
+                    month1 = Integer.parseInt(date.split("/")[1]);
+                    year1 = Integer.parseInt(date.split("/")[2]);
+                } catch (Exception e2) {
+                    throw new IllegalArgumentException("DATE_IN_WRONG_FORMAT");
+
+                }
+            }
+        }
+        this.day = day1;
+        this.month = month1;
+        this.year = year1;
     }
 
     public int getDay() {

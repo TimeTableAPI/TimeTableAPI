@@ -3,6 +3,7 @@ package pt.iscte.asd.projectn3.group11.services.loaders;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
+import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import org.springframework.web.multipart.MultipartFile;
@@ -112,6 +113,33 @@ public class ClassCourseLoaderService {
                 TimeShift begginingTime = TimeShift.getById(i);
                 TimeShift endTime = TimeShift.getById(i+1);
 
+                final List<String> realCharacteristicsList = Arrays.asList((realCharacteristics.split(", ")));
+                LinkedList<Boolean> classroomCharacteristics = new LinkedList<Boolean>();
+                for(String s : Classroom.CHARACTERISTICS_LIST){
+                    classroomCharacteristics.add(realCharacteristicsList.contains(s));
+                }
+
+               final String[] classroomStringSplit = classroom.split(",");
+               Classroom classroomBuild;
+               if(classroomStringSplit.length>1) {
+                   classroomBuild = new Classroom.Builder()
+                           .building(classroomStringSplit[0])
+                           .classroomName(classroomStringSplit[1])
+                           .normalCapacity(capacity)
+                           .examCapacity(capacity)
+                           .numberCharacteristics(realCharacteristicsList.size())
+                           .characteristics(classroomCharacteristics)
+                           .build();
+               }else{
+                   classroomBuild = new Classroom.Builder()
+                           .classroomName(classroomStringSplit[0])
+                           .normalCapacity(capacity)
+                           .examCapacity(capacity)
+                           .numberCharacteristics(realCharacteristicsList.size())
+                           .characteristics(classroomCharacteristics)
+                           .build();
+               }
+
                 ClassCourse aclassCourse = new ClassCourse.Builder().
                         courses(Arrays.asList(course.split(", "))).
                         units(Arrays.asList(unit.split(", "))).
@@ -126,7 +154,10 @@ public class ClassCourseLoaderService {
                         date(date).
                         askedCharacteristics(Arrays.asList((askedCharacteristics).split(","))).
                         capacity(capacity).
-                        realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
+                        realCharacteristics(realCharacteristicsList).
+                        classroom(
+                                classroomBuild
+                        ).
                         build();
                 System.out.println(aclassCourse);
                 classCourses.add(aclassCourse);

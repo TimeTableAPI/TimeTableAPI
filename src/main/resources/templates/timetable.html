@@ -27,6 +27,11 @@
         Request Timetabling
     </button>
 </a>
+<a th:href="@{/timetable/download}">
+    <button>
+        Download Timetable
+    </button>
+</a>
 <div id="requestSection" style="display:none">
 
     <br>
@@ -46,6 +51,7 @@
 </div>
 
 <div id="timetable_tabulator"></div>
+<div id="timetable_statistics_tabulator"></div>
 <script th:inline="javascript">
 /*<![CDATA[*/
     var timetablejs = /*[[${timetable}]]*/ null;
@@ -56,29 +62,29 @@
             addRowPos:"top",          //when adding a new row, add it to the top of the table
             history:true,             //allow undo and redo actions on the table
             pagination:"local",       //paginate the data
-            paginationSize:20,         //allow 7 rows per page of data
+            paginationSize:20,         //allow 20 rows per page of data
             movableColumns:true,      //allow column order to be changed
             resizableRows:true,       //allow row order to be changed
             initialSort:[             //set the initial sort order of the data
-                {column:"Building", dir:"asc"},
+                {column:"courses", dir:"asc"},
             ],
             //autoColumns:true,
             columns:[
-                {title: "Courses", field: "courses", sorter: "string", headerFilter: "input",},
-                {title: "Units", field: "units", sorter: "string", headerFilter: "input",},
-                {title: "Shift", field: "shift", sorter: "string", headerFilter: "input",},
-                {title: "NumberOfStudentsInClass", field: "numberOfStudentsInClass", sorter: "string", headerFilter: "input",},
-                {title: "ShiftsWithFreeSpots", field: "shiftsWithFreeSpots", sorter: "string", headerFilter: "input",},
-                {title: "ShiftsWithMoreThanTheCapacity", field: "shiftsWithMoreThanTheCapacity", sorter: "string", headerFilter: "input",},
-                {title: "Weekday", field: "weekday", sorter: "string", headerFilter: "input",},
-                {title: "BeginningHour", field: "beginningHour", sorter: "string", headerFilter: "input",},
-                {title: "EndHour", field: "endHour", sorter: "string", headerFilter: "input",},
-                {title: "Date", field: "date", sorter: "string", headerFilter: "input",},
-                {title: "AskedCharacteristics", field: "askedCharacteristics", sorter: "string",headerFilter: "input",},
-                {title: "Classroom", field: "classroom", sorter: "int", headerFilter: "input",},
-                {title: "Capacity", field: "capacity", sorter: "int", headerFilter: "input",},
-                {title: "RealCharacteristics", field: "realCharacteristics", sorter: "int", headerFilter: "input",},
-                {title: "ClassesOfCourse", field: "classesOfCourse", sorter:"string",headerFilter: "input"},
+                {title: "Courses",                       field: "courses",                      sorter: "string",  headerFilter: "input",   },
+                {title: "Units",                         field: "units",                        sorter: "string",  headerFilter: "input",   },
+                {title: "Shift",                         field: "shift",                        sorter: "string",  headerFilter: "input",   },
+                {title: "ClassesOfCourse",               field: "classesOfCourse",              sorter: "string",  headerFilter: "input",   },
+                {title: "NumberOfStudentsInClass",       field: "numberOfStudentsInClass",      sorter: "string",  headerFilter: "input",   },
+                {title: "ShiftsWithFreeSpots",           field: "shiftsWithFreeSpots",          sorter: "string",  headerFilter: "input",   },
+                {title: "ShiftsWithMoreThanTheCapacity", field: "shiftsWithMoreThanTheCapacity",sorter: "string",  headerFilter: "input",   },
+                {title: "Weekday",                       field: "weekday",                      sorter: "string",  headerFilter: "input",   },
+                {title: "BeginningHour",                 field: "beginningHour",                sorter: "string",  headerFilter: "input",   },
+                {title: "EndHour",                       field: "endHour",                      sorter: "string",  headerFilter: "input",   },
+                {title: "Date",                          field: "date",                         sorter: "string",  headerFilter: "input",   },
+                {title: "AskedCharacteristics",          field: "askedCharacteristics",         sorter: "string",  headerFilter: "input",   },
+                {title: "Classroom",                     field: "classroom",                    sorter: "number",  headerFilter: "input",   },
+                {title: "Capacity",                      field: "capacity",                     sorter: "number",  headerFilter: "input",   },
+                {title: "RealCharacteristics",           field: "realCharacteristics",          sorter: "number",  headerFilter: "input",   },
 
                 ]
             });
@@ -87,49 +93,31 @@
 
 
 </script>
-<a th:href="@{/timetable/download}">
-    <button>
-        Download Timetable
-    </button>
-</a>
-<!--
-<table>
-    <tr>
-        <th>courses</th>
-        <th>units</th>
-        <th>shift</th>
-        <th>numberOfStudentsInClass</th>
-        <th>shiftsWithFreeSpots</th>
-        <th>shiftsWithMoreThanTheCapacity</th>
-        <th>weekday</th>
-        <th>beginningHour</th>
-        <th>endHour</th>
-        <th>monthDay</th>
-        <th>askedCharacteristics</th>
-        <th>classroom</th>
-        <th>capacity</th>
-        <th>realCharacteristics</th>
-        <th>classesOfCourse</th>
-    </tr>
-    <tr th:each="classCourse : ${timetable}">
-        <td th:text="${classCourse.courses}">courses</td>
-        <td th:text="${classCourse.units}">units</td>
-        <td th:text="${classCourse.shift}">shift</td>
-        <td th:text="${classCourse.numberOfStudentsInClass}">numberOfStudentsInClass</td>
-        <td th:text="${classCourse.shiftsWithFreeSpots  }">shiftsWithFreeSpots</td>
-        <td th:text="${classCourse.shiftsWithMoreThanTheCapacity}">shiftsWithMoreThanTheCapacity</td>
-        <td th:text="${classCourse.weekday}">weekday</td>
-        <td th:text="${classCourse.beginningHour}">beginningHour</td>
-        <td th:text="${classCourse.endHour}">endHour</td>
-        <td th:text="${classCourse.monthDay}">monthDay</td>
-        <td th:text="${classCourse.askedCharacteristics}">askedCharacteristics</td>
-        <td th:text="${classCourse.classroom}">classroom</td>
-        <td th:text="${classCourse.capacity}">capacity</td>
-        <td th:text="${classCourse.realCharacteristics}">realCharacteristics</td>
-        <td th:text="${classCourse.classesOfCourse}">classesOfCourse</td>
-    </tr>
-</table>
--->
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var timetablestatsjs = /*[[${timetablestats}]]*/ null;
+/*]]>*/
+    var table = new Tabulator("#timetable_statistics_tabulator", {
+            data: timetablestatsjs,
+            tooltips:true,            //show tool tips on cells
+            addRowPos:"top",          //when adding a new row, add it to the top of the table
+            history:true,             //allow undo and redo actions on the table
+            pagination:"local",       //paginate the data
+            paginationSize:20,         //allow 20 rows per page of data
+            movableColumns:true,      //allow column order to be changed
+            resizableRows:true,       //allow row order to be changed
+            initialSort:[             //set the initial sort order of the data
+                {column:"result", dir:"desc"},
+            ],
+            //autoColumns:true,
+            columns:[
+                {title: "Metric", field: "metricName", sorter: "string", headerFilter: "input",},
+                {title: "Result", field: "result", sorter: "number", headerFilter: "input",},
+                ]
+            });
+</script>
+
+
 
 </body>
 </html>
