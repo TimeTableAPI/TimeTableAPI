@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 
-@ComponentScan({"pt.iscte.asd.projectn3.group11.controller"})
+@ComponentScan({"pt.iscte.asd.projectn3.group11.controllers"})
 @SpringBootApplication
 public class Application {
 
