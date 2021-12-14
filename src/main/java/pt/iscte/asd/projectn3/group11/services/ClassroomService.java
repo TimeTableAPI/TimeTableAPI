@@ -15,13 +15,14 @@ import java.util.*;
 public class ClassroomService {
 
 	public static final int INFINITY = 999999999;
-
+//region GETTERS
 	/**
 	 * Getter for specified capacity
 	 *
 	 * @param capacity integer
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 */
+	@Deprecated
 	public static List<Classroom> getWithCapacity(List<Classroom> classrooms, int capacity) {
 		final LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x : classrooms) {
@@ -38,6 +39,7 @@ public class ClassroomService {
 	 * @param capacity integer
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 */
+	@Deprecated
 	public static List<Classroom> getWithExamCapacity(List<Classroom> classrooms, int capacity) {
 		final LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x : classrooms) {
@@ -54,6 +56,7 @@ public class ClassroomService {
 	 * @param characteristics List<String>
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 */
+	@Deprecated
 	public static List<Classroom> getWithCharacteristics(List<Classroom> classrooms, List<String> characteristics) {
 		final LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x : classrooms) {
@@ -70,6 +73,7 @@ public class ClassroomService {
 	 * @param characteristic String
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 */
+	@Deprecated
 	public static List<Classroom> getWithCharacteristic(List<Classroom> classrooms, String characteristic) {
 		final LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x : classrooms) {
@@ -86,6 +90,7 @@ public class ClassroomService {
 	 * @param building String
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 */
+	@Deprecated
 	public static List<Classroom> getInBuilding(List<Classroom> classrooms, String building) {
 		final LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x : classrooms) {
@@ -102,6 +107,7 @@ public class ClassroomService {
 	 * @param buildings List<String>
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 */
+	@Deprecated
 	public static List<Classroom> getInAnyBuilding(List<Classroom> classrooms, List<String> buildings) {
 		final LinkedList<Classroom> result = new LinkedList<>();
 		for (Classroom x : classrooms) {
@@ -112,6 +118,7 @@ public class ClassroomService {
 		return result;
 	}
 
+	@Deprecated
 	public static List<Classroom> get(List<Classroom> classrooms, RequestInformation requestInformation, LogicOperation logicOp) {
 		List<List<Classroom>> requestClassRooms = new LinkedList<>();
 		requestClassRooms.add(ClassroomService.getWithCapacity(classrooms, requestInformation.capacity));
@@ -142,19 +149,41 @@ public class ClassroomService {
 		return finalrequestClassRooms;
 
 	}
+//endregion
 
-	public static ClassCourse allocate(ClassCourse classCourse, List<Classroom> classrooms, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
+	public static void allocate(ClassCourse classCourse, List<Classroom> classrooms, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
 		Date date = classCourse.getDate();
 		TimeShift timeShift = classCourse.getBeginningHour();
-		for( Classroom classroom: classrooms){
-			if(checkClassRoomAvailability(classroom,date,timeShift,classRoomAvailabilityMap) &&
-					checkClassRoomFeatures(classroom, classCourse,percentageCharacteristicsNeeded)
-			){
-				classCourse.setClassroom(classroom);
+		List <Classroom> availableClassrooms = new LinkedList<>();
+		classRoomAvailabilityMap.get(date).get(timeShift).stream().map(availableClassrooms::add);
+
+
+		Iterator<Classroom> iterator = availableClassrooms.iterator();
+		boolean foundClassroom = false;
+		while (iterator.hasNext() && !foundClassroom) {
+			Classroom availableClassroom = iterator.next();
+			if (checkClassRoomFeatures(availableClassroom, classCourse, percentageCharacteristicsNeeded)) {
+				classCourse.setClassroom(availableClassroom);
+				foundClassroom = true;
 			}
 		}
 
-		return classCourse;
+		iterator = availableClassrooms.iterator();
+		if (!foundClassroom){
+			while (iterator.hasNext() && !foundClassroom) {
+				Classroom availableClassroom = iterator.next();
+				if (checkClassRoomCapacity(availableClassroom, classCourse)) {
+					classCourse.setClassroom(availableClassroom);
+					availableClassrooms.remove(availableClassroom);
+					foundClassroom = true;
+				}
+			}
+		}
+
+	}
+
+	private static boolean checkClassRoomCapacity(Classroom availableClassroom, ClassCourse classCourse) {
+		return availableClassroom.getNormalCapacity() >= classCourse.getNumberOfStudentsInClass();
 	}
 
 	private static boolean checkClassRoomFeatures(Classroom classRoom, ClassCourse classCourse, Float percentageCharacteristicsNeeded) {
@@ -177,8 +206,6 @@ public class ClassroomService {
 		return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
 	}
 
-	//endregion
-	//region OPERATIONS
 	//region Request
 	public static final class RequestInformation {
 		final int capacity;
