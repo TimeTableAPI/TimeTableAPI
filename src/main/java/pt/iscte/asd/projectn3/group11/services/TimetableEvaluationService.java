@@ -7,7 +7,6 @@ import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.*;
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TimetableEvaluationService {
 
