@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * <p>Metric to evaluate the quantity of classes with assigned Classrooms.</p>
- *
  */
 public class AllocationMetric implements MetricCalculator{
 

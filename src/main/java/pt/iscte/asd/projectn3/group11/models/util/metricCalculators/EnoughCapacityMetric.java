@@ -24,7 +24,7 @@ public class EnoughCapacityMetric implements MetricCalculator {
 		float totalClassCoursesWithEnoughCapacity = 0f;
 		for(ClassCourse classCourse : classCourseList){
 			if(classCourse.getClassroom() != null){
-				if(classCourse.getNumberOfStudentsInClass() > classCourse.getCapacity()){
+				if(classCourse.getNumberOfStudentsInClass() <= classCourse.getCapacity()){
 					totalClassCoursesWithEnoughCapacity++;
 				}
 				totalClassCoursesWithClassroom ++;

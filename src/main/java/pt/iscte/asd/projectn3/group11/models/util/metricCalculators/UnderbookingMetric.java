@@ -33,13 +33,14 @@ public class UnderbookingMetric implements MetricCalculator{
 				classRoomDateMap.get(date.getKey()).get(hour.getKey()).addAll(classroomsList);
 
 				for (ClassCourse classCourse: hour.getValue()){
-					classRoomDateMap.get(date.getKey()).get(hour.getKey()).remove(classCourse.getClassroom());
+					final LinkedList<Classroom> classrooms = classRoomDateMap.get(date.getKey()).get(hour.getKey());
+					classrooms.remove(classCourse.getClassroom());
 				}
 			}
 		}
 		int freecounter = 0;
-		for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> date : organizedclassCourseList.entrySet()) {
-			for (Map.Entry<TimeShift, HashSet<ClassCourse>> hour : date.getValue().entrySet()) {
+		for (Map.Entry<Date, EnumMap<TimeShift, LinkedList<Classroom>>> date : classRoomDateMap.entrySet()) {
+			for (Map.Entry<TimeShift, LinkedList<Classroom>> hour : date.getValue().entrySet()) {
 				freecounter+= hour.getValue().size();
 			}
 		}

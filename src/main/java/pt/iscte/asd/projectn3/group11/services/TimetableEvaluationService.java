@@ -24,7 +24,7 @@ public class TimetableEvaluationService {
 			new StudentBuildingMovementsMetric()
 	));
 
-	public static List<MetricResult> evaluateTimetable(List<ClassCourse> classCourseList, LinkedList<Classroom> classroomsList){
+	public static List<MetricResult> evaluateTimetable(List<ClassCourse> classCourseList, List<Classroom> classroomsList){
 		List<MetricResult> results = new LinkedList<>();
 		Queue<MetricResult> globalQueue = new ConcurrentLinkedQueue<MetricResult>();
 		List<Thread> threadList = new LinkedList<>();

@@ -381,7 +381,7 @@ public class ClassCourse {
                 "," + endHour +
                 "," + date +
                 ",\"" + String.join(", ",askedCharacteristics) +"\""+
-                "," + ((classroom != null)?  classroom.getClassroomName(): "") +
+                "," + ((classroom != null)?  "\""+classroom.getBuilding()+","+classroom.getClassroomName()+"\"": "") +
                 "," + capacity +
                 ",\"" + String.join(", ",realCharacteristics) +"\""
                 ;
