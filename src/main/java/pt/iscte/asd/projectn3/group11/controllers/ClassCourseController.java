@@ -149,20 +149,11 @@ public class ClassCourseController {
             UUID uuid = CookieHandlerService.getUUID(request, response);
             SessionsService.putSession(uuid, context);
 
-            model.addAttribute("timetable", loadedClassCourses);
-
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
-            final List<MetricResult> metricResultList = new LinkedList<>();
-            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
-                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
-            }
-            model.addAttribute("timetablestats",metricResultList);
-
-            return "timetable";
+            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         } catch (IOException e) {
             attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
             e.printStackTrace();
-            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
+            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
     }
 
