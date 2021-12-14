@@ -90,32 +90,6 @@ public class Classroom {
 
     //region CONSTRUCTORS
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Classroom classroom = (Classroom) o;
-        return getNormalCapacity() == classroom.getNormalCapacity() &&
-                getExamCapacity() == classroom.getExamCapacity() &&
-                getNumberCharacteristics() == classroom.getNumberCharacteristics() &&
-                Objects.equals(getCharacteristics(), classroom.getCharacteristics()) &&
-                Objects.equals(getBuilding(), classroom.getBuilding()) &&
-                Objects.equals(getClassroomName(), classroom.getClassroomName()
-                );
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                getCharacteristics(),
-                getBuilding(),
-                getClassroomName(),
-                getNormalCapacity(),
-                getExamCapacity(),
-                getNumberCharacteristics()
-        );
-    }
-
     private Classroom(Builder builder) {
         this.characteristics = builder.characteristics;
         this.building = builder.building;
@@ -265,6 +239,7 @@ public class Classroom {
         }
         return characteristisStringList;
     }
+
     @Override
     public final String toString() {
         return "ClassRoom{" +
@@ -277,6 +252,36 @@ public class Classroom {
                 '}';
     }
     //endregion
+
+    //region EQUALS_HASH
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Classroom classroom = (Classroom) o;
+        return getNormalCapacity() == classroom.getNormalCapacity() &&
+                getExamCapacity() == classroom.getExamCapacity() &&
+                getNumberCharacteristics() == classroom.getNumberCharacteristics() &&
+                Objects.equals(getCharacteristics(), classroom.getCharacteristics()) &&
+                Objects.equals(getBuilding(), classroom.getBuilding()) &&
+                Objects.equals(getClassroomName(), classroom.getClassroomName()
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getCharacteristics(),
+                getBuilding(),
+                getClassroomName(),
+                getNormalCapacity(),
+                getExamCapacity(),
+                getNumberCharacteristics()
+        );
+    }
+    //endregion
+
+
 
     public static class Builder {
         private LinkedList<Boolean> characteristics;

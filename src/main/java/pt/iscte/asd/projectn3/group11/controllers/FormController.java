@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.controller;
+package pt.iscte.asd.projectn3.group11.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,34 +13,58 @@ import java.io.IOException;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
+@Deprecated
 @Controller
 public class FormController {
 
-    public static final String FORMPATH = "/form";
+    //region PATH_CONSTANTS
+    public static final String FORM_PATH = "/form";
+    //endregion
 
-    //region form
-    @GetMapping(value = FORMPATH)
+    //region FORM
+
+    /**
+     * Gets the form
+     * @param model model
+     * @return html
+     */
+    @GetMapping(value = FORM_PATH)
     public String getForm(Model model) {
         FormResponse formResponse = new FormResponse();
         model.addAttribute("response", formResponse);
         return "form";
     }
+    //endregion
 
-    @PostMapping(value = FORMPATH)
+    //region FORM_UPLOAD
+    /**
+     * Submits form
+     * @param formResponse form response
+     * @param model model
+     * @return html
+     */
+    @PostMapping(value = FORM_PATH)
     public String submitForm(@ModelAttribute(name = "response") FormResponse formResponse, Model model) {
         String classCourse = formResponse.getClassCourse();
-        String classRoom = formResponse.getClassRoom();
+        String classRoom = formResponse.getClassroom();
         model.addAttribute("classCourse", classCourse);
         model.addAttribute("classRoom", classRoom);
         return "form";
     }
 
-    @PostMapping(value = FORMPATH + "/upload")
+    /**
+     * Submits file form
+     * @param file file
+     * @param attributes attributes
+     * @param model model
+     * @return html
+     */
+    @PostMapping(value = FORM_PATH + "/upload")
     public String submitFileForm(@RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) {
         // check if file is empty
         if (file.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:/form";
+            return "redirect:" + FORM_PATH;
         }
 
         // normalize the file path
@@ -52,8 +76,8 @@ public class FormController {
         // return success response
         attributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + '!');
 
-        return "redirect:/form";
+        return "redirect:" + FORM_PATH;
     }
-//endregion
+    //endregion
 
 }

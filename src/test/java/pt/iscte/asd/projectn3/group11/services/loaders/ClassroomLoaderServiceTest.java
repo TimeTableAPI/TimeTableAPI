@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.loaders;
+package pt.iscte.asd.projectn3.group11.services.loaders;
 
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ClassroomLoaderTest {
+public class ClassroomLoaderServiceTest {
     private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/test/resources/classRoomTest.csv";
     private static Classroom classroom;
     @org.junit.jupiter.api.BeforeEach
@@ -64,7 +64,7 @@ public class ClassroomLoaderTest {
     @org.junit.jupiter.api.Test
     void load()
     {
-        Classroom classRoomTest = ClassroomLoader.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
+        Classroom classRoomTest = ClassroomLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
         assertEquals(classRoomTest.getBuilding(), classroom.getBuilding());
         assertEquals(classRoomTest.getClassroomName(), classroom.getClassroomName());
         assertEquals(classRoomTest.getExamCapacity(), classroom.getExamCapacity());
