@@ -95,12 +95,25 @@ public class Classroom {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Classroom classroom = (Classroom) o;
-        return getNormalCapacity() == classroom.getNormalCapacity() && getExamCapacity() == classroom.getExamCapacity() && getNumberCharacteristics() == classroom.getNumberCharacteristics() && getCharacteristics().equals(classroom.getCharacteristics()) && getBuilding().equals(classroom.getBuilding()) && getClassroomName().equals(classroom.getClassroomName());
+        return getNormalCapacity() == classroom.getNormalCapacity() &&
+                getExamCapacity() == classroom.getExamCapacity() &&
+                getNumberCharacteristics() == classroom.getNumberCharacteristics() &&
+                Objects.equals(getCharacteristics(), classroom.getCharacteristics()) &&
+                Objects.equals(getBuilding(), classroom.getBuilding()) &&
+                Objects.equals(getClassroomName(), classroom.getClassroomName()
+                );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCharacteristics(), getBuilding(), getClassroomName(), getNormalCapacity(), getExamCapacity(), getNumberCharacteristics());
+        return Objects.hash(
+                getCharacteristics(),
+                getBuilding(),
+                getClassroomName(),
+                getNormalCapacity(),
+                getExamCapacity(),
+                getNumberCharacteristics()
+        );
     }
 
     private Classroom(Builder builder) {
