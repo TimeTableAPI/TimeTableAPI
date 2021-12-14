@@ -31,15 +31,7 @@ class TimetableEvaluationServiceTest {
 	{
 		LinkedList<Classroom> classroomsTestList = ClassroomLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
 		LinkedList<ClassCourse> classCoursesTestList = ClassCourseLoader.load(SAMPLE_CSV_FILE_CLASS_FILLED_PATH);
-		/*
-		metricResultList.add(new MetricResult(AllocationMetric.class.getSimpleName(),            1.0f));
-		metricResultList.add(new MetricResult(GoodCharacteristicsMetric.class.getSimpleName(),   0.266667f));
-		metricResultList.add(new MetricResult(EnoughCapacityMetric.class.getSimpleName(),        0.8f));
-		metricResultList.add(new MetricResult(RoomMovementsMetric.class.getSimpleName(),         1f));
-		metricResultList.add(new MetricResult(OverbookingMetric.class.getSimpleName(),           0f));
-		metricResultList.add(new MetricResult(UnderbookingMetric.class.getSimpleName(),          45f));
-		metricResultList.add(new MetricResult(StudentClassMovementsMetric.class.getSimpleName(), 1f));
-		*/
+
 		metricResultListTimetable = TimetableEvaluationService.evaluateTimetable(classCoursesTestList, classroomsTestList);
 		System.out.println(metricResultListTimetable);
 	}

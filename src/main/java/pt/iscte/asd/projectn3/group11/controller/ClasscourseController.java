@@ -16,13 +16,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.loaders.ClassCourseLoader;
 import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.models.util.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 
@@ -34,7 +38,12 @@ public class ClasscourseController {
     @GetMapping(value = ClasscourseController.TIMETABLEPATH)
     public String fetchTimeTable(Model model) {
         model.addAttribute("timetable", ClassCourseLoader.CLASS_COURSES);
-        model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(ClassCourseLoader.CLASS_COURSES, ClassroomLoader.CLASSROOMS));
+        final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(ClassCourseLoader.CLASS_COURSES, ClassroomLoader.CLASSROOMS);
+        final List<MetricResult> metricResultList = new LinkedList<>();
+        for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
+            metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
+        }
+        model.addAttribute("timetablestats",metricResultList);
         return "timetable";
     }
 
@@ -91,10 +100,13 @@ public class ClasscourseController {
             LinkedList<Classroom> loadedClassRooms = ClassroomLoader.load(file_classrooms, false);
             Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
             context.resolve();
-
-
+            final Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(loadedClassCourses, loadedClassRooms);
+            final List<MetricResult> metricResultList = new LinkedList<>();
+            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
+                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
+            }
             model.addAttribute("timetable", loadedClassCourses);
-            model.addAttribute("timetablestats", TimetableEvaluationService.evaluateTimetable(loadedClassCourses, loadedClassRooms ));
+            model.addAttribute("timetablestats", metricResultList);
 
             // return success response
             return "timetable";
