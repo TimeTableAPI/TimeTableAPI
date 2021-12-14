@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.loaders;
+package pt.iscte.asd.projectn3.group11.services.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -18,9 +18,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ClassCourseLoader {
-    //region LOADERS
-    public final static LinkedList<ClassCourse> CLASS_COURSES = new LinkedList<>();
+public class ClassCourseLoaderService {
 
     /**
      * Loads a Class csv file from given path.
@@ -29,20 +27,19 @@ public class ClassCourseLoader {
      * @return List of classrooms
      */
     public static final LinkedList<ClassCourse> load(final String path) {
+        LinkedList<ClassCourse> classCourses = new LinkedList<>();
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
 
-            extractClass(csvReader);
+            extract(csvReader, classCourses);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-        return CLASS_COURSES;
+        return classCourses;
     }
-
-    //endregion
 
     /**
      * Loads a Class csv file.
@@ -51,17 +48,17 @@ public class ClassCourseLoader {
      * @return List of classrooms
      */
     public static final LinkedList<ClassCourse> load(final File file) {
+        LinkedList<ClassCourse> classCourses = new LinkedList<>();
         try (
                 final Reader reader = new FileReader(file);
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
-            extractClass(csvReader);
+            extract(csvReader, classCourses);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
-            return CLASS_COURSES;
         }
-        return CLASS_COURSES;
+        return classCourses;
     }
 
     /**
@@ -81,11 +78,11 @@ public class ClassCourseLoader {
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(multipartFile.getBytes());
         fos.close();
-        ClassCourseLoader.load(file);
-        return CLASS_COURSES;
+        LinkedList<ClassCourse> classCourses = load(file);
+        return classCourses;
     }
 
-    private static void extractClass(CSVReader csvReader) throws IOException, CsvValidationException {
+    private static void extract(CSVReader csvReader, List<ClassCourse> classCourses) throws IOException, CsvValidationException {
         csvReader.readNext();
         String[] nextRecord;
 
@@ -163,26 +160,20 @@ public class ClassCourseLoader {
                         ).
                         build();
                 System.out.println(aclassCourse);
-                CLASS_COURSES.add(aclassCourse);
+                classCourses.add(aclassCourse);
             }
         }
     }
 
-    public static void clear() {
-        ClassCourseLoader.CLASS_COURSES.clear();
-    }
-    //endregion
-
-    //region Exporter
-    public static File export() throws IOException {
+    public static File export(List<ClassCourse> classCourses) throws IOException {
         try {
             Path temp = Files.createTempFile("tempExportedClasses", ".csv");
             File myObj = new File(temp.toUri());
             //if (myObj.createNewFile()) {
             try (FileWriter writer = new FileWriter(myObj)) {
                 writer.write(String.join(",", ClassCourse.HEADER));
-                for (ClassCourse classCourse : ClassCourseLoader.CLASS_COURSES) {
-                    writer.write(classCourse.toCSVString());
+                for (ClassCourse classCourse : classCourses) {
+                    writer.write(classCourse.toCSVEntry());
                     writer.write("\n");
                 }
 
@@ -199,5 +190,4 @@ public class ClassCourseLoader {
         }
     }
 
-//endregion
 }

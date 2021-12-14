@@ -23,25 +23,23 @@ public class Date implements Comparable {
             day1 = NOTHING;
             month1 = NOTHING;
             year1 = NOTHING;
-        }else{
-	        try
-	        {
-	            final String[] dateSplit = date.split("-");
-	            day1 = Integer.parseInt(dateSplit[0]);
-	            month1 = Integer.parseInt(dateSplit[1]);
-	            year1 = Integer.parseInt(dateSplit[2]);
-	        }
-	        catch (NumberFormatException e)
-	        {
-	            try {
-	                final String[] dateSplit = date.split("/");
-	                day1 = Integer.parseInt(dateSplit[0]);
-	                month1 = Integer.parseInt(dateSplit[1]);
-	                year1 = Integer.parseInt(dateSplit[2]);
-	            } catch (NumberFormatException ex) {
-	                throw new IllegalArgumentException("DATE_IN_WRONG_FORMAT");
-	            }
-	        }
+
+        }else {
+
+            try {
+                day1 = Integer.parseInt(date.split("-")[0]);
+                month1 = Integer.parseInt(date.split("-")[1]);
+                year1 = Integer.parseInt(date.split("-")[2]);
+            } catch (Exception e) {
+                try {
+                    day1 = Integer.parseInt(date.split("/")[0]);
+                    month1 = Integer.parseInt(date.split("/")[1]);
+                    year1 = Integer.parseInt(date.split("/")[2]);
+                } catch (Exception e2) {
+                    throw new IllegalArgumentException("DATE_IN_WRONG_FORMAT");
+
+                }
+            }
         }
         this.day = day1;
         this.month = month1;

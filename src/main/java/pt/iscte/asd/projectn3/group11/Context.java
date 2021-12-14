@@ -17,8 +17,16 @@ public class Context {
         this.algorithm = algorithm;
     }
 
-    public void resolve()
+    public void computeSolutionWithAlgorithm()
     {
         algorithm.execute(classCourses, classrooms);
+    }
+
+    public List<ClassCourse> getClassCourses() {
+        return classCourses;
+    }
+
+    public List<Classroom> getClassrooms() {
+        return classrooms;
     }
 }
