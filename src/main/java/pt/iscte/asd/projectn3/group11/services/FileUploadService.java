@@ -8,11 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+@Deprecated
 @Service
 public class FileUploadService {
 
-
-    public static final String UPLOADED_FILES_LOCATION = "/home/joao/Uni/Mestrado/ADS/Project/src/main/resources/uploadedFiles/";
+    public static final String UPLOADED_FILES_LOCATION = "./";
 
     public static void uploadFile(MultipartFile file) throws IOException {
         file.transferTo(new File(UPLOADED_FILES_LOCATION + file.getOriginalFilename()));
