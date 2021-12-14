@@ -150,7 +150,7 @@ public class ClassroomService {
 
 	}
 //endregion
-
+//region ALLOCATOR
 	public static void allocate(ClassCourse classCourse, List<Classroom> classrooms, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
 		Date date = classCourse.getDate();
 		TimeShift timeShift = classCourse.getBeginningHour();
@@ -205,6 +205,98 @@ public class ClassroomService {
 	private static boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
 		return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
 	}
+
+
+	//endregion
+
+	//region ORGANIZER
+
+	/**
+	 * <p>Organizes a List of ClassCourses into a TreeMap organized by Date which is then organized by ClassCourseStudentGroups </p>
+	 * @param classCourses List<ClassCourse>
+	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
+	 */
+	public static  TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizeClassCourseByClassStudents(List<ClassCourse> classCourses) {
+		TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
+		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
+
+	    for (ClassCourse classCourse : classCourses) {
+		    classCourseMap.computeIfAbsent(classCourse.getDate(), k -> new HashMap<>());
+
+				for (String s :	classCourse.getClassesOfCourse()) {
+					classCourseMap.get(classCourse.getDate()).computeIfAbsent(s, k -> new HashSet<>());
+					classCourseMap.get(classCourse.getDate()).get(s).add(classCourse);
+				}
+			}
+
+	    return classCourseMap;
+	}
+
+	/**
+	 * <p>Organizes a List of ClassCourses into a TreeMap organized by Date which is then organized by ClassCourse </p>
+	 * @param classCourses List<ClassCourse>
+	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
+	 */
+	public static  TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(List<ClassCourse> classCourses) {
+		TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
+		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
+
+	    for (ClassCourse classCourse : classCourses) {
+		    classCourseMap.computeIfAbsent(classCourse.getDate(), k -> new HashMap<>());
+
+			boolean foundClassInMap = false;
+			for(ClassCourse classCourseInMap : classCourseMap.get(classCourse.getDate()).keySet() ){
+				if(classCourseInMap.equals(classCourse)){
+					classCourseMap.get(classCourse.getDate()).get(classCourseInMap).add(classCourse);
+					foundClassInMap = true;
+					break;
+				}
+			}
+		    if(!foundClassInMap){
+			    classCourseMap.get(classCourse.getDate()).computeIfAbsent(classCourse, k -> new HashSet<>());
+				classCourseMap.get(classCourse.getDate()).get(classCourse).add(classCourse);
+		    }
+	    }
+	    return classCourseMap;
+	}
+
+	/**
+	 * <p>Organizes a List of ClassCourses into a TreeMap organized by Date which is then organized by TimeShift </p>
+	 * @param classCourses List<ClassCourse>
+	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>
+	 */
+	public static  TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizeClassCourseByDate(List<ClassCourse> classCourses) {
+	    TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
+	    for (ClassCourse classCourse : classCourses) {
+	        classCoursedateMap.computeIfAbsent(classCourse.getDate(), k -> new EnumMap<TimeShift, HashSet<ClassCourse>>(TimeShift.class));
+	        classCoursedateMap.get(classCourse.getDate()).computeIfAbsent(classCourse.getBeginningHour(), k -> new HashSet<ClassCourse>());
+	        classCoursedateMap.get(classCourse.getDate()).get(classCourse.getBeginningHour()).add(classCourse);
+	    }
+	    return classCoursedateMap;
+	}
+
+	/**
+	 * <p>Creates a framework for organizing Classrooms based on a List of ClassCourses </p>
+	 * <p> The framwework is a TreeMap organized by Date wihch is then organized by TimeShift </p>
+	 * <p>
+	 * @param classCoursedateMap TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>
+	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>>
+	 * </p>
+	 */
+	public static TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> organizeClassroomByDate(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap) {
+	    TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
+
+	    for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> date : classCoursedateMap.entrySet()) {
+	        for (Map.Entry<TimeShift, HashSet<ClassCourse>> hour : date.getValue().entrySet()) {
+	            classRoomDateMap.computeIfAbsent(date.getKey(), k -> new EnumMap<TimeShift, HashSet<Classroom>>(TimeShift.class));
+	            classRoomDateMap.get(date.getKey()).computeIfAbsent(hour.getKey(), k -> new HashSet<Classroom>());
+	        }
+	    }
+	    return classRoomDateMap;
+	}
+
+
+	//endregion
 
 	//region Request
 	public static final class RequestInformation {

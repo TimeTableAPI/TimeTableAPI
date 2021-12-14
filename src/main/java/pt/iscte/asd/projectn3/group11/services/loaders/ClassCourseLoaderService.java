@@ -1,8 +1,9 @@
-package pt.iscte.asd.projectn3.group11.loaders;
+package pt.iscte.asd.projectn3.group11.services.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
+import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,10 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
-public class ClassCourseLoader {
-    //region LOADERS
-    public final static LinkedList<ClassCourse> CLASS_COURSES = new LinkedList<>();
+public class ClassCourseLoaderService {
 
     /**
      * Loads a Class csv file from given path.
@@ -27,19 +27,19 @@ public class ClassCourseLoader {
      * @return List of classrooms
      */
     public static final LinkedList<ClassCourse> load(final String path) {
+        LinkedList<ClassCourse> classCourses = new LinkedList<>();
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
-            extractClass(csvReader);
+
+            extract(csvReader, classCourses);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-        return CLASS_COURSES;
+        return classCourses;
     }
-
-    //endregion
 
     /**
      * Loads a Class csv file.
@@ -48,17 +48,17 @@ public class ClassCourseLoader {
      * @return List of classrooms
      */
     public static final LinkedList<ClassCourse> load(final File file) {
+        LinkedList<ClassCourse> classCourses = new LinkedList<>();
         try (
                 final Reader reader = new FileReader(file);
                 final CSVReader csvReader = new CSVReader(reader)
         ) {
-            extractClass(csvReader);
+            extract(csvReader, classCourses);
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
-            return CLASS_COURSES;
         }
-        return CLASS_COURSES;
+        return classCourses;
     }
 
     /**
@@ -78,11 +78,11 @@ public class ClassCourseLoader {
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(multipartFile.getBytes());
         fos.close();
-        ClassCourseLoader.load(file);
-        return CLASS_COURSES;
+        LinkedList<ClassCourse> classCourses = load(file);
+        return classCourses;
     }
 
-    private static void extractClass(CSVReader csvReader) throws IOException, CsvValidationException {
+    private static void extract(CSVReader csvReader, List<ClassCourse> classCourses) throws IOException, CsvValidationException {
         csvReader.readNext();
         String[] nextRecord;
 
@@ -113,6 +113,33 @@ public class ClassCourseLoader {
                 TimeShift begginingTime = TimeShift.getById(i);
                 TimeShift endTime = TimeShift.getById(i+1);
 
+                final List<String> realCharacteristicsList = Arrays.asList((realCharacteristics.split(", ")));
+                LinkedList<Boolean> classroomCharacteristics = new LinkedList<Boolean>();
+                for(String s : Classroom.CHARACTERISTICS_LIST){
+                    classroomCharacteristics.add(realCharacteristicsList.contains(s));
+                }
+
+               final String[] classroomStringSplit = classroom.split(",");
+               Classroom classroomBuild;
+               if(classroomStringSplit.length>1) {
+                   classroomBuild = new Classroom.Builder()
+                           .building(classroomStringSplit[0])
+                           .classroomName(classroomStringSplit[1])
+                           .normalCapacity(capacity)
+                           .examCapacity(capacity)
+                           .numberCharacteristics(realCharacteristicsList.size())
+                           .characteristics(classroomCharacteristics)
+                           .build();
+               }else{
+                   classroomBuild = new Classroom.Builder()
+                           .classroomName(classroomStringSplit[0])
+                           .normalCapacity(capacity)
+                           .examCapacity(capacity)
+                           .numberCharacteristics(realCharacteristicsList.size())
+                           .characteristics(classroomCharacteristics)
+                           .build();
+               }
+
                 ClassCourse aclassCourse = new ClassCourse.Builder().
                         courses(Arrays.asList(course.split(", "))).
                         units(Arrays.asList(unit.split(", "))).
@@ -127,29 +154,26 @@ public class ClassCourseLoader {
                         date(date).
                         askedCharacteristics(Arrays.asList((askedCharacteristics).split(","))).
                         capacity(capacity).
-                        realCharacteristics(Arrays.asList((realCharacteristics.split(", ")))).
+                        realCharacteristics(realCharacteristicsList).
+                        classroom(
+                                classroomBuild
+                        ).
                         build();
                 System.out.println(aclassCourse);
-                CLASS_COURSES.add(aclassCourse);
+                classCourses.add(aclassCourse);
             }
         }
     }
 
-    public static void clear() {
-        ClassCourseLoader.CLASS_COURSES.clear();
-    }
-    //endregion
-
-    //region Exporter
-    public static File export() throws IOException {
+    public static File export(List<ClassCourse> classCourses) throws IOException {
         try {
             Path temp = Files.createTempFile("tempExportedClasses", ".csv");
             File myObj = new File(temp.toUri());
             //if (myObj.createNewFile()) {
             try (FileWriter writer = new FileWriter(myObj)) {
                 writer.write(String.join(",", ClassCourse.HEADER));
-                for (ClassCourse classCourse : ClassCourseLoader.CLASS_COURSES) {
-                    writer.write(classCourse.toCSVString());
+                for (ClassCourse classCourse : classCourses) {
+                    writer.write(classCourse.toCSVEntry());
                     writer.write("\n");
                 }
 
@@ -166,5 +190,4 @@ public class ClassCourseLoader {
         }
     }
 
-//endregion
 }

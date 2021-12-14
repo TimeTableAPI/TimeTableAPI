@@ -2,6 +2,7 @@ package pt.iscte.asd.projectn3.group11.models;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <h1>ClassRoom</h1>
@@ -24,7 +25,7 @@ import java.util.List;
  *
  * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
  */
-public class  Classroom {
+public class Classroom {
 
     public static final String[] HEADER = {
             "Edifício",
@@ -75,7 +76,7 @@ public class  Classroom {
     private final int examCapacity;
     private final int numberCharacteristics;
 
-    public Classroom(List<Boolean> characteristics, String building, String classroomName, int normalCapacity, int examCapacity, int numberCharacteristics) {
+    private Classroom(List<Boolean> characteristics, String building, String classroomName, int normalCapacity, int examCapacity, int numberCharacteristics) {
 
         this.characteristics = new LinkedList<>(characteristics);
         this.building = building;
@@ -239,7 +240,6 @@ public class  Classroom {
         return characteristisStringList;
     }
 
-
     @Override
     public final String toString() {
         return "ClassRoom{" +
@@ -252,6 +252,36 @@ public class  Classroom {
                 '}';
     }
     //endregion
+
+    //region EQUALS_HASH
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Classroom classroom = (Classroom) o;
+        return getNormalCapacity() == classroom.getNormalCapacity() &&
+                getExamCapacity() == classroom.getExamCapacity() &&
+                getNumberCharacteristics() == classroom.getNumberCharacteristics() &&
+                Objects.equals(getCharacteristics(), classroom.getCharacteristics()) &&
+                Objects.equals(getBuilding(), classroom.getBuilding()) &&
+                Objects.equals(getClassroomName(), classroom.getClassroomName()
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getCharacteristics(),
+                getBuilding(),
+                getClassroomName(),
+                getNormalCapacity(),
+                getExamCapacity(),
+                getNumberCharacteristics()
+        );
+    }
+    //endregion
+
+
 
     public static class Builder {
         private LinkedList<Boolean> characteristics;
