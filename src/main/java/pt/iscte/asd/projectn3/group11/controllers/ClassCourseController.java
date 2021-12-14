@@ -10,18 +10,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.UUID;
+import java.util.*;
 
 import pt.iscte.asd.projectn3.group11.Context;
+import pt.iscte.asd.projectn3.group11.models.util.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
+import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
@@ -55,6 +57,13 @@ public class ClassCourseController {
         {
             Context context = SessionsService.getContext(uuid);
             model.addAttribute("timetable", context.getClassCourses());
+
+            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
+            final List<MetricResult> metricResultList = new LinkedList<>();
+            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
+                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
+            }
+            model.addAttribute("timetablestats",metricResultList);
         }
 
         return "timetable";
@@ -141,6 +150,13 @@ public class ClassCourseController {
             SessionsService.putSession(uuid, context);
 
             model.addAttribute("timetable", loadedClassCourses);
+
+            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
+            final List<MetricResult> metricResultList = new LinkedList<>();
+            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
+                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
+            }
+            model.addAttribute("timetablestats",metricResultList);
 
             return "timetable";
         } catch (IOException e) {

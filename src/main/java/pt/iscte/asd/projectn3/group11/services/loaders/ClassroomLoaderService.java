@@ -53,6 +53,7 @@ public class ClassroomLoaderService {
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
+            return classrooms;
         }
         return classrooms;
     }
