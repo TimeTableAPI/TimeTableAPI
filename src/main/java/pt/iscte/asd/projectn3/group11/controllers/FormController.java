@@ -46,7 +46,7 @@ public class FormController {
     @PostMapping(value = FORM_PATH)
     public String submitForm(@ModelAttribute(name = "response") FormResponse formResponse, Model model) {
         String classCourse = formResponse.getClassCourse();
-        String classRoom = formResponse.getClassRoom();
+        String classRoom = formResponse.getClassroom();
         model.addAttribute("classCourse", classCourse);
         model.addAttribute("classRoom", classRoom);
         return "form";
