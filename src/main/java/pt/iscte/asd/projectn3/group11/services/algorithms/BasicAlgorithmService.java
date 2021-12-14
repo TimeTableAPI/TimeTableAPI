@@ -15,8 +15,8 @@ public class BasicAlgorithmService implements IAlgorithmService {
     public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
         System.out.println("BASIC_ALGORITHM::EXECUTE");
 
-        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = initializeClassCourseDateMap(classCourses);
-        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = initializeClassRoomDateMap(classCoursedateMap);
+        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
+        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap);
 
         for( ClassCourse classCourse : classCourses){
             ClassroomService.allocate(classCourse, classrooms ,classRoomAvailabilityMap, 0.5F);
@@ -68,6 +68,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
     private static boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
         return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
     }
+
 */
     private TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> initializeClassCourseDateMap(List<ClassCourse> classCourses) {
         TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
