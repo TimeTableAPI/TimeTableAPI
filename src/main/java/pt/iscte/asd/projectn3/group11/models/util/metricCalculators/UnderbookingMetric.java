@@ -14,8 +14,14 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * <p>The <b>smaller</b> the result the better.</p>
  */
 public class UnderbookingMetric implements MetricCalculator{
+
+	/**
+	 * @param classCourseList List<ClassCourse>
+	 * @param classroomsList List<Classroom>
+	 * @return a float number representing the quantity of underbooked classrooms
+	 */
 	@Override
-	public float evaluate(List<ClassCourse> classCourseList, LinkedList<Classroom> classroomsList) {
+	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
 		TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizedclassCourseList = organizeClassCourseByDate(classCourseList);
 
 		TreeMap<Date, EnumMap<TimeShift, LinkedList<Classroom>>> classRoomDateMap = new TreeMap<>();

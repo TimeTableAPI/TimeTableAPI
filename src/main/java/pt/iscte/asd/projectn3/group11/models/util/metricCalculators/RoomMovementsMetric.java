@@ -10,19 +10,20 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
 import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByDate;
 
 /**
- * <p>Metric that calculates the percentage of classes where the students don't have to move mid-Class</p>
+ * <p>Metric that calculates the number of classes where the students have to move mid-Class</p>
+ * 	<p>The <b>smaller</b> the result the better.</p>
  * */
 public class RoomMovementsMetric implements MetricCalculator{
 
 	/**
-	 * @param classCourseList
-	 * @param classroomsList
-	 * @return
+	 * @param classCourseList List<ClassCourse>
+	 * @param classroomsList List<Classroom>
+ 	 * @return a float number representing the number of classes where the students have to move mid-Class
 	 */
 	@Override
-	public float evaluate(List<ClassCourse> classCourseList, LinkedList<Classroom> classroomsList) {
+	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
 		final TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizedClassCourseByClass =
-				organizeClassCourseByClass(classCourseList, organizeClassCourseByDate(classCourseList));
+				organizeClassCourseByClass(classCourseList);
 
 		int classMoveCounter = 0;
 		int nClassSameRoom = 0;
@@ -46,6 +47,6 @@ public class RoomMovementsMetric implements MetricCalculator{
 			}
 		}
 
-		return (float)nClassSameRoom / (float)classMoveCounter ;
+		return (float)classMoveCounter ;
 	}
 }
