@@ -9,7 +9,7 @@ package pt.iscte.asd.projectn3.group11.models.util;
  */
 public class Date implements Comparable {
 
-    private final int NOTHING = -1;
+    private final int NOTHING = 0;
     private final int day;
     private final int month;
     private final int year;
@@ -38,9 +38,10 @@ public class Date implements Comparable {
         }else {
 
             try {
-                day1 = Integer.parseInt(date.split("-")[0]);
-                month1 = Integer.parseInt(date.split("-")[1]);
-                year1 = Integer.parseInt(date.split("-")[2]);
+                final String[] split = date.split("-");
+                day1 = Integer.parseInt(split[0]);
+                month1 = Integer.parseInt(split[1]);
+                year1 = Integer.parseInt(split[2]);
             } catch (Exception e) {
                 try {
                     day1 = Integer.parseInt(date.split("/")[0]);
