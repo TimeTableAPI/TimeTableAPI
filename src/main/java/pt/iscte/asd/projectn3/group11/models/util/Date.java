@@ -1,5 +1,12 @@
 package pt.iscte.asd.projectn3.group11.models.util;
 
+/**
+ * <h1>Date</h1>
+ * <p>The Date class hold the day of the month, the month and the year all in {@link Integer} varaibles</p>
+ * <p>
+ * @implNote Comparable
+ * </p>
+ */
 public class Date implements Comparable {
 
     private final int NOTHING = -1;
@@ -13,6 +20,10 @@ public class Date implements Comparable {
         this.year = year;
     }
 
+    /**
+     * <p>Constructor from {@link String}</p>
+     * @param date {@link String}
+     */
     public Date(String date)
     {
         int year1;

@@ -117,7 +117,18 @@ public class ClassroomService {
 		}
 		return result;
 	}
-
+	/**
+	 * <p>Method to get all the classroms that fulfill the requirements in the requestInformation</p>
+	 * <p>
+	 * @param classrooms List<Classroom>
+	 * @param requestInformation RequestInformation
+	 * @param logicOp LogicOperation
+	 * @see LogicOperation
+	 * @see RequestInformation
+	 * @see Classroom
+	 * @return List<Classroom> of classrooms gotten
+	 * </p>
+	 */
 	@Deprecated
 	public static List<Classroom> get(List<Classroom> classrooms, RequestInformation requestInformation, LogicOperation logicOp) {
 		List<List<Classroom>> requestClassRooms = new LinkedList<>();
@@ -151,6 +162,25 @@ public class ClassroomService {
 	}
 //endregion
 //region ALLOCATOR
+
+	/**
+	 *<p>Method that receives one classCourse and tries to allocate the best classroom available</p>
+	 *<p>
+	 * @param classCourse ClassCourse
+	 * @param classrooms List<Classroom>
+	 * @param classRoomAvailabilityMap TreeMap
+	 * @param percentageCharacteristicsNeeded  Float
+	 * @see ClassCourse
+	 * @see Classroom
+	 * @see TimeShift
+	 * @see Date
+	 * @see Float
+	 * @see TreeMap
+	 * @see EnumMap
+	 * @see HashSet
+	 *</p>
+	 *
+	 */
 	public static void allocate(ClassCourse classCourse, List<Classroom> classrooms, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
 		Date date = classCourse.getDate();
 		TimeShift timeShift = classCourse.getBeginningHour();
@@ -181,10 +211,32 @@ public class ClassroomService {
 		}
 	}
 
+	/**
+	 * <p>Checks whether the given Classroom has enough capacity for the given ClassCourse</p>
+	 *<p>
+	 * @param availableClassroom Classroom
+	 * @param classCourse ClassCourse
+	 * @return boolean value, true if availableClassroom has capacity for classCourse
+	 * @see Classroom
+	 * @see ClassCourse
+	 *</p>
+	 */
 	private static boolean checkClassRoomCapacity(Classroom availableClassroom, ClassCourse classCourse) {
 		return availableClassroom.getNormalCapacity() >= classCourse.getNumberOfStudentsInClass();
 	}
-
+	/**
+	 * <p>Checks whether the given Classroom has the required percentage of features (Characteristics) for the given ClassCourse</p>
+	 *<p>
+	 * @param classRoom Classroom
+	 * @param classCourse ClassCourse
+	 * @param percentageCharacteristicsNeeded Float
+	 * @return boolean value, true if availableClassroom has capacity for classCourse
+	 *
+	 * @see Classroom
+	 * @see ClassCourse
+	 *</p>
+	 *
+	 */
 	private static boolean checkClassRoomFeatures(Classroom classRoom, ClassCourse classCourse, Float percentageCharacteristicsNeeded) {
 		final boolean  capacity_bool = classRoom.getNormalCapacity() < classCourse.getNumberOfStudentsInClass();
 		int characteristics_counter = 0;
@@ -194,13 +246,24 @@ public class ClassroomService {
 				characteristics_counter ++;
 			}
 		}
-		//boolean  characteristics_bool = classCourse.getAskedCharacteristics().containsAll(classRoom.getCharacteristicsToString());
 		final float includedCharacteristicsPercentage = (characteristics_counter / askedCharacteristics.size());
 		boolean  characteristics_bool = includedCharacteristicsPercentage > percentageCharacteristicsNeeded;
 
 		return capacity_bool && characteristics_bool;
 	}
-
+	/**
+	 * <p>Checks whether the given Classroom is asvailable for the given TimeShift and Date in the given TreeMap</p>
+	 *<p>
+	 * @param classRoom Classroom
+	 * @param date Date
+	 * @param timeShift TimeShift
+	 * @param classRoomAvailabilityMap TreeMap
+	 * @return boolean value representing if the classroom is available
+	 *
+	 * @see Classroom
+	 * @see ClassCourse
+	 *</p>
+	 */
 	private static boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
 		return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
 	}
@@ -300,6 +363,14 @@ public class ClassroomService {
 	//endregion
 
 	//region Request
+
+	/**
+	 * <p>
+	 * Object created to Store information about a request for the algorithm
+	 * </p>
+	 *
+	 */
+	@Deprecated
 	public static final class RequestInformation {
 		final int capacity;
 		final int examCapacity;

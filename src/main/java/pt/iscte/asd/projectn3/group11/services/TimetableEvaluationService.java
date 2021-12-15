@@ -8,6 +8,24 @@ import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.*;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
+/**
+ * <h1>TimetableEvaluationService</h1>
+ * <p>Service to Evaluate a given Timetable (List of {@link Classroom})</p>
+ * <p>Computing a list of results for all the different implemented {@link MetricCalculator} stored in METRICSLIST</p>
+ * <p>
+ * @see MetricCalculator
+ * @see ClassCourse
+ * @see ClassCourse
+ * @see AllocationMetric
+ * @see GoodCharacteristicsMetric
+ * @see EnoughCapacityMetric
+ * @see RoomMovementsMetric
+ * @see OverbookingMetric
+ * @see UnderbookingMetric
+ * @see StudentClassMovementsMetric
+ * @see StudentBuildingMovementsMetric
+ * </p>
+ */
 public class TimetableEvaluationService {
 
 	public static final LinkedList<MetricCalculator> METRICSLIST = new LinkedList<MetricCalculator>(Arrays.asList(
@@ -21,14 +39,25 @@ public class TimetableEvaluationService {
 			new StudentBuildingMovementsMetric()
 	));
 
-	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> classCourseList, List<Classroom> classroomsList){
+	/**
+	 *<p>Method to evaluate The given Timetable</p>
+	 * <p>
+	 * @param timetableList List<ClassCourse> of {@link ClassCourse}
+	 * @param classroomsList List<Classroom> of {@link Classroom}
+	 * @return Hashtable<String, Float> of {@link String} and {@link Float}
+	 *
+	 * @see ClassCourse
+	 * @see Classroom
+	 * </p>
+	 */
+	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> timetableList, List<Classroom> classroomsList){
 		List<MetricResult> results = new LinkedList<>();
 		Queue<MetricResult> globalQueue = new ArrayBlockingQueue<MetricResult>(METRICSLIST.size());
 		List<Thread> threadList = new LinkedList<>();
 
 		for(MetricCalculator metric : METRICSLIST){
 			Thread t1 = new Thread(() -> {
-				float metricresult = metric.evaluate(classCourseList, classroomsList);
+				float metricresult = metric.evaluate(timetableList, classroomsList);
 				String metricName = metric.getClass().getSimpleName();
 				globalQueue.add(new MetricResult(metricName, metricresult));
 			}
