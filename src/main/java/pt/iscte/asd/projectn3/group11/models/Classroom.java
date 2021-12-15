@@ -7,6 +7,7 @@ import java.util.Objects;
 /**
  * <h1>ClassRoom</h1>
  * <p>Class used to hold all the proprieties belonging to the classRoom of a School or University </p>
+ * <p>Can be Dummy if all the variables are empty</p>
  * <p>To hold all of these proprieties the class has some {@link String} and {@link Integer} final variables like the ones below</p>
  * <ul>
  *     <li>{@link String} Building</li>
@@ -24,6 +25,7 @@ import java.util.Objects;
  * </ul>
  *
  * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
+ * @see Classroom#isDummy()
  */
 public class Classroom {
 
@@ -279,7 +281,16 @@ public class Classroom {
                 getNumberCharacteristics()
         );
     }
-    //endregion
+
+    /**
+     * <p>Checks if Classroom is Dummy</p>
+     * <p>Dummy means that all the vraiables are empty</p>
+     * @return boolean
+     */
+	public boolean isDummy() {
+        return building.isEmpty() || classroomName.isEmpty() || normalCapacity <0 || examCapacity <0 || characteristics.isEmpty()|| characteristics == null;
+	}
+	//endregion
 
 
 
