@@ -13,6 +13,13 @@ public class ClassroomControllerHandler {
 
     //region HANDLERS
 
+    /**
+     * fetchAllClassRooms endpoint handler.
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
     public static final String fetchAllClassRoomsHandler(HttpServletResponse response, HttpServletRequest request, Model model)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
