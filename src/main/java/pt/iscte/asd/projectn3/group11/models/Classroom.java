@@ -287,7 +287,8 @@ public class Classroom {
      * @return boolean
      */
 	public boolean isDummy() {
-        return building.isEmpty() || classroomName.isEmpty() || normalCapacity <0 || examCapacity <0 || characteristics.isEmpty()|| characteristics == null;
+        if(building == null ||classroomName == null || characteristics == null) return true;
+        return building.isEmpty() || classroomName.isEmpty() || normalCapacity <0 || examCapacity <0 || characteristics.isEmpty() ;
 	}
 	//endregion
 

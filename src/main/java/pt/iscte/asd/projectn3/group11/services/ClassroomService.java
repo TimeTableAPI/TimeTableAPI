@@ -15,7 +15,8 @@ import java.util.*;
 public class ClassroomService {
 
 	public static final int INFINITY = 999999999;
-//region GETTERS
+
+	//region GETTERS
 	/**
 	 * Getter for specified capacity
 	 *
@@ -267,8 +268,6 @@ public class ClassroomService {
 	private static boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
 		return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
 	}
-
-
 	//endregion
 
 	//region ORGANIZER
@@ -342,7 +341,6 @@ public class ClassroomService {
 	 * <p> The framwework is a TreeMap organized by Date wihch is then organized by TimeShift </p>
 	 * <p>
 	 * @param classCoursedateMap TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>
-	 * @param classroomList List<Classroom>
 	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>>
 	 * </p>
 	 */
