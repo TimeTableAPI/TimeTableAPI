@@ -24,6 +24,8 @@ import pt.iscte.asd.projectn3.group11.models.util.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
+import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler;
+import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassroomControllerHandler;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
@@ -51,22 +53,7 @@ public class ClassCourseController {
      */
     @GetMapping(value = ClassCourseController.TIMETABLE_PATH)
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
-
-        UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(SessionsService.containsSession(uuid))
-        {
-            Context context = SessionsService.getContext(uuid);
-            model.addAttribute("timetable", context.getClassCourses());
-
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
-            final List<MetricResult> metricResultList = new LinkedList<>();
-            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
-                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
-            }
-            model.addAttribute("timetablestats",metricResultList);
-        }
-
-        return "timetable";
+        return ClassCourseControllerHandler.fetchTimeTableHandler(response, request, model);
     }
     //endregion
 
@@ -81,39 +68,7 @@ public class ClassCourseController {
      */
     @GetMapping(value = ClassCourseController.TIMETABLE_PATH + "/download")
     public ResponseEntity<Resource> downloadTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
-
-        UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
-
-        Context context = SessionsService.getContext(uuid);
-        model.addAttribute("timetable", context.getClassCourses());
-
-        try {
-            File file = ClassCourseLoaderService.export(context.getClassCourses());
-
-            try {
-                InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-
-                HttpHeaders header = new HttpHeaders();
-                header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=ExportedClasses.csv");
-                header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-                header.add("Pragma", "no-cache");
-                header.add("Expires", "0");
-
-                return ResponseEntity.ok()
-                        .headers(header)
-                        .contentLength(file.length())
-                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                        .body(resource);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return (ResponseEntity<Resource>) ResponseEntity.notFound();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return (ResponseEntity<Resource>) ResponseEntity.notFound();
-        }
+        return ClassCourseControllerHandler.downloadTimeTableHandler(response, request, model);
     }
     //endregion
 
@@ -131,39 +86,7 @@ public class ClassCourseController {
      */
     @PostMapping(value = ClassCourseController.TIMETABLE_PATH + "/upload")
     public String timeTableUpload(HttpServletResponse response, HttpServletRequest request, @RequestParam("file_classes") MultipartFile fileClasses, @RequestParam("file_classrooms") MultipartFile fileClassrooms, RedirectAttributes attributes, Model model) {
-        // check if file is empty
-        if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
-            attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
-        }
-
-        // normalize the file path
-        try {
-            attributes.addFlashAttribute("message", "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
-
-            LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
-            LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
-            Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
-            context.computeSolutionWithAlgorithm();
-
-            UUID uuid = CookieHandlerService.getUUID(request, response);
-            SessionsService.putSession(uuid, context);
-
-            model.addAttribute("timetable", loadedClassCourses);
-
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
-            final List<MetricResult> metricResultList = new LinkedList<>();
-            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
-                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
-            }
-            model.addAttribute("timetablestats",metricResultList);
-
-            return "timetable";
-        } catch (IOException e) {
-            attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
-            e.printStackTrace();
-            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
-        }
+        return ClassCourseControllerHandler.timeTableUploadHandler(response, request, fileClasses, fileClassrooms, attributes, model);
     }
 
     //endregion
