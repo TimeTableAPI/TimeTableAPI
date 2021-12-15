@@ -9,7 +9,11 @@ import pt.iscte.asd.projectn3.group11.services.ClassroomService;
 import java.util.*;
 
 public class BasicAlgorithmService implements IAlgorithmService {
-
+    /**
+     *
+     * @param classCourses
+     * @param classrooms
+     */
     @Override
     public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
         System.out.println("BASIC_ALGORITHM::EXECUTE");
@@ -23,7 +27,11 @@ public class BasicAlgorithmService implements IAlgorithmService {
         }
     }
 
-
+    /**
+     *
+     * @param classCourses
+     * @return
+     */
     private TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> initializeClassCourseDateMap(List<ClassCourse> classCourses) {
         TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
         for (ClassCourse classCourse : classCourses) {
@@ -34,6 +42,11 @@ public class BasicAlgorithmService implements IAlgorithmService {
         return classCoursedateMap;
     }
 
+    /**
+     *
+     * @param classCoursedateMap
+     * @return
+     */
     private TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> initializeClassRoomDateMap(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap) {
         TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
 
