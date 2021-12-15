@@ -138,7 +138,7 @@ public class ClassCourseController {
         // check if file is empty
         if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
+            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
 
         // normalize the file path
@@ -156,6 +156,10 @@ public class ClassCourseController {
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         } catch (IOException e) {
             attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
+            e.printStackTrace();
+            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+        }catch (Exception e){
+            attributes.addFlashAttribute("message", "Something went wrong with the Server...");
             e.printStackTrace();
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
