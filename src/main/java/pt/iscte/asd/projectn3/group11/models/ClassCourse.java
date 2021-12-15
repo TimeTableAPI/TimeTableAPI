@@ -94,6 +94,10 @@ public class ClassCourse {
         this.classroom = builder.classroom;
     }
 
+    public boolean hasClassRoomAllocated() {
+        return capacity > 0 || realCharacteristics != null|| !realCharacteristics.isEmpty() || classroom != null|| !classroom.isDummy();
+    }
+
     //endregion
 
     //region BUILDER

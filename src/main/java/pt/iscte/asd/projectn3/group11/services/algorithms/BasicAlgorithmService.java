@@ -9,6 +9,7 @@ import pt.iscte.asd.projectn3.group11.services.ClassroomService;
 import java.util.*;
 
 public class BasicAlgorithmService implements IAlgorithmService {
+//TODO
     /**
      *
      * @param classCourses
@@ -22,11 +23,12 @@ public class BasicAlgorithmService implements IAlgorithmService {
         TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
 
         for( ClassCourse classCourse : classCourses){
-            ClassroomService.allocate(classCourse, classrooms ,classRoomAvailabilityMap, 0.5F);
-
+            if(!classCourse.hasClassRoomAllocated()){
+                ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
+            }
         }
     }
-
+//TODO
     /**
      *
      * @param classCourses
@@ -41,7 +43,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
         }
         return classCoursedateMap;
     }
-
+//TODO
     /**
      *
      * @param classCoursedateMap
