@@ -33,6 +33,13 @@ public class ClassCourseControllerHandler {
 
     //region HANDLERS
 
+    /**
+     * fetchTimeTable endpoint handler.
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
     public static final String fetchTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
@@ -52,6 +59,13 @@ public class ClassCourseControllerHandler {
         return "timetable";
     }
 
+    /**
+     * downloadTimeTable endpoint handler.
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
     public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
@@ -88,6 +102,16 @@ public class ClassCourseControllerHandler {
         }
     }
 
+    /**
+     * timeTableUpload endpoint handler.
+     * @param response
+     * @param request
+     * @param fileClasses
+     * @param fileClassrooms
+     * @param attributes
+     * @param model
+     * @return
+     */
     public static final String timeTableUploadHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile fileClasses, MultipartFile fileClassrooms, RedirectAttributes attributes, Model model)
     {
         // check if file is empty
