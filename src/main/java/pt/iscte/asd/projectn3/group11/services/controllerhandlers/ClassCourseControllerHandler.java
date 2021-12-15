@@ -13,7 +13,7 @@ import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.util.MetricResult;
+import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
@@ -45,8 +45,10 @@ public class ClassCourseControllerHandler {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
-            Context context = SessionsService.getContext(uuid);
-            model.addAttribute("timetable", context.getClassCourses());
+            Context context = SessionsService.getContext(uuid);LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+
+            model.addAttribute("timetable", loadedClassCoursesJSON);
 
             final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
             final List<MetricResult> metricResultList = new LinkedList<>();
@@ -117,7 +119,7 @@ public class ClassCourseControllerHandler {
         // check if file is empty
         if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
+            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
 
         // normalize the file path
@@ -132,20 +134,12 @@ public class ClassCourseControllerHandler {
             UUID uuid = CookieHandlerService.getUUID(request, response);
             SessionsService.putSession(uuid, context);
 
-            model.addAttribute("timetable", loadedClassCourses);
 
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
-            final List<MetricResult> metricResultList = new LinkedList<>();
-            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
-                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
-            }
-            model.addAttribute("timetablestats",metricResultList);
-
-            return "timetable";
+            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         } catch (IOException e) {
             attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
             e.printStackTrace();
-            return "redirect:/" + ClassCourseController.TIMETABLE_PATH;
+            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
     }
 

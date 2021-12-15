@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.models.util;
+package pt.iscte.asd.projectn3.group11.models;
 
 public class MetricResult {
 

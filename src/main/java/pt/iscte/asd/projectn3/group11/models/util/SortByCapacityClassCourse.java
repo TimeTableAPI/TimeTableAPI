@@ -2,8 +2,19 @@ package pt.iscte.asd.projectn3.group11.models.util;
 
 import java.util.Comparator;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
-
+/**
+ * <p>Class to implement a comparator for ClassCourses based on their capacity</p>
+ */
 public class SortByCapacityClassCourse implements Comparator<ClassCourse> {
+    /**
+     *
+     * <p>Method to compare two classCourses capacities</p>
+     * <p>
+     * @param classCourse1 ClassCourse
+     * @param classCourse2 ClassCourse
+     * @return integer number representing if classCourse1 has a bigger capacity than classCourse2
+     * </p>
+     */
     @Override
     public final int compare(ClassCourse classCourse1, ClassCourse classCourse2) {
         final int classCourse1Capacity = classCourse1.getCapacity();
