@@ -67,7 +67,7 @@ class ClassroomTest {
         assertTrue(classRoom.hasCharacteristic("Anfiteatro aulas"));
         assertFalse(classRoom.hasCharacteristic("Arq 2"));
         assertTrue(classRoom.hasCharacteristic("BYOD (Bring Your Own Device)"));
-        assertThrows(IllegalArgumentException.class, () -> classRoom.hasCharacteristic("HelloWorld"));
+        assertFalse(classRoom.hasCharacteristic("HelloWorld"));
         assertDoesNotThrow(() -> {
             classRoom.hasCharacteristic("Focus Group");
 
@@ -79,7 +79,7 @@ class ClassroomTest {
         assertTrue(classRoom.hasALLCharacteristics(Arrays.asList("Anfiteatro aulas","BYOD (Bring Your Own Device)")));
         assertFalse(classRoom.hasALLCharacteristics(Arrays.asList("Arq 2","Sala de Arquitectura")));
 
-        assertThrows(IllegalArgumentException.class, () -> classRoom.hasALLCharacteristics(Arrays.asList("HelloWorld", "testFalse")));
+        assertFalse( classRoom.hasALLCharacteristics(Arrays.asList("HelloWorld", "testFalse")));
         assertDoesNotThrow(() -> {
             classRoom.hasALLCharacteristics(Arrays.asList("Focus Group","Átrio"));
 

@@ -1,16 +1,16 @@
 package pt.iscte.asd.projectn3.group11.services.loaders;
 
+import org.junit.jupiter.api.BeforeAll;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
+import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
 import static java.lang.Math.min;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,8 +21,8 @@ public class ClassCourseLoaderServiceTest {
     private static LinkedList<ClassCourse> loadedClassCourses ;
     private static ClassCourse aClassCourse;
 
-    @org.junit.jupiter.api.BeforeEach
-    void setUp()
+    @BeforeAll
+    static void setUp()
     {
         loadedClassCourses = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
 
@@ -45,6 +45,14 @@ public class ClassCourseLoaderServiceTest {
         final String beginningHour = "11:00:00";
         final String endHour = "13:00:00";
         final String monthDay = "23-11-2015";
+
+
+        final LinkedList<Boolean> characteristics = new LinkedList<>();
+        //realCharacteristics.stream().map(realCharacteristic ->characteristics.add(realCharacteristic.equals("X") || realCharacteristic.equals("x")));
+        Arrays.stream(Classroom.CHARACTERISTICS_LIST).forEach(realCharacteristic -> {
+            characteristics.add(realCharacteristics.contains(realCharacteristic));
+        });
+
         classCourse1 = new ClassCourse.Builder().
                 courses(courses).
                 units(units).
@@ -60,6 +68,15 @@ public class ClassCourseLoaderServiceTest {
                 askedCharacteristics(askedCharacteristics).
                 capacity(capacity).
                 realCharacteristics(realCharacteristics).
+                classroom(new Classroom.Builder().
+                        building("Edifício Teste").
+                        classroomName("123").
+                        normalCapacity(capacity).
+                        examCapacity(capacity).
+                        numberCharacteristics(realCharacteristics.size()).
+                        characteristics(characteristics)
+                        .build()
+                ).
                 build();
         classCourse2 = new ClassCourse.Builder().
                 courses(courses).
@@ -83,18 +100,18 @@ public class ClassCourseLoaderServiceTest {
     void load()
     {
         ClassCourse classCourseTest = loadedClassCourses.get(0);
-        assertEquals(classCourseTest.getCourses(), classCourse1.getCourses());
-        assertEquals(classCourseTest.getUnits(), classCourse1.getUnits());
-        assertEquals(classCourseTest.getClassesOfCourse(), classCourse1.getClassesOfCourse());
-        assertEquals(classCourseTest.getNumberOfStudentsInClass(), classCourse1.getNumberOfStudentsInClass());
-        assertEquals(classCourseTest.getShiftsWithFreeSpots(), classCourse1.getShiftsWithFreeSpots());
-        assertEquals(classCourseTest.getShiftsWithMoreThanTheCapacity(), classCourse1.getShiftsWithMoreThanTheCapacity());
-        assertEquals(classCourseTest.getWeekday(), classCourse1.getWeekday());
-        assertEquals(classCourseTest.getDate(), classCourse1.getDate());
-        assertEquals(classCourseTest.getAskedCharacteristics(), classCourse1.getAskedCharacteristics());
-        assertEquals(classCourseTest.getClassroom(), classCourse1.getClassroom());
-        assertEquals(classCourseTest.getCapacity(), classCourse1.getCapacity());
-        assertEquals(classCourseTest.getRealCharacteristics(), classCourse1.getRealCharacteristics());
+        assertEquals(classCourse1.getCourses() , classCourseTest.getCourses());
+        assertEquals(classCourse1.getUnits() , classCourseTest.getUnits());
+        assertEquals(classCourse1.getClassesOfCourse() , classCourseTest.getClassesOfCourse());
+        assertEquals(classCourse1.getNumberOfStudentsInClass() , classCourseTest.getNumberOfStudentsInClass());
+        assertEquals(classCourse1.getShiftsWithFreeSpots() , classCourseTest.getShiftsWithFreeSpots());
+        assertEquals(classCourse1.getShiftsWithMoreThanTheCapacity() , classCourseTest.getShiftsWithMoreThanTheCapacity());
+        assertEquals(classCourse1.getWeekday() , classCourseTest.getWeekday());
+        assertEquals(classCourse1.getDate() , classCourseTest.getDate());
+        assertEquals(classCourse1.getAskedCharacteristics() , classCourseTest.getAskedCharacteristics());
+        assertEquals(classCourse1.getClassroom() , classCourseTest.getClassroom());
+        assertEquals(classCourse1.getCapacity() , classCourseTest.getCapacity());
+        assertEquals(classCourse1.getRealCharacteristics() , classCourseTest.getRealCharacteristics());
     }
 
     @org.junit.jupiter.api.Test

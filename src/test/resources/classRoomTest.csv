@@ -1,5 +1,5 @@
 Edifício,Nome sala,Capacidade Normal,Capacidade Exame,Nº características,Anfiteatro aulas,Apoio técnico eventos,Arq 1,Arq 2,Arq 3,Arq 4,Arq 5,Arq 6,Arq 9,BYOD (Bring Your Own Device),Focus Group,Horário sala visível portal público,Laboratório de Arquitectura de Computadores I,Laboratório de Arquitectura de Computadores II,Laboratório de Bases de Engenharia,Laboratório de Electrónica,Laboratório de Informática,Laboratório de Jornalismo,Laboratório de Redes de Computadores I,Laboratório de Redes de Computadores II,Laboratório de Telecomunicações,Sala Aulas Mestrado,Sala Aulas Mestrado Plus,Sala NEE,Sala Provas,Sala Reunião,Sala de Arquitectura,Sala de Aulas normal,videoconferencia,Átrio
-Edifício Teste,123,50,50,4,,,,,,,,,,,,X,,,,,,,,,,X,X,,,,,X,,
+Edifício Teste,123,50,25,4,,,,,,,,,,,,X,,,,,,,,,,X,X,,,,,X,,
 Edifício 1,B21,100,100,4,x,x,,,,,,,,,,,,,,,x,,,,x,,,,,,,,,
 Edifício 1,C21,25,10,2,,,,,,,,x,,,,,,,,,,,,,,,,,,,,x,,
 Edifício 3,D49,200,5,2,,,,,,,,x,,,,,,,,,,,,,,,,,,,,x,,
