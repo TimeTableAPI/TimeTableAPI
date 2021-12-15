@@ -56,7 +56,11 @@ public class ClassCourseController {
         if(SessionsService.containsSession(uuid))
         {
             Context context = SessionsService.getContext(uuid);
-            model.addAttribute("timetable", context.getClassCourses());
+
+            LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+
+            model.addAttribute("timetable", loadedClassCoursesJSON);
 
             final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
             final List<MetricResult> metricResultList = new LinkedList<>();
