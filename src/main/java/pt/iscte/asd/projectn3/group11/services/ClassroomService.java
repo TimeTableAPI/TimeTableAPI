@@ -3,7 +3,7 @@ package pt.iscte.asd.projectn3.group11.services;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
-import pt.iscte.asd.projectn3.group11.models.util.LogicOperation;
+import pt.iscte.asd.projectn3.group11.services.util.LogicOperation;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
 import java.util.*;

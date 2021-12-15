@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.models.util;
+package pt.iscte.asd.projectn3.group11.services.util;
 
 /**
  *
@@ -6,6 +6,7 @@ package pt.iscte.asd.projectn3.group11.models.util;
  * Logic Operation interface to store the behaviour of diferent operations between two boolean values
  * </p>
  */
+@Deprecated
 public interface LogicOperation {
     boolean op(boolean a, boolean b);
 }

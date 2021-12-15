@@ -7,6 +7,7 @@ import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.*;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
+import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.*;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -34,13 +35,13 @@ class TimetableEvaluationServiceTest {
 
 		@Test
 	void AllocationMetricTest(){
-		String metricName=AllocationMetric.class.getSimpleName();
+		String metricName= AllocationMetric.class.getSimpleName();
 		assertEquals(1.0f,metricResultListTimetable.get(metricName));
 	}
 
 	@Test
 	void GoodCharacteristicsMetricTest(){
-		String metricName=GoodCharacteristicsMetric.class.getSimpleName();
+		String metricName= GoodCharacteristicsMetric.class.getSimpleName();
 			assertEquals((float)Math.round(0.266667f*100)/100,(float)Math.round(metricResultListTimetable.get(metricName)*100)/100);
 	}
 
@@ -52,13 +53,13 @@ class TimetableEvaluationServiceTest {
 
 	@Test
 	void RoomMovementsMetricTest(){
-		String metricName=RoomMovementsMetric.class.getSimpleName();
+		String metricName= RoomMovementsMetric.class.getSimpleName();
 		assertEquals(1f,metricResultListTimetable.get(metricName));
 	}
 
 	@Test
 	void OverbookingMetricTest(){
-		String metricName=OverbookingMetric.class.getSimpleName();
+		String metricName= OverbookingMetric.class.getSimpleName();
 		assertEquals(0f,metricResultListTimetable.get(metricName));
 	}
 
@@ -70,7 +71,7 @@ class TimetableEvaluationServiceTest {
 
 	@Test
 	void StudentClassMovementsMetricTest(){
-		String metricName=StudentClassMovementsMetric.class.getSimpleName();
+		String metricName= StudentClassMovementsMetric.class.getSimpleName();
 		assertEquals(2f,metricResultListTimetable.get(metricName));
 	}
 }

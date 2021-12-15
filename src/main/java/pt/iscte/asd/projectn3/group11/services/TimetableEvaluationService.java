@@ -2,8 +2,9 @@ package pt.iscte.asd.projectn3.group11.services;
 
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.util.MetricResult;
+import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.*;
+import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.*;
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
