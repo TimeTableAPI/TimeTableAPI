@@ -32,10 +32,9 @@
         Download Timetable
     </button>
 </a>
-<div id="requestSection" style="display:none">
+<p th:text="${message}" th:if="${message ne null}"></p>
 
-    <br>
-    <p th:text="${message}" th:if="${message ne null}"></p>
+<div id="requestSection" style="display:none">
     <form method="post" th:action="@{/timetable/upload}" enctype="multipart/form-data">
         <div>
             <p>
@@ -47,7 +46,6 @@
             <button type="submit">Upload File</button>
         </div>
     </form>
-    <br>
 </div>
 
 <div id="timetable_tabulator"></div>

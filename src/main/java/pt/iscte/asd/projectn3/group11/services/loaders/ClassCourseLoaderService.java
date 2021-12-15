@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *
+ */
 public class ClassCourseLoaderService {
 
     /**
@@ -169,22 +172,18 @@ public class ClassCourseLoaderService {
         try {
             Path temp = Files.createTempFile("tempExportedClasses", ".csv");
             File myObj = new File(temp.toUri());
-            //if (myObj.createNewFile()) {
             try (FileWriter writer = new FileWriter(myObj)) {
-                writer.write(String.join(",", ClassCourse.HEADER));
+                writer.write(String.join(",", ClassCourse.HEADER) + "\n");
                 for (ClassCourse classCourse : classCourses) {
                     writer.write(classCourse.toCSVEntry());
                     writer.write("\n");
                 }
 
             }
-            System.out.println("File created in:" + myObj.getAbsolutePath());
-            //} else {
-            //    System.out.println("File already exists.");
-            //}
+            System.out.println("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::File created in:" + myObj.getAbsolutePath());
             return myObj;
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::An error occurred.");
             e.printStackTrace();
             throw e;
         }

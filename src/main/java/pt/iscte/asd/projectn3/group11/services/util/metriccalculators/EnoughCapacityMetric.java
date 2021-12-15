@@ -1,9 +1,8 @@
-package pt.iscte.asd.projectn3.group11.models.util.metricCalculators;
+package pt.iscte.asd.projectn3.group11.services.util.metriccalculators;
 
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**

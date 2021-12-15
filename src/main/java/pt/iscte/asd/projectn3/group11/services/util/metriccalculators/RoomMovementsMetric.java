@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.models.util.metricCalculators;
+package pt.iscte.asd.projectn3.group11.services.util.metriccalculators;
 
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
@@ -7,7 +7,6 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 import java.util.*;
 
 import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByClass;
-import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByDate;
 
 /**
  * <p>Metric that calculates the number of classes where the students have to move mid-Class</p>
