@@ -95,7 +95,12 @@ public class ClassCourse {
     }
 
     public boolean hasClassRoomAllocated() {
-        return capacity > 0 || realCharacteristics != null|| !realCharacteristics.isEmpty() || classroom != null|| !classroom.isDummy();
+        try{
+        return (capacity > 0 || realCharacteristics.size() > 1  || !classroom.isDummy()) &&  (classroom != null);
+        }catch (NullPointerException e ){
+            //e.printStackTrace();
+            return false;
+        }
     }
 
     //endregion

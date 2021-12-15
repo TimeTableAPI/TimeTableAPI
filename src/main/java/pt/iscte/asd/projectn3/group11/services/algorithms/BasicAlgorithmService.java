@@ -23,7 +23,8 @@ public class BasicAlgorithmService implements IAlgorithmService {
         TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
 
         for( ClassCourse classCourse : classCourses){
-            if(!classCourse.hasClassRoomAllocated()){
+            final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
+            if(!hasClassRoomAllocated){
                 ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
             }
         }
