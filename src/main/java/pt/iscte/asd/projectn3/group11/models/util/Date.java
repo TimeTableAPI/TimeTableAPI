@@ -46,14 +46,26 @@ public class Date implements Comparable {
         this.year = year1;
     }
 
+    /**
+     * Gets day.
+     * @return day
+     */
     public int getDay() {
         return day;
     }
 
+    /**
+     * Gets month.
+     * @return month
+     */
     public int getMonth() {
         return month;
     }
 
+    /**
+     * Gets year.
+     * @return year
+     */
     public int getYear() {
         return year;
     }
