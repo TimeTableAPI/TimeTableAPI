@@ -10,6 +10,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -104,11 +105,7 @@ public class ClassroomLoaderService {
             final LinkedList<Boolean> characteristics = new LinkedList<>();
 
             for (int index = 5; index < nextRecord.length; index++) {
-                if (nextRecord[index].equals("X") || nextRecord[index].equals("x")) {
-                    characteristics.add(true);
-                } else {
-                    characteristics.add(false);
-                }
+                characteristics.add (nextRecord[index].equals("X") || nextRecord[index].equals("x"));
             }
             Classroom classN = new Classroom.Builder().
                     building(building).

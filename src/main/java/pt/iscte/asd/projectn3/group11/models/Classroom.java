@@ -1,5 +1,6 @@
 package pt.iscte.asd.projectn3.group11.models;
 
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +68,7 @@ public class Classroom {
             "Átrio",
     };
     public static final int NUMBER_OF_CHARACTERISTICS = 30;
-    public static final String[] CHARACTERISTICS_LIST = new String[]{"Anfiteatro aulas", "Apoio técnico eventos", "Arq 1", "Arq 2", "Arq 3", "Arq 4", "Arq 5", "Arq 6", "Arq 9", "BYOD (Bring Your Own Device)", "Focus Group", "Horário sala visível portal público", "Laboratório de Arquitectura de Computadores I", "Laboratório de Arquitectura de Computadores II", "Laboratório de Bases de Engenharia", "Laboratório de Electrónica", "Laboratório de Informática", "Laboratório de Jornalismo", "Laboratório de Redes de Computadores I", "Laboratório de Redes de Computadores II", "Laboratório de Telecomunicações", "Sala Aulas Mestrado", "Sala Aulas Mestrado Plus", "Sala NEE", "Sala Provas", "Sala Reunião", "Sala de Arquitectura", "Sala de Aulas normal", "videoconferencia", "Átrio"};
+    public static final String[] CHARACTERISTICS_LIST = {"Anfiteatro aulas", "Apoio técnico eventos", "Arq 1", "Arq 2", "Arq 3", "Arq 4", "Arq 5", "Arq 6", "Arq 9", "BYOD (Bring Your Own Device)", "Focus Group", "Horário sala visível portal público", "Laboratório de Arquitectura de Computadores I", "Laboratório de Arquitectura de Computadores II", "Laboratório de Bases de Engenharia", "Laboratório de Electrónica", "Laboratório de Informática", "Laboratório de Jornalismo", "Laboratório de Redes de Computadores I", "Laboratório de Redes de Computadores II", "Laboratório de Telecomunicações", "Sala Aulas Mestrado", "Sala Aulas Mestrado Plus", "Sala NEE", "Sala Provas", "Sala Reunião", "Sala de Arquitectura", "Sala de Aulas normal", "videoconferencia", "Átrio"};
 
     //region MEMBERS
 
@@ -185,7 +186,7 @@ public class Classroom {
      * @param characteristics a List of Strings that represents a characteristic the classRoom may have, like if it is a Lab for example, the full list can be seen here {@link Classroom#CHARACTERISTICS_LIST}
      * @return <b>true</b> if classRoom fulfills the characteristic and <b>false</b> if it doesn't
      */
-    public final boolean hasALLCharacteristics(final List<String> characteristics) throws IllegalArgumentException {
+    public final boolean hasALLCharacteristics(final List<String> characteristics) {
         boolean result = true;
         for (String characteristic : characteristics) {
             result = result && this.hasCharacteristic(characteristic);
@@ -262,7 +263,6 @@ public class Classroom {
         if (o == null || getClass() != o.getClass()) return false;
         Classroom classroom = (Classroom) o;
         return getNormalCapacity() == classroom.getNormalCapacity() &&
-                getExamCapacity() == classroom.getExamCapacity() &&
                 getNumberCharacteristics() == classroom.getNumberCharacteristics() &&
                 Objects.equals(getCharacteristics(), classroom.getCharacteristics()) &&
                 Objects.equals(getBuilding(), classroom.getBuilding()) &&
@@ -277,7 +277,6 @@ public class Classroom {
                 getBuilding(),
                 getClassroomName(),
                 getNormalCapacity(),
-                getExamCapacity(),
                 getNumberCharacteristics()
         );
     }

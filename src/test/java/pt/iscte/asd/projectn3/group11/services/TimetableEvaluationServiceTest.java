@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.util.metricCalculators.*;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.*;
