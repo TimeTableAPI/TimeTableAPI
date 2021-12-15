@@ -204,7 +204,7 @@ public class ClassCourse {
             this.date = date.toString();
             this.askedCharacteristics = askedCharacteristics;
             this.classesOfCourse = classesOfCourse;
-            this.classroom = (classroom != null)? classroom.getClassroomName() : "";
+            this.classroom = (classroom != null)? classroom.getBuilding()+","+classroom.getClassroomName() : "";
             this.capacity = String.valueOf(capacity);
             this.realCharacteristics = realCharacteristics;
 
@@ -392,6 +392,32 @@ public class ClassCourse {
                 ", realCharacteristics=" + realCharacteristics +
                 '}';
     }
+
+    /**
+     * Transforms Class course to csv file entry.
+     * @return string of csv file entry.
+     */
+    public final String toCSVEntry() {
+        return "\""+String.join(", ",courses) +"\""+
+                ",\"" + String.join(", " , units) +"\""+
+                "," + shift + "" +
+                ",\"" + String.join(", " , classesOfCourse) +"\""+
+                "," + numberOfStudentsInClass  +
+                "," + shiftsWithFreeSpots +
+                "," + shiftsWithMoreThanTheCapacity +
+                "," + weekday +
+                "," + beginningHour +
+                "," + endHour +
+                "," + date +
+                ",\"" + String.join(", ",askedCharacteristics) +"\""+
+                "," + ((classroom != null)?  "\""+classroom.getBuilding()+","+classroom.getClassroomName()+"\"": "") +
+                "," + capacity +
+                ",\"" + String.join(", ",realCharacteristics) +"\""
+                ;
+    }
+    //endregion
+
+    //region EQUALS_HASH
     /**
      * <p>Equals method for Comparing ClassCourses</p>
      * <p>Uses all of the variables minus the startTime and EndTime. This way two classes back to back are considered equal</p>
@@ -433,28 +459,7 @@ public class ClassCourse {
                 getRealCharacteristics()
         );
     }
-    /**
-     * Transforms Class course to csv file entry.
-     * @return string of csv file entry.
-     */
-    public final String toCSVEntry() {
-        return "\""+String.join(", ",courses) +"\""+
-                ",\"" + String.join(", " , units) +"\""+
-                "," + shift + "" +
-                ",\"" + String.join(", " , classesOfCourse) +"\""+
-                "," + numberOfStudentsInClass  +
-                "," + shiftsWithFreeSpots +
-                "," + shiftsWithMoreThanTheCapacity +
-                "," + weekday +
-                "," + beginningHour +
-                "," + endHour +
-                "," + date +
-                ",\"" + String.join(", ",askedCharacteristics) +"\""+
-                "," + ((classroom != null)?  "\""+classroom.getBuilding()+","+classroom.getClassroomName()+"\"": "") +
-                "," + capacity +
-                ",\"" + String.join(", ",realCharacteristics) +"\""
-                ;
-    }
     //endregion
+
 
 }

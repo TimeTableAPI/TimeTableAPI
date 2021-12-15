@@ -155,8 +155,7 @@ public class ClassroomService {
 		Date date = classCourse.getDate();
 		TimeShift timeShift = classCourse.getBeginningHour();
 		List <Classroom> availableClassrooms = new LinkedList<>();
-		classRoomAvailabilityMap.get(date).get(timeShift).stream().map(availableClassrooms::add);
-
+		classRoomAvailabilityMap.get(date).get(timeShift).forEach(classroom -> availableClassrooms.add(classroom));
 
 		Iterator<Classroom> iterator = availableClassrooms.iterator();
 		boolean foundClassroom = false;
@@ -164,6 +163,7 @@ public class ClassroomService {
 			Classroom availableClassroom = iterator.next();
 			if (checkClassRoomFeatures(availableClassroom, classCourse, percentageCharacteristicsNeeded)) {
 				classCourse.setClassroom(availableClassroom);
+				classRoomAvailabilityMap.get(date).get(timeShift).remove(availableClassroom);
 				foundClassroom = true;
 			}
 		}
@@ -174,12 +174,11 @@ public class ClassroomService {
 				Classroom availableClassroom = iterator.next();
 				if (checkClassRoomCapacity(availableClassroom, classCourse)) {
 					classCourse.setClassroom(availableClassroom);
-					availableClassrooms.remove(availableClassroom);
+					classRoomAvailabilityMap.get(date).get(timeShift).remove(availableClassroom);
 					foundClassroom = true;
 				}
 			}
 		}
-
 	}
 
 	private static boolean checkClassRoomCapacity(Classroom availableClassroom, ClassCourse classCourse) {
@@ -280,16 +279,18 @@ public class ClassroomService {
 	 * <p> The framwework is a TreeMap organized by Date wihch is then organized by TimeShift </p>
 	 * <p>
 	 * @param classCoursedateMap TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>
+	 * @param classroomList List<Classroom>
 	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>>
 	 * </p>
 	 */
-	public static TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> organizeClassroomByDate(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap) {
+	public static TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> organizeClassroomByDate(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap, List<Classroom> classroomList) {
 	    TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
 
 	    for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> date : classCoursedateMap.entrySet()) {
 	        for (Map.Entry<TimeShift, HashSet<ClassCourse>> hour : date.getValue().entrySet()) {
 	            classRoomDateMap.computeIfAbsent(date.getKey(), k -> new EnumMap<TimeShift, HashSet<Classroom>>(TimeShift.class));
-	            classRoomDateMap.get(date.getKey()).computeIfAbsent(hour.getKey(), k -> new HashSet<Classroom>());
+	            classRoomDateMap.get(date.getKey()).computeIfAbsent(hour.getKey(), k -> new HashSet<Classroom>(classroomList));
+
 	        }
 	    }
 	    return classRoomDateMap;
