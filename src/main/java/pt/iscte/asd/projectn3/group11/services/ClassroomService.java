@@ -15,7 +15,8 @@ import java.util.*;
 public class ClassroomService {
 
 	public static final int INFINITY = 999999999;
-//region GETTERS
+
+	//region GETTERS
 	/**
 	 * Getter for specified capacity
 	 *
@@ -149,8 +150,9 @@ public class ClassroomService {
 		return finalrequestClassRooms;
 
 	}
-//endregion
-//region ALLOCATOR
+	//endregion
+
+	//region ALLOCATOR
 	public static void allocate(ClassCourse classCourse, List<Classroom> classrooms, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
 		Date date = classCourse.getDate();
 		TimeShift timeShift = classCourse.getBeginningHour();
@@ -205,8 +207,6 @@ public class ClassroomService {
 	private static boolean checkClassRoomAvailability(Classroom classRoom, Date date, TimeShift timeShift, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap) {
 		return !classRoomAvailabilityMap.get(date).get(timeShift).contains(classRoom);
 	}
-
-
 	//endregion
 
 	//region ORGANIZER
@@ -359,4 +359,5 @@ public class ClassroomService {
 
 
 	//endregion
+
 }
