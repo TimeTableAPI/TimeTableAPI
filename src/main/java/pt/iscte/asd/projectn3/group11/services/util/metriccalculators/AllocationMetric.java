@@ -21,7 +21,7 @@ public class AllocationMetric implements MetricCalculator{
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
 		float counter = 0f;
 		for(ClassCourse classCourse : classCourseList){
-			if(classCourse.getClassroom() != null){
+			if(classCourse.hasClassRoomAllocated()){
 				counter ++;
 			}
 		}
