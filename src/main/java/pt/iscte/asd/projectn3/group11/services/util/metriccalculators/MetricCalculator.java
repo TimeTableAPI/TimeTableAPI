@@ -11,7 +11,7 @@ import java.util.List;
  *<p>Has a single method {@link #evaluate(List, List)} </p>
  *
  */
-public interface MetricCalculator {
+public abstract class MetricCalculator {
 
 	/**
 	 * <p>Method to analyze a List of classCourse  </p>
@@ -21,6 +21,9 @@ public interface MetricCalculator {
 	 * @return float value with the score of the implemented metric
 	 *
 	 * */
-	float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList);
+	abstract float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList);
+
+
+	abstract float getObjective();
 }
 

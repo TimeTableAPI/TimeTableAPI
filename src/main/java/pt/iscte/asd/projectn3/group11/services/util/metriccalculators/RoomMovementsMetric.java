@@ -12,7 +12,8 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * <p>Metric that calculates the number of classes where the students have to move mid-Class</p>
  * 	<p>The <b>smaller</b> the result the better.</p>
  * */
-public class RoomMovementsMetric implements MetricCalculator{
+public class RoomMovementsMetric extends MetricCalculator{
+	private static float objective = 0f;
 
 	/**
 	 * @param classCourseList List<ClassCourse>
@@ -47,5 +48,10 @@ public class RoomMovementsMetric implements MetricCalculator{
 		}
 
 		return (float)classMoveCounter ;
+	}
+
+	@Override
+	float getObjective() {
+		return objective;
 	}
 }
