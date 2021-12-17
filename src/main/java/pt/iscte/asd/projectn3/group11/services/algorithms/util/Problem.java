@@ -8,11 +8,9 @@ import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
+import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.MetricCalculator;
 
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Problem extends AbstractProblem {
 
@@ -27,16 +25,38 @@ public class Problem extends AbstractProblem {
 
     @Override
     public void evaluate(Solution solution) {
-        double[] doubles = EncodingUtils.getReal(solution);
         double[] metricNumber = new double[numberOfObjectives];
 
+        LinkedList<ClassCourse> solutionClassCourses = solutionToTimetable(solution, classCourses, classrooms);
+
+        Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
+
+        int itr = 0;
+
+        for (MetricCalculator me : TimetableEvaluationService.METRICSLIST) {
+            for(Map.Entry<String, Float> entry: stringFloatHashtable.entrySet()){
+                if (me.getClass().getSimpleName().equals(entry.getKey())){
+                    metricNumber[itr] = entry.getValue();
+                    itr++;
+                    break;
+                }
+            }
+        }
+        ArrayList<Double> objectivesDoubleList = new ArrayList<>();
+        stringFloatHashtable.values().forEach(aFloat -> objectivesDoubleList.add((double)aFloat));
+        double[] arr = objectivesDoubleList.stream().mapToDouble(Double::doubleValue).toArray();
+        solution.setObjectives(arr);
+    }
+
+    public static  LinkedList<ClassCourse> solutionToTimetable(Solution solution, List<ClassCourse> inputClasses, List<Classroom> classrooms) {
         LinkedList<ClassCourse> classCourses = new LinkedList<>();
+        double[] doubles = EncodingUtils.getReal(solution);
         for(int i = 0; i < doubles.length; i++)
         {
             try
             {
-                ClassCourse classCourse = this.classCourses.get(i);
-                Classroom classroom = this.classrooms.get((int)doubles[i]);
+                ClassCourse classCourse = inputClasses.get(i);
+                Classroom classroom = classrooms.get((int)doubles[i]);
                 classCourse.setClassroom(classroom);
                 classCourses.add(classCourse);
             }catch(Exception e) {
@@ -45,17 +65,7 @@ public class Problem extends AbstractProblem {
                 classCourses.add(classCourse);
             }
         }
-
-        Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(classCourses, this.classrooms);
-
-        int itr = 0;
-        for(Map.Entry<String, Float> entry: stringFloatHashtable.entrySet())
-        {
-            metricNumber[itr] = entry.getValue();
-            itr++;
-        }
-
-        solution.setObjectives(metricNumber);
+        return classCourses;
     }
 
     @Override
