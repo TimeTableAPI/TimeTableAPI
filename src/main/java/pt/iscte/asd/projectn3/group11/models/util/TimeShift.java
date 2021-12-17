@@ -1,5 +1,11 @@
 package pt.iscte.asd.projectn3.group11.models.util;
 
+/**
+ * <h1>TimeShift</h1>
+ * <p>The TimeShift class is an enum class containing all the timeSHifts or TimeSlots in a day </p>
+ * <p>Each slot lasts for 30 minutes and can correspond to a classCourse or part of a ClassCourse</p>
+ * @see pt.iscte.asd.projectn3.group11.models.ClassCourse
+ */
 public enum TimeShift {
     NOTHING(0),
     HOUR_07H00(1),
@@ -49,6 +55,10 @@ public enum TimeShift {
         return values[id];
     }
 
+    /**
+     * <p>Gets ID</p>
+     * @return {@link Integer} id
+     */
     public int getId() {
         return id;
     }
@@ -72,6 +82,13 @@ public enum TimeShift {
         }
     }
 
+    /**
+     * <p>Converts a String into a {@link TimeShift}</p>
+     * <p>
+     * @param timeString {@link String}
+     * @return {@link TimeShift}
+     * </p>
+     */
     public static TimeShift stringToClassTime(String timeString)
     {
         if(timeString.isEmpty()) return NOTHING;

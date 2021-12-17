@@ -1,11 +1,14 @@
 package pt.iscte.asd.projectn3.group11.models;
 
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <h1>ClassRoom</h1>
  * <p>Class used to hold all the proprieties belonging to the classRoom of a School or University </p>
+ * <p>Can be Dummy if all the variables are empty</p>
  * <p>To hold all of these proprieties the class has some {@link String} and {@link Integer} final variables like the ones below</p>
  * <ul>
  *     <li>{@link String} Building</li>
@@ -23,6 +26,7 @@ import java.util.List;
  * </ul>
  *
  * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
+ * @see Classroom#isDummy()
  */
 public class Classroom {
 
@@ -64,7 +68,7 @@ public class Classroom {
             "Átrio",
     };
     public static final int NUMBER_OF_CHARACTERISTICS = 30;
-    public static final String[] CHARACTERISTICS_LIST = new String[]{"Anfiteatro aulas", "Apoio técnico eventos", "Arq 1", "Arq 2", "Arq 3", "Arq 4", "Arq 5", "Arq 6", "Arq 9", "BYOD (Bring Your Own Device)", "Focus Group", "Horário sala visível portal público", "Laboratório de Arquitectura de Computadores I", "Laboratório de Arquitectura de Computadores II", "Laboratório de Bases de Engenharia", "Laboratório de Electrónica", "Laboratório de Informática", "Laboratório de Jornalismo", "Laboratório de Redes de Computadores I", "Laboratório de Redes de Computadores II", "Laboratório de Telecomunicações", "Sala Aulas Mestrado", "Sala Aulas Mestrado Plus", "Sala NEE", "Sala Provas", "Sala Reunião", "Sala de Arquitectura", "Sala de Aulas normal", "videoconferencia", "Átrio"};
+    public static final String[] CHARACTERISTICS_LIST = {"Anfiteatro aulas", "Apoio técnico eventos", "Arq 1", "Arq 2", "Arq 3", "Arq 4", "Arq 5", "Arq 6", "Arq 9", "BYOD (Bring Your Own Device)", "Focus Group", "Horário sala visível portal público", "Laboratório de Arquitectura de Computadores I", "Laboratório de Arquitectura de Computadores II", "Laboratório de Bases de Engenharia", "Laboratório de Electrónica", "Laboratório de Informática", "Laboratório de Jornalismo", "Laboratório de Redes de Computadores I", "Laboratório de Redes de Computadores II", "Laboratório de Telecomunicações", "Sala Aulas Mestrado", "Sala Aulas Mestrado Plus", "Sala NEE", "Sala Provas", "Sala Reunião", "Sala de Arquitectura", "Sala de Aulas normal", "videoconferencia", "Átrio"};
 
     //region MEMBERS
 
@@ -75,7 +79,7 @@ public class Classroom {
     private final int examCapacity;
     private final int numberCharacteristics;
 
-    public Classroom(List<Boolean> characteristics, String building, String classroomName, int normalCapacity, int examCapacity, int numberCharacteristics) {
+    private Classroom(List<Boolean> characteristics, String building, String classroomName, int normalCapacity, int examCapacity, int numberCharacteristics) {
 
         this.characteristics = new LinkedList<>(characteristics);
         this.building = building;
@@ -182,7 +186,7 @@ public class Classroom {
      * @param characteristics a List of Strings that represents a characteristic the classRoom may have, like if it is a Lab for example, the full list can be seen here {@link Classroom#CHARACTERISTICS_LIST}
      * @return <b>true</b> if classRoom fulfills the characteristic and <b>false</b> if it doesn't
      */
-    public final boolean hasALLCharacteristics(final List<String> characteristics) throws IllegalArgumentException {
+    public final boolean hasALLCharacteristics(final List<String> characteristics) {
         boolean result = true;
         for (String characteristic : characteristics) {
             result = result && this.hasCharacteristic(characteristic);
@@ -224,6 +228,21 @@ public class Classroom {
         return this.classroomName.equals(name);
     }
 
+    /**
+     * <p>Method to parse the characteristics list in the Classroom form a List<bool> into a List<String> and return it.</p>
+     *
+     * @return List of characteristics the ClassRoom has
+     * */
+    public final List<String> getCharacteristicsToString(){
+        LinkedList<String> characteristisStringList = new LinkedList<>();
+        for (int i = 0; i< characteristics.size(); i++){
+            if(characteristics.get(i)){
+                characteristisStringList.add(CHARACTERISTICS_LIST[i]);
+            }
+        }
+        return characteristisStringList;
+    }
+
     @Override
     public final String toString() {
         return "ClassRoom{" +
@@ -236,6 +255,44 @@ public class Classroom {
                 '}';
     }
     //endregion
+
+    //region EQUALS_HASH
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Classroom classroom = (Classroom) o;
+        return getNormalCapacity() == classroom.getNormalCapacity() &&
+                getNumberCharacteristics() == classroom.getNumberCharacteristics() &&
+                Objects.equals(getCharacteristics(), classroom.getCharacteristics()) &&
+                Objects.equals(getBuilding(), classroom.getBuilding()) &&
+                Objects.equals(getClassroomName(), classroom.getClassroomName()
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getCharacteristics(),
+                getBuilding(),
+                getClassroomName(),
+                getNormalCapacity(),
+                getNumberCharacteristics()
+        );
+    }
+
+    /**
+     * <p>Checks if Classroom is Dummy</p>
+     * <p>Dummy means that all the vraiables are empty</p>
+     * @return boolean
+     */
+	public boolean isDummy() {
+        if(building == null ||classroomName == null || characteristics == null) return true;
+        return building.isEmpty() || classroomName.isEmpty() || normalCapacity <0 || examCapacity <0 || characteristics.isEmpty() ;
+	}
+	//endregion
+
+
 
     public static class Builder {
         private LinkedList<Boolean> characteristics;

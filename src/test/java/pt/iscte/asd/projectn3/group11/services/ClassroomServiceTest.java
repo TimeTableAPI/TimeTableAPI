@@ -2,7 +2,7 @@ package pt.iscte.asd.projectn3.group11.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pt.iscte.asd.projectn3.group11.loaders.ClassroomLoader;
+import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
 import java.util.LinkedList;
@@ -16,7 +16,7 @@ class ClassroomServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		classRoomsTestList = ClassroomLoader.load(SAMPLE_CSV_FILE_CLASS_PATH);
+		classRoomsTestList = ClassroomLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
 	}
 
 	@Test

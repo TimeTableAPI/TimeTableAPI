@@ -1,32 +1,80 @@
 package pt.iscte.asd.projectn3.group11.models;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.multipart.MultipartFile;
+@EntityScan
 public class FormResponse {
 
-    private String classCourse;
-    private String classRoom;
+    //region MEMBERS
+    private MultipartFile classCourse;
+    private MultipartFile classroom;
+    private String algorithm;
+    //endregion
 
+    //region CONSTRUCTORS
     public FormResponse() {
         super();
     }
 
-    public FormResponse(String classcourse, String classRoom) {
-        this.classCourse = classcourse;
-        this.classRoom = classRoom;
+    public FormResponse(MultipartFile classCourse, MultipartFile classroom, String algorithm) {
+        this.classCourse = classCourse;
+        this.classroom = classroom;
+        this.algorithm = algorithm;
     }
+    //endregion
 
-    public String getClassCourse() {
+    //region SETTERS
+    /**
+     * Gets class course MultipartFile
+     * @return class course MultipartFile
+     */
+    public MultipartFile getClassCourse() {
         return classCourse;
     }
 
-    public void setClassCourse(String classCourse) {
+    /**
+     * Sets class course MultipartFile
+     * @param classCourse Class course MultipartFile to set
+     */
+    public void setClassCourse(MultipartFile classCourse) {
         this.classCourse = classCourse;
     }
+    //endregion
 
-    public String getClassRoom() {
-        return classRoom;
+    //region GETTERS
+    /**
+     * Gets classroom MultipartFile
+     * @return classroom MultipartFile
+     */
+    public MultipartFile getClassroom() {
+        return classroom;
     }
 
-    public void setClassRoom(String classRoom) {
-        this.classRoom = classRoom;
+    /**
+     * Sets classroom MultipartFile
+     * @param classroom Classroom string to set
+     */
+    public void setClassroom(MultipartFile classroom) {
+        this.classroom = classroom;
     }
+
+    /**
+     *
+     * @return
+     */
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    /**
+     *
+     * @param algorithm String
+     */
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
+    }
+
+
+    //endregion
 }
