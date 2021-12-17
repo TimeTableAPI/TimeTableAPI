@@ -3,7 +3,36 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import java.util.LinkedList;
 import java.util.List;
-//TODO doc ClassCourse
+import java.util.Objects;
+
+/**
+ * <h1>ClassCourse</h1>
+ * <p>The classCourse class represents a class in a School</p>
+ * <p>Has the following nested Classes</p>
+ * <ul>
+ *     <li>{@link ClassCourse.Builder}</li>
+ *     <li>{@link ClassCourse.ClassCourseJson}</li>
+ * </ul>
+ * <p>To hold all of these proprieties the class holds the following variables</p>
+ * <ul>
+ *     <li>{@link LinkedList<String>} courses </li>
+ *     <li>{@link LinkedList<String>} units </li>
+ *     <li>{@link String} shift </li>
+ *     <li>{@link Integer} numberOfStudentsInClass </li>
+ *     <li>{@link Integer} shiftsWithFreeSpots </li>
+ *     <li>{@link Integer} shiftsWithMoreThanTheCapacity </li>
+ *     <li>{@link String} weekday </li>
+ *     <li>{@link TimeShift} beginningHour </li>
+ *     <li>{@link TimeShift} endHour </li>
+ *     <li>{@link Date} date </li>
+ *     <li>{@link LinkedList<String>} askedCharacteristics </li>
+ *     <li>{@link LinkedList<String>} classesOfCourse </li>
+ *     <li>{@link Integer} capacity </li>
+ *     <li>{@link LinkedList<String>} realCharacteristics </li>
+ *     <li>{@link Classroom} classroom </li>
+ * </ul>
+ *
+ */
 public class ClassCourse {
 
     public static final String[] HEADER = {
@@ -19,9 +48,11 @@ public class ClassCourse {
             "Fim",
             "Dia",
             "Características da sala pedida para a aula",
-            "Sala da aula,Lotação",
+            "Sala da aula",
+            "Lotação",
             "Características reais da sala",
     };
+
     //region MEMBERS
 
     private final LinkedList<String> courses;
@@ -36,8 +67,8 @@ public class ClassCourse {
     private final Date date;
     private final LinkedList<String> askedCharacteristics;
     private final LinkedList<String> classesOfCourse;
-    private final int capacity;
-    private final LinkedList<String> realCharacteristics;
+    private int capacity;
+    private LinkedList<String> realCharacteristics;
 
     private Classroom classroom;
 
@@ -63,10 +94,23 @@ public class ClassCourse {
         this.classroom = builder.classroom;
     }
 
+    public boolean hasClassRoomAllocated() {
+        try{
+        return (capacity > 0 || realCharacteristics.size() > 1  || !classroom.isDummy()) &&  (classroom != null);
+        }catch (NullPointerException e ){
+            //e.printStackTrace();
+            return false;
+        }
+    }
+
     //endregion
 
     //region BUILDER
 
+    /**
+     * <h2>ClassCourse.Builder</h2>
+     * <p>Simple builder class for {@link ClassCourse}</p>
+     */
     public static class Builder {
         private LinkedList<String> courses;
         private LinkedList<String> units;
@@ -164,6 +208,73 @@ public class ClassCourse {
         }
     }
 
+    //endregion
+
+    //region JSONTYPE
+
+    /**
+     * <h2>ClassCourse.ClassCourseJson</h2>
+     * <p>The ClassCourseJson class is a mere copy of {@link ClassCourse} but all of its variables are {@link String}.</p>
+     * <p>This is to more easily transfer all of the information into our frontEnd, kinda like a JSON</p>
+     */
+    public static class ClassCourseJson{
+        public final LinkedList<String> courses;
+        public final LinkedList<String> units;
+        public final String shift;
+        public final String numberOfStudentsInClass;
+        public final String shiftsWithFreeSpots;
+        public final String shiftsWithMoreThanTheCapacity;
+        public final String weekday;
+        public final String beginningHour;
+        public final String endHour;
+        public final String date;
+        public final LinkedList<String> askedCharacteristics;
+        public final LinkedList<String> classesOfCourse;
+        public final String capacity;
+        public final LinkedList<String> realCharacteristics;
+
+        public String classroom;
+
+
+        public ClassCourseJson(LinkedList<String> courses, LinkedList<String> units, String shift, int numberOfStudentsInClass, int shiftsWithFreeSpots, int shiftsWithMoreThanTheCapacity, String weekday, TimeShift beginningHour, TimeShift endHour, Date date, LinkedList<String> askedCharacteristics, LinkedList<String> classesOfCourse, int capacity, LinkedList<String> realCharacteristics, Classroom classroom) {
+            this.courses = courses;
+            this.units = units;
+            this.shift = shift;
+            this.numberOfStudentsInClass = String.valueOf(numberOfStudentsInClass);
+            this.shiftsWithFreeSpots = String.valueOf(shiftsWithFreeSpots);
+            this.shiftsWithMoreThanTheCapacity = String.valueOf(shiftsWithMoreThanTheCapacity);
+            this.weekday = weekday;
+            this.beginningHour = beginningHour.toString();
+            this.endHour = endHour.toString();
+            this.date = date.toString();
+            this.askedCharacteristics = askedCharacteristics;
+            this.classesOfCourse = classesOfCourse;
+            this.classroom = (classroom != null)? classroom.getBuilding()+","+classroom.getClassroomName() : "";
+            this.capacity = String.valueOf(capacity);
+            this.realCharacteristics = realCharacteristics;
+
+        }
+    }
+
+    public ClassCourseJson toJsonType() {
+        return new ClassCourseJson(
+                courses,
+                units,
+                shift,
+                numberOfStudentsInClass,
+                shiftsWithFreeSpots,
+                shiftsWithMoreThanTheCapacity,
+                weekday,
+                beginningHour,
+                endHour,
+                date,
+                askedCharacteristics,
+                classesOfCourse,
+                capacity,
+                realCharacteristics,
+                classroom
+        );
+    }
     //endregion
 
     //region GETTERS
@@ -292,14 +403,25 @@ public class ClassCourse {
 
     //region SETTERS
 
+    /**
+     * <p>Sets the classroom.</p>
+     * <p>Changes the capacity and realCharacteristics of the {@link ClassCourse} object</p>
+     * <p>@param classroom classroom to set</p>
+     */
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
+        capacity = classroom.getNormalCapacity();
+        realCharacteristics = (LinkedList<String>) classroom.getCharacteristicsToString();
     }
 
     //endregion
 
-    //region TOSTRINGS
+    //region TO_STRINGS
 
+    /**
+     * <p>Simple toString implementation</p>
+     * @return {@link String}
+     */
     @Override
     public final String toString() {
         return "Class{" +
@@ -321,7 +443,11 @@ public class ClassCourse {
                 '}';
     }
 
-    public final String toCSVString() {
+    /**
+     * Transforms Class course to csv file entry.
+     * @return string of csv file entry.
+     */
+    public final String toCSVEntry() {
         return "\""+String.join(", ",courses) +"\""+
                 ",\"" + String.join(", " , units) +"\""+
                 "," + shift + "" +
@@ -334,11 +460,60 @@ public class ClassCourse {
                 "," + endHour +
                 "," + date +
                 ",\"" + String.join(", ",askedCharacteristics) +"\""+
-                "," + ((classroom != null)?  classroom.getClassroomName(): "") +
+                "," + ((classroom != null)?  "\""+classroom.getBuilding()+","+classroom.getClassroomName()+"\"": "") +
                 "," + capacity +
                 ",\"" + String.join(", ",realCharacteristics) +"\""
                 ;
     }
     //endregion
+
+    //region EQUALS_HASH
+    /**
+     * <p>Equals method for Comparing ClassCourses</p>
+     * <p>Uses all of the variables minus the startTime and EndTime. This way two classes back to back are considered equal</p>
+     *
+     * */
+    @Override
+    public boolean equals(Object o) {
+        //if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassCourse that = (ClassCourse) o;
+        return getNumberOfStudentsInClass() == that.getNumberOfStudentsInClass() &&
+                getShiftsWithFreeSpots() == that.getShiftsWithFreeSpots() &&
+                getShiftsWithMoreThanTheCapacity() == that.getShiftsWithMoreThanTheCapacity() &&
+                getUnits().equals(that.getUnits()) && getShift().equals(that.getShift()) &&
+                getWeekday().equals(that.getWeekday()) && getDate().equals(that.getDate()) &&
+                getAskedCharacteristics().equals(that.getAskedCharacteristics()) &&
+                getClassesOfCourse().equals(that.getClassesOfCourse()
+                );
+    }
+
+    /**
+     * <p>Simple Hashcode implementation</p>
+     * <p>@return {@link Integer} value for the Hash</p>
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getCourses(),
+                getUnits(),
+                getShift(),
+                getNumberOfStudentsInClass(),
+                getShiftsWithFreeSpots(),
+                getShiftsWithMoreThanTheCapacity(),
+                getWeekday(),
+                getDate(),
+                getBeginningHour(),
+                getEndHour(),
+                getAskedCharacteristics(),
+                getClassesOfCourse(),
+                getClassroom(),
+                getCapacity(),
+                getRealCharacteristics()
+        );
+    }
+    //endregion
+
 
 }
