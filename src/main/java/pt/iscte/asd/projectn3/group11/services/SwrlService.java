@@ -42,8 +42,8 @@ public class SwrlService {
             System.out.println("Result: ");
             List<String> results = new LinkedList<>();
             while (result.next()) {
-                System.out.println(result.getNamedIndividual("alg").getShortName());
-                results.add(result.getNamedIndividual("alg").getShortName());
+                System.out.println(result.getNamedIndividual("alg").getShortName().substring(1));
+                results.add(result.getNamedIndividual("alg").getShortName().substring(1));
             }
 
             return results;

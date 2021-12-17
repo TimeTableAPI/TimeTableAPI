@@ -12,7 +12,7 @@
 
     <groupId>pt.iscte.asd.projectn3.group11</groupId>
     <artifactId>ADS_Project_3</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.2</version>
     <build>
         <plugins>
             <plugin>
@@ -87,6 +87,11 @@
         <dependency>
             <groupId>edu.stanford.swrl</groupId>
             <artifactId>swrlapi</artifactId>
+            <version>2.0.11</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.swrl</groupId>
+            <artifactId>swrlapi-drools-engine</artifactId>
             <version>2.0.11</version>
         </dependency>
 
