@@ -81,7 +81,6 @@ public class ClassCourseController {
                 fileClasses,
                 fileClassrooms,
                 attributes,
-                model,
                 algorithm
         );
     }
