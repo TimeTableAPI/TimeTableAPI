@@ -6,12 +6,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
@@ -113,11 +115,18 @@ public class ClassCourseControllerHandler {
      * @param request
      * @param fileClasses
      * @param fileClassrooms
+     * @param algorithm
      * @param attributes
      * @param model
      * @return
      */
-    public static final String timeTableRequestHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile fileClasses, MultipartFile fileClassrooms, RedirectAttributes attributes, Model model, String algorithm)
+    public static final String timeTableRequestHandler(HttpServletResponse response,
+                                                       HttpServletRequest request,
+                                                       MultipartFile fileClasses,
+                                                       MultipartFile fileClassrooms,
+                                                       RedirectAttributes attributes,
+                                                       Model model,
+                                                       String algorithm)
     {
         // check if file is empty
         if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
@@ -127,6 +136,9 @@ public class ClassCourseControllerHandler {
 
         // normalize the file path
         try {
+            if(algorithm == null || algorithm.isEmpty()){
+                algorithm = BASIC;
+            }
             attributes.addFlashAttribute("message", "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
 
             LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);

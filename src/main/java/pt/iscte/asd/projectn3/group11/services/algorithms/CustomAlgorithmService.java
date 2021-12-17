@@ -96,7 +96,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
         LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load("src/main/resources/ADS - Exemplo de horario do 1o Semestre.csv");
 
         Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
-        CustomAlgorithmService customAlgorithmService = new CustomAlgorithmService("NSGAII",2);
+        CustomAlgorithmService customAlgorithmService = new CustomAlgorithmService("GDE3",10);
         customAlgorithmService.execute(loadedClassCourses,loadedClassRooms);
 
 

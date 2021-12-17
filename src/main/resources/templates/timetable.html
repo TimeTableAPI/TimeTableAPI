@@ -37,12 +37,22 @@
 <div id="requestSection" style="display:none">
     <form method="post" th:action="@{/timetable/upload}" enctype="multipart/form-data">
         <div>
-            <p>
-                Classes <input type="file" name="file_classes"/>
-            </p>
-            <p>
-                Classrooms <input type="file" name="file_classrooms"/>
-            </p>
+            <div><label for="file_classes">Classes:</label>
+                 <input type="file" name="file_classes" id="file_classes"/>
+                <label for="file_classrooms">Classrooms:</label>
+                 <input type="file" name="file_classrooms" id="file_classrooms"/>
+                <label for="algorithm">Algorithm:</label>
+                 <input type="text" name="algorithm" id="algorithm" value="basic"/>
+<!--
+                <label for="algorithm">Algorithm:</label>
+                <select name=”algorithm” id="algorithm">
+                    <option value=”basic” >Basic </option>
+                    <option value=”NSGAII” >NSGAII</option>
+                    <option value=”NSGAIII” >NSGAIII</option>
+                    <option value=”GDE3”  >GDE3</option>
+                </select>
+                -->
+            </div>
             <button type="submit">Upload File</button>
         </div>
     </form>
