@@ -27,8 +27,10 @@ import java.util.concurrent.ArrayBlockingQueue;
  * </p>
  */
 public class TimetableEvaluationService {
-
-	public static final LinkedList<MetricCalculator> METRICSLIST = new LinkedList<MetricCalculator>(Arrays.asList(
+	/**
+	 * <p>List with all the implemented metrics</p>
+	 */
+	public static final LinkedList<MetricCalculator> ALLMETRICSLIST = new LinkedList<MetricCalculator>(Arrays.asList(
 			new AllocationMetric(),
 			new GoodCharacteristicsMetric(),
 			new EnoughCapacityMetric(),
@@ -41,6 +43,7 @@ public class TimetableEvaluationService {
 
 	/**
 	 *<p>Method to evaluate The given Timetable</p>
+	 * <p> Uses the deault list with all the metrics {@link TimetableEvaluationService#ALLMETRICSLIST}</p>
 	 * <p>
 	 * @param timetableList List<ClassCourse> of {@link ClassCourse}
 	 * @param classroomsList List<Classroom> of {@link Classroom}
@@ -50,12 +53,31 @@ public class TimetableEvaluationService {
 	 * @see Classroom
 	 * </p>
 	 */
-	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> timetableList, List<Classroom> classroomsList){
+	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> timetableList,
+	                                                         List<Classroom> classroomsList){
+		return evaluateTimetable(timetableList,classroomsList, ALLMETRICSLIST);
+
+	}
+		/**
+		 *<p>Method to evaluate The given Timetable</p>
+		 * <p>
+		 * @param timetableList List<ClassCourse> of {@link ClassCourse}
+		 * @param classroomsList List<Classroom> of {@link Classroom}
+		 * @param metricsList List<MetricCalculator> of {@link MetricCalculator}
+		 * @return Hashtable<String, Float> of {@link String} and {@link Float}
+		 *
+		 * @see ClassCourse
+		 * @see Classroom
+		 * </p>
+		 */
+	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> timetableList,
+	                                                         List<Classroom> classroomsList,
+	                                                         List<MetricCalculator> metricsList){
 		List<MetricResult> results = new LinkedList<>();
-		Queue<MetricResult> globalQueue = new ArrayBlockingQueue<MetricResult>(METRICSLIST.size());
+		Queue<MetricResult> globalQueue = new ArrayBlockingQueue<MetricResult>(metricsList.size());
 		List<Thread> threadList = new LinkedList<>();
 
-		for(MetricCalculator metric : METRICSLIST){
+		for(MetricCalculator metric : metricsList){
 			Thread t1 = new Thread(() -> {
 				float metricresult = metric.evaluate(timetableList, classroomsList);
 				String metricName = metric.getClass().getSimpleName();

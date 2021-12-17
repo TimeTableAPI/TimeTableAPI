@@ -29,7 +29,7 @@ public class AllocationMetric extends MetricCalculator{
 	}
 
 	@Override
-	float getObjective() {
+	public float getObjective() {
 		return objective;
 	}
 }

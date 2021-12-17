@@ -56,7 +56,7 @@ public class OverbookingMetric  extends   MetricCalculator{
 	}
 
 	@Override
-	float getObjective() {
+	public float getObjective() {
 		return objective;
 	}
 }

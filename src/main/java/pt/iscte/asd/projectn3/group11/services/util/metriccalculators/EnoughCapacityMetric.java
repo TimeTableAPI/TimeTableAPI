@@ -31,4 +31,10 @@ public class EnoughCapacityMetric extends MetricCalculator {
 		}
 		return totalClassCoursesWithEnoughCapacity/totalClassCoursesWithClassroom;
 	}
+
+	@Override
+	public float getObjective() {
+		float objective = 1f;
+		return objective;
+	}
 }

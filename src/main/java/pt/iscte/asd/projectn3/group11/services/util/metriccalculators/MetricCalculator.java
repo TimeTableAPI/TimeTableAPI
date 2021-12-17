@@ -21,9 +21,13 @@ public abstract class MetricCalculator {
 	 * @return float value with the score of the implemented metric
 	 *
 	 * */
-	abstract float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList);
+	public abstract float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList);
 
-
-	abstract float getObjective();
+	//TODO
+	/**
+	 *
+	 * @return
+	 */
+	public abstract float getObjective();
 }
 

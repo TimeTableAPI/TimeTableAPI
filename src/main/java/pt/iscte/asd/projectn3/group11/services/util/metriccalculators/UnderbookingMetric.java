@@ -16,7 +16,7 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
 public class UnderbookingMetric extends MetricCalculator{
 	private static float objective = 0f;
 	@Override
-	float getObjective() {
+	public float getObjective() {
 		return objective;
 	}
 
