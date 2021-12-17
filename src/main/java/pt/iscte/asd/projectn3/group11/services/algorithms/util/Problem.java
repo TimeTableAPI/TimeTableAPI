@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.services.algorithms;
+package pt.iscte.asd.projectn3.group11.services.algorithms.util;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
