@@ -6,6 +6,7 @@ import org.moeaframework.core.Solution;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
+import pt.iscte.asd.projectn3.group11.services.algorithms.util.Problem;
 
 import java.util.List;
 
