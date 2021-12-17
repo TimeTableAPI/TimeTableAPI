@@ -20,6 +20,11 @@ public class CustomAlgorithmService implements IAlgorithmService {
         this.maxEvaluation = maxEvaluation;
     }
 
+    /**
+     * Executes the algorithm.
+     * @param classes
+     * @param classrooms
+     */
     @Override
     public void execute(List<ClassCourse> classes, List<Classroom> classrooms) {
         //configure and run this experiment

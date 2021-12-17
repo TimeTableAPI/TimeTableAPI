@@ -6,7 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
@@ -18,6 +17,8 @@ import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
+import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
+import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 
@@ -31,6 +32,8 @@ import java.util.*;
 
 public class ClassCourseControllerHandler {
 
+    private static final String BASIC = "basic";
+    private static final int MAX_EVALUATION = 3;
     //region HANDLERS
 
     /**
@@ -114,7 +117,7 @@ public class ClassCourseControllerHandler {
      * @param model
      * @return
      */
-    public static final String timeTableUploadHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile fileClasses, MultipartFile fileClassrooms, RedirectAttributes attributes, Model model)
+    public static final String timeTableRequestHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile fileClasses, MultipartFile fileClassrooms, RedirectAttributes attributes, Model model, String algorithm)
     {
         // check if file is empty
         if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
@@ -128,7 +131,13 @@ public class ClassCourseControllerHandler {
 
             LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
             LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
-            Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
+
+            IAlgorithmService iAlgorithmService;
+
+            if(algorithm.equals(BASIC)) iAlgorithmService = new BasicAlgorithmService();
+            else iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
+
+            Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
             context.computeSolutionWithAlgorithm();
 
             UUID uuid = CookieHandlerService.getUUID(request, response);
