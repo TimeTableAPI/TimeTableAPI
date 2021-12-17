@@ -37,12 +37,14 @@ public class FormController {
     //endregion
 
     //region FORM_UPLOAD
-    /**
+    /*
+*
      * Submits form
      * @param formResponse form response
      * @param model model
      * @return html
      */
+    /*
     @PostMapping(value = FORM_PATH)
     public String submitForm(@ModelAttribute(name = "response") FormResponse formResponse, Model model) {
         String classCourse = formResponse.getClassCourse();
@@ -51,7 +53,7 @@ public class FormController {
         model.addAttribute("classRoom", classRoom);
         return "form";
     }
-
+*/
     /**
      * Submits file form
      * @param file file
