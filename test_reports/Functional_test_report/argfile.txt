@@ -1,0 +1,10 @@
+--outputdir
+C:\Users\SAROJ~1.DUW\AppData\Local\Temp\RIDEhk00lzzn.d
+-C
+off
+-W
+203
+--suite
+Timetable Generator.TestSuite Timetable Generator
+--test
+Timetable Generator.TestSuite Timetable Generator.TEST_UPLOAD
