@@ -14,8 +14,6 @@ import java.util.*;
  */
 public class ClassroomService {
 
-	public static final int INFINITY = 999999999;
-
 	//region GETTERS
 	/**
 	 * Getter for specified capacity
@@ -384,8 +382,8 @@ public class ClassroomService {
 		}
 
 		public static final class Builder {
-			int capacity = INFINITY;
-			int examCapacity = INFINITY;
+			int capacity = Integer.MAX_VALUE;
+			int examCapacity = Integer.MAX_VALUE;
 			List<String> characteristics = new ArrayList<>();
 			List<String> buildings = new ArrayList<>();
 
