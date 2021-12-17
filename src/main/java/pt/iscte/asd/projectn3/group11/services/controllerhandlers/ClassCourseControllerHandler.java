@@ -17,6 +17,7 @@ import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
+import pt.iscte.asd.projectn3.group11.services.SwrlService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
@@ -35,6 +36,7 @@ import java.util.*;
 public class ClassCourseControllerHandler {
 
     private static final String BASIC = "basic";
+    private static final String OWL = "owl";
     private static final int MAX_EVALUATION = 3;
     //region HANDLERS
 
@@ -146,8 +148,20 @@ public class ClassCourseControllerHandler {
 
             IAlgorithmService iAlgorithmService;
 
-            if(algorithm.equals(BASIC)) iAlgorithmService = new BasicAlgorithmService();
-            else iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
+            if(algorithm.equals(BASIC)) {
+                iAlgorithmService = new BasicAlgorithmService();
+            }
+            else if (algorithm.equals(OWL)) {
+                List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
+                if(querryResult == null) {
+                    iAlgorithmService = new BasicAlgorithmService();
+                }else {
+                    iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
+                }
+            }
+            else {
+                iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
+            }
 
             Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
             context.computeSolutionWithAlgorithm();

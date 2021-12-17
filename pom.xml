@@ -83,5 +83,14 @@
             <version>2.13</version>
         </dependency>
         <!--endregion -->
+        <!--region owl -->
+        <dependency>
+            <groupId>edu.stanford.swrl</groupId>
+            <artifactId>swrlapi</artifactId>
+            <version>2.0.11</version>
+            <type>bundle</type>
+        </dependency>
+
+        <!--endregion -->
     </dependencies>
 </project>
