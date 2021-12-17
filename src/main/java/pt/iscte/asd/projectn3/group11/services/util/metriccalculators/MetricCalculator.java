@@ -22,5 +22,11 @@ public interface MetricCalculator {
 	 *
 	 * */
 	float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList);
+
+	/**
+	 *
+	 * @return
+	 */
+	public float getObjective();
 }
 
