@@ -127,7 +127,6 @@ public class ClassCourseControllerHandler {
                                                        MultipartFile fileClasses,
                                                        MultipartFile fileClassrooms,
                                                        RedirectAttributes attributes,
-                                                       Model model,
                                                        String algorithm)
     {
         // check if file is empty
