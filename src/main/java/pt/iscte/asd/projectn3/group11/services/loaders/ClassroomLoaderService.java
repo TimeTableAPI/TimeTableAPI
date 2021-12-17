@@ -94,8 +94,6 @@ public class ClassroomLoaderService {
         final String[] headers = csvReader.readNext();
 
         String[] nextRecord;
-        System.out.println("ClassRoomLoad.main::Arrays are equal, loading...");
-
         while ((nextRecord = csvReader.readNext()) != null) {
             final String building = nextRecord[0];
             final String classroomName = nextRecord[1];

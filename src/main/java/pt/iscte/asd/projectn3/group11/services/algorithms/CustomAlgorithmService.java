@@ -14,10 +14,7 @@ import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.MetricCalculator;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class CustomAlgorithmService implements IAlgorithmService {
 
@@ -25,7 +22,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
     private final int maxEvaluation;
 
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
-        this.algorithmName = algorithmName;
+        this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;
     }
 
