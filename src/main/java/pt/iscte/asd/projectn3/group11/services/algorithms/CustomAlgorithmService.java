@@ -26,38 +26,45 @@ public class CustomAlgorithmService implements IAlgorithmService {
     @Override
     public void execute(List<ClassCourse> inputClasses, List<Classroom> classrooms) {
         this.isRunning = true;
-        System.out.println(algorithmName + "::EXECUTE");
-        LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
+        try
+        {
+            System.out.println(algorithmName + "::EXECUTE");
+            LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
-        //configure and run this experiment
-        NondominatedPopulation result = new Executor()
-                .withProblemClass(Problem.class,classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
-                .withAlgorithm(algorithmName)
-                .withMaxEvaluations(maxEvaluation)
-                .run();
+            //configure and run this experiment
+            NondominatedPopulation result = new Executor()
+                    .withProblemClass(Problem.class,classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
+                    .withAlgorithm(algorithmName)
+                    .withMaxEvaluations(maxEvaluation)
+                    .run();
 
-        System.out.println(result);
-        //display the results
-        System.out.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n");
-        for (Solution solution : result) {
-            System.out.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
-                    solution.getObjective(0),
-                    solution.getObjective(1),
-                    solution.getObjective(2),
-                    solution.getObjective(3),
-                    solution.getObjective(4),
-                    solution.getObjective(5),
-                    solution.getObjective(6),
-                    solution.getObjective(7)
-            );
+            System.out.println(result);
+            //display the results
+            System.out.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n");
+            for (Solution solution : result) {
+                System.out.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
+                        solution.getObjective(0),
+                        solution.getObjective(1),
+                        solution.getObjective(2),
+                        solution.getObjective(3),
+                        solution.getObjective(4),
+                        solution.getObjective(5),
+                        solution.getObjective(6),
+                        solution.getObjective(7)
+                );
+            }
+            final Solution bestSolution = getBestSolution(result);
+            final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
+
+            System.out.println(Arrays.toString(bestSolution.getObjectives()));
+            System.out.println(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
+            inputClasses = bestClassCourses;
         }
-        final Solution bestSolution = getBestSolution(result);
-        final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
+        finally
+        {
+            this.isRunning = false;
+        }
 
-        System.out.println(Arrays.toString(bestSolution.getObjectives()));
-        System.out.println(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
-        inputClasses = bestClassCourses;
-        this.isRunning = false;
     }
 
     @Override

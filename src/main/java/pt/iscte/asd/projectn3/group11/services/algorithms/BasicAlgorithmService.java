@@ -19,18 +19,24 @@ public class BasicAlgorithmService implements IAlgorithmService {
     @Override
     public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
         this.isRunning = true;
-        System.out.println("BASIC_ALGORITHM::EXECUTE");
+        try
+        {
+            System.out.println("BASIC_ALGORITHM::EXECUTE");
 
-        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
-        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
+            TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
+            TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
 
-        for( ClassCourse classCourse : classCourses){
-            final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
-            if(!hasClassRoomAllocated){
-                ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
+            for( ClassCourse classCourse : classCourses){
+                final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
+                if(!hasClassRoomAllocated){
+                    ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
+                }
             }
         }
-        this.isRunning = false;
+        finally
+        {
+            this.isRunning = false;
+        }
     }
 
     @Override
