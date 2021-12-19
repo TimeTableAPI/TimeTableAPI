@@ -10,13 +10,15 @@ import java.util.*;
 
 public class BasicAlgorithmService implements IAlgorithmService {
 
-    /**
-     * Executes the algorithm.
-     * @param classCourses
-     * @param classrooms
-     */
+    private boolean isRunning;
+
+    public BasicAlgorithmService() {
+        this.isRunning = false;
+    }
+
     @Override
     public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
+        this.isRunning = true;
         System.out.println("BASIC_ALGORITHM::EXECUTE");
 
         TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
@@ -28,6 +30,12 @@ public class BasicAlgorithmService implements IAlgorithmService {
                 ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
             }
         }
+        this.isRunning = false;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return this.isRunning;
     }
 
 }
