@@ -1,17 +1,12 @@
 package pt.iscte.asd.projectn3.group11.services.algorithms;
 
-import org.apache.commons.beanutils.LazyDynaMap;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
-import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.util.Problem;
-import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
-import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.MetricCalculator;
 
 import java.util.*;
@@ -20,19 +15,18 @@ public class CustomAlgorithmService implements IAlgorithmService {
 
     private final String algorithmName;
     private final int maxEvaluation;
+    private boolean isRunning;
 
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;
+        this.isRunning = false;
     }
 
-    /**
-     * Executes the algorithm.
-     * @param inputClasses
-     * @param classrooms
-     */
     @Override
     public void execute(List<ClassCourse> inputClasses, List<Classroom> classrooms) {
+        this.isRunning = true;
+        System.out.println(algorithmName + "::EXECUTE");
         LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
         //configure and run this experiment
@@ -58,11 +52,17 @@ public class CustomAlgorithmService implements IAlgorithmService {
             );
         }
         final Solution bestSolution = getBestSolution(result);
-        final LinkedList<ClassCourse> BestclassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
+        final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
 
         System.out.println(Arrays.toString(bestSolution.getObjectives()));
-        System.out.println(TimetableEvaluationService.evaluateTimetable(BestclassCourses,classrooms));
-        inputClasses = BestclassCourses;
+        System.out.println(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
+        inputClasses = bestClassCourses;
+        this.isRunning = false;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return this.isRunning;
     }
 
     private static Solution getBestSolution (NondominatedPopulation result){
@@ -70,7 +70,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
         List<double[]> listObjectives = new LinkedList<>();
         result.forEach(solution -> {
             listObjectives.add(solution.getObjectives());
-            distancesList.add(euclidianMetricDistance(solution.getObjectives(), TimetableEvaluationService.METRICSLIST));
+            distancesList.add(euclideanMetricDistance(solution.getObjectives(), TimetableEvaluationService.METRICSLIST));
         });
         Double minValue =  Collections.min(distancesList);
         final int bestIndex = distancesList.indexOf(minValue);
@@ -78,7 +78,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
         return result.get(bestIndex);
     }
 
-    private static double euclidianMetricDistance(double[] metricResults, List<MetricCalculator> metricCalculatorList){
+    private static double euclideanMetricDistance(double[] metricResults, List<MetricCalculator> metricCalculatorList){
         double value = 0;
         for(int i = 0 ; i< metricResults.length;i++){
             value += Math.pow(metricResults[i] - metricCalculatorList.get(i).getObjective() ,2);
@@ -87,19 +87,4 @@ public class CustomAlgorithmService implements IAlgorithmService {
         return Math.pow(value, 0.5);
     }
 
-
-    public static void main(String[] args) {
-        LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load("src/main/resources/ADS - Caracterizacao das salas.csv");
-        LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load("src/main/resources/ADS - Exemplo de horario do 1o Semestre.csv");
-
-        Context context = new Context(loadedClassCourses, loadedClassRooms, new BasicAlgorithmService());
-        CustomAlgorithmService customAlgorithmService = new CustomAlgorithmService("GDE3",10);
-        customAlgorithmService.execute(loadedClassCourses,loadedClassRooms);
-
-
-
-
-    }
-
-
-    }
+}
