@@ -10,24 +10,38 @@ import java.util.*;
 
 public class BasicAlgorithmService implements IAlgorithmService {
 
-    /**
-     * Executes the algorithm.
-     * @param classCourses
-     * @param classrooms
-     */
+    private boolean isRunning;
+
+    public BasicAlgorithmService() {
+        this.isRunning = false;
+    }
+
     @Override
     public void execute(List<ClassCourse> classCourses, List<Classroom> classrooms) {
-        System.out.println("BASIC_ALGORITHM::EXECUTE");
+        this.isRunning = true;
+        try
+        {
+            System.out.println("BASIC_ALGORITHM::EXECUTE");
 
-        TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
-        TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
+            TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
+            TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
 
-        for( ClassCourse classCourse : classCourses){
-            final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
-            if(!hasClassRoomAllocated){
-                ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
+            for( ClassCourse classCourse : classCourses){
+                final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
+                if(!hasClassRoomAllocated){
+                    ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
+                }
             }
         }
+        finally
+        {
+            this.isRunning = false;
+        }
+    }
+
+    @Override
+    public boolean isRunning() {
+        return this.isRunning;
     }
 
 }
