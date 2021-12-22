@@ -28,7 +28,6 @@ public class CustomAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            System.out.println(algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
             //configure and run this experiment

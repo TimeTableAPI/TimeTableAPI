@@ -1,5 +1,7 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -10,15 +12,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
+import pt.iscte.asd.projectn3.group11.controllers.Application;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
-import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
-import pt.iscte.asd.projectn3.group11.services.SessionsService;
-import pt.iscte.asd.projectn3.group11.services.SwrlService;
-import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
+import pt.iscte.asd.projectn3.group11.services.*;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
@@ -49,6 +49,8 @@ public class ClassCourseControllerHandler {
      */
     public static final String fetchTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
     {
+        LoggerService.LOGGER.info("Entering FetchTimeTable Endpoint Handler");
+
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
@@ -65,6 +67,7 @@ public class ClassCourseControllerHandler {
             model.addAttribute("timetablestats",metricResultList);
         }
 
+        LoggerService.LOGGER.info("Exiting FetchTimeTable Endpoint Handler");
         return "timetable";
     }
 
@@ -77,8 +80,14 @@ public class ClassCourseControllerHandler {
      */
     public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
     {
+        LoggerService.LOGGER.info("Entering DownloadTimeTable Endpoint Handler");
+
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
+        if(!SessionsService.containsSession(uuid))
+        {
+            LoggerService.LOGGER.info("Exiting DownloadTimeTable Endpoint Handler - No session");
+            return (ResponseEntity<Resource>) ResponseEntity.notFound();
+        }
 
         Context context = SessionsService.getContext(uuid);
         model.addAttribute("timetable", context.getClassCourses());
@@ -95,6 +104,7 @@ public class ClassCourseControllerHandler {
                 header.add("Pragma", "no-cache");
                 header.add("Expires", "0");
 
+                LoggerService.LOGGER.info("Exiting DownloadTimeTable Endpoint Handler");
                 return ResponseEntity.ok()
                         .headers(header)
                         .contentLength(file.length())
@@ -102,11 +112,11 @@ public class ClassCourseControllerHandler {
                         .body(resource);
 
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                LoggerService.LOGGER.error("Exiting DownloadTimeTable Endpoint Handler - " + e.getMessage());
                 return (ResponseEntity<Resource>) ResponseEntity.notFound();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerService.LOGGER.error("Exiting DownloadTimeTable Endpoint Handler - " + e.getMessage());
             return (ResponseEntity<Resource>) ResponseEntity.notFound();
         }
     }
@@ -119,7 +129,6 @@ public class ClassCourseControllerHandler {
      * @param fileClassrooms
      * @param algorithm
      * @param attributes
-     * @param model
      * @return
      */
     public static final String timeTableRequestHandler(HttpServletResponse response,
@@ -129,9 +138,12 @@ public class ClassCourseControllerHandler {
                                                        RedirectAttributes attributes,
                                                        String algorithm)
     {
+        LoggerService.LOGGER.info("Entering TimeTableUpload Endpoint Handler");
+
         // check if file is empty
         if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
+            LoggerService.LOGGER.info("Exiting TimeTableUpload Endpoint Handler - No file selected");
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
 
@@ -168,11 +180,11 @@ public class ClassCourseControllerHandler {
             UUID uuid = CookieHandlerService.getUUID(request, response);
             SessionsService.putSession(uuid, context);
 
-
+            LoggerService.LOGGER.info("Exiting TimeTableUpload Endpoint Handler");
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         } catch (IOException e) {
             attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
-            e.printStackTrace();
+            LoggerService.LOGGER.error("Exiting TimeTableUpload Endpoint Handler - " + e.getMessage());
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
     }

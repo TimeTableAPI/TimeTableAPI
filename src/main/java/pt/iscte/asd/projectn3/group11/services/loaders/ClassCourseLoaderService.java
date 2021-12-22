@@ -113,7 +113,7 @@ public class ClassCourseLoaderService {
             final Date date = new Date(dateString);
 
             for( int i =beginningHour.getId() ; i< endHour.getId();i++){
-                TimeShift begginingTime = TimeShift.getById(i);
+                TimeShift beginningTime = TimeShift.getById(i);
                 TimeShift endTime = TimeShift.getById(i+1);
 
                 final List<String> realCharacteristicsList = Arrays.asList((realCharacteristics.split(", ")));
@@ -152,7 +152,7 @@ public class ClassCourseLoaderService {
                         shiftsWithFreeSpots(Integer.parseInt(shiftsWithFreeSpots)).
                         shiftsWithMoreThanTheCapacity(Integer.parseInt(shiftsWithMoreThanTheCapacity)).
                         weekday(weekday).
-                        beginningHour(begginingTime).
+                        beginningHour(beginningTime).
                         endHour(endTime).
                         date(date).
                         askedCharacteristics(Arrays.asList((askedCharacteristics).split(","))).
@@ -162,7 +162,6 @@ public class ClassCourseLoaderService {
                                 classroomBuild
                         ).
                         build();
-                System.out.println(aclassCourse);
                 classCourses.add(aclassCourse);
             }
         }
@@ -180,10 +179,8 @@ public class ClassCourseLoaderService {
                 }
 
             }
-            System.out.println("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::File created in:" + myObj.getAbsolutePath());
             return myObj;
         } catch (IOException e) {
-            System.out.println("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::An error occurred.");
             e.printStackTrace();
             throw e;
         }

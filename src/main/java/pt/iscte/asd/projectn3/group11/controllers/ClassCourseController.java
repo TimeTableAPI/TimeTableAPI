@@ -75,7 +75,6 @@ public class ClassCourseController {
                                   @RequestPart(value = "algorithm") String algorithm,
                                   RedirectAttributes attributes,
                                   Model model) {
-        //System.out.println(algorithm);
         return ClassCourseControllerHandler.timeTableRequestHandler(response,
                 request,
                 fileClasses,

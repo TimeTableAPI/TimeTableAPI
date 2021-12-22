@@ -115,7 +115,6 @@ public class ClassroomLoaderService {
                     build();
             classrooms.add(classN);
         }
-        System.out.println("ClassRoomLoad.main::classRooms = " + classrooms);
     }
 
 }

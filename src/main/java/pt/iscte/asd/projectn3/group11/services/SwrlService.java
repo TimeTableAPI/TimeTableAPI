@@ -38,11 +38,8 @@ public class SwrlService {
             SQWRLResult result = queryEngine.runSQWRLQuery("q1", query);
 
             // Process the SQWRL result
-            System.out.println("Query: \n" + query + "\n");
-            System.out.println("Result: ");
             List<String> results = new LinkedList<>();
             while (result.next()) {
-                System.out.println(result.getNamedIndividual("alg").getShortName().substring(1));
                 results.add(result.getNamedIndividual("alg").getShortName().substring(1));
             }
 

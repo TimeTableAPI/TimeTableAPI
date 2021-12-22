@@ -21,8 +21,6 @@ public class BasicAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            System.out.println("BASIC_ALGORITHM::EXECUTE");
-
             TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
             TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
 
