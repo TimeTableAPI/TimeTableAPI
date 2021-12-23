@@ -22,7 +22,7 @@ public class StudentBuildingMovementsMetric implements MetricCalculator{
 	 */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
-		final TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizedClassCourseByClass = organizeClassCourseByClassStudents(classCourseList);
+		final Map<Date, HashMap<String, HashSet<ClassCourse>>> organizedClassCourseByClass = organizeClassCourseByClassStudents(classCourseList);
 
 		int classMoveBuildingCounter = 0;
 

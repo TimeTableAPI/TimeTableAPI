@@ -22,9 +22,8 @@ public class UnderbookingMetric implements MetricCalculator{
 	 */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
-		TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizedclassCourseList = organizeClassCourseByDate(classCourseList);
-
-		TreeMap<Date, EnumMap<TimeShift, LinkedList<Classroom>>> classRoomDateMap = new TreeMap<>();
+		Map<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizedclassCourseList = organizeClassCourseByDate(classCourseList);
+		Map<Date, EnumMap<TimeShift, LinkedList<Classroom>>> classRoomDateMap = new TreeMap<>();
 
 		for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> date : organizedclassCourseList.entrySet()) {
 			for (Map.Entry<TimeShift, HashSet<ClassCourse>> hour : date.getValue().entrySet()) {
