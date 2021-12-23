@@ -30,7 +30,11 @@ public class EnoughCapacityMetric implements MetricCalculator {
 				totalClassCoursesWithClassroom ++;
 			}
 		}
-		return totalClassCoursesWithEnoughCapacity/totalClassCoursesWithClassroom;
+		if(totalClassCoursesWithClassroom != 0){
+			return totalClassCoursesWithEnoughCapacity / totalClassCoursesWithClassroom;
+		}else{
+			return 1;
+		}
 	}
 	@Override
 	public float getObjective() {

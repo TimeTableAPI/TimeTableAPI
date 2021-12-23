@@ -26,7 +26,7 @@ public class StudentClassMovementsMetric implements MetricCalculator{
 
 		int classMoveCounter = 0;
 
-		LinkedList<Classroom> uniqueClassroomsList;
+
 		HashSet<Classroom> classroomHashSet = new HashSet<>();
 		for(Map.Entry<Date, HashMap<String, HashSet<ClassCourse>>> dateEntry:organizedClassCourseByClass.entrySet()){
 			for(Map.Entry<String, HashSet<ClassCourse>> StudentsGroupEntry: dateEntry.getValue().entrySet()){
@@ -43,7 +43,7 @@ public class StudentClassMovementsMetric implements MetricCalculator{
 			}
 		}
 
-		return (float)classMoveCounter ;
+		return classMoveCounter ;
 	}
 	@Override
 	public float getObjective() {

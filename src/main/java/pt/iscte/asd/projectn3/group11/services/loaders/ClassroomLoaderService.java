@@ -10,7 +10,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import java.util.List;
  *
  */
 public class ClassroomLoaderService {
+    private ClassroomLoaderService(){}
 
     /**
      * Loads a Classroom List from a file in the given path.
@@ -25,8 +25,8 @@ public class ClassroomLoaderService {
      * @param path path to the classroom csv.
      * @return List of classrooms
      */
-    public static final LinkedList<Classroom> load(final String path) {
-        LinkedList<Classroom> classrooms = new LinkedList<>();
+    public static final List<Classroom> load(final String path) {
+        List<Classroom> classrooms = new LinkedList<>();
         try (
                 final Reader reader = Files.newBufferedReader(Paths.get(path));
                 final CSVReader csvReader = new CSVReader(reader)
@@ -46,8 +46,8 @@ public class ClassroomLoaderService {
      * @param file object containing the classroom csv.
      * @return List of classrooms
      */
-    public static final LinkedList<Classroom> load(final File file) {
-        LinkedList<Classroom> classrooms = new LinkedList<>();
+    public static final List<Classroom> load(final File file) {
+        List<Classroom> classrooms = new LinkedList<>();
         try (
                 final Reader reader = new FileReader(file);
                 final CSVReader csvReader = new CSVReader(reader)
@@ -69,7 +69,7 @@ public class ClassroomLoaderService {
      * @param toDisk
      * @return List of classrooms
      */
-    public static final LinkedList<Classroom> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
+    public static final List<Classroom> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
         File file;
         if (toDisk) {
             file = new File(FileUploadService.UPLOADED_FILES_LOCATION + multipartFile.getOriginalFilename());
@@ -77,11 +77,10 @@ public class ClassroomLoaderService {
             Path temp = Files.createTempFile(multipartFile.getOriginalFilename(), ".csv");
             file = new File(temp.toUri());
         }
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(multipartFile.getBytes());
-        fos.close();
-        LinkedList<Classroom> classrooms = load(file);
-        return classrooms;
+        try(FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(multipartFile.getBytes());
+        }
+        return load(file);
     }
 
     /**

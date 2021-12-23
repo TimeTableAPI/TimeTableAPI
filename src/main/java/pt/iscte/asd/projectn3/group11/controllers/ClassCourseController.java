@@ -5,13 +5,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler;
 
 import javax.servlet.http.HttpServletRequest;

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ClassroomLoaderServiceTest {
+class ClassroomLoaderServiceTest {
     private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/test/resources/classRoomTest.csv";
     private static Classroom classroom;
     @org.junit.jupiter.api.BeforeEach

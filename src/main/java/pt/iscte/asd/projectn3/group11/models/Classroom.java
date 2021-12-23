@@ -72,7 +72,7 @@ public class Classroom {
 
     //region MEMBERS
 
-    private final LinkedList<Boolean> characteristics;
+    private final List<Boolean> characteristics;
     private final String building;
     private final String classroomName;
     private final int normalCapacity;
@@ -111,7 +111,7 @@ public class Classroom {
      *
      * @return {@link Classroom#characteristics}
      */
-    public final LinkedList<Boolean> getCharacteristics() {
+    public final List<Boolean> getCharacteristics() {
         return characteristics;
     }
 
@@ -213,7 +213,7 @@ public class Classroom {
     public final boolean isInANYBuilding(final List<String> buildings) {
         boolean result = false;
         for (int i = 0; i < buildings.size() && !result; i++) {
-            result = result || this.isInBuilding(buildings.get(i));
+            result = this.isInBuilding(buildings.get(i));
         }
         return result;
     }
@@ -236,7 +236,7 @@ public class Classroom {
     public final List<String> getCharacteristicsToString(){
         LinkedList<String> characteristisStringList = new LinkedList<>();
         for (int i = 0; i< characteristics.size(); i++){
-            if(characteristics.get(i)){
+            if(Boolean.TRUE.equals(characteristics.get(i))){
                 characteristisStringList.add(CHARACTERISTICS_LIST[i]);
             }
         }
@@ -295,14 +295,14 @@ public class Classroom {
 
 
     public static class Builder {
-        private LinkedList<Boolean> characteristics;
+        private List<Boolean> characteristics;
         private String building;
         private String classroomName;
         private int normalCapacity;
         private int examCapacity;
         private int numberCharacteristics;
 
-        public Builder characteristics(final LinkedList<Boolean> characteristics) {
+        public Builder characteristics(final List<Boolean> characteristics) {
             this.characteristics = characteristics;
             return this;
         }

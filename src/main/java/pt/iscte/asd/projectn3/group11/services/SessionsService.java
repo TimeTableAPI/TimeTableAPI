@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class SessionsService {
+    private SessionsService(){}
 
     private static final HashMap<UUID, Context> SESSIONS = new HashMap<>();
     private static int SESSION_NUM = 0;
@@ -16,7 +17,7 @@ public class SessionsService {
      * @param uuid UUID of the session
      * @param context context of the session
      */
-    public synchronized static void putSession(UUID uuid, Context context)
+    public static synchronized void putSession(UUID uuid, Context context)
     {
         SESSIONS.put(uuid, context);
     }
@@ -25,7 +26,7 @@ public class SessionsService {
      * Removes the session of a UUID
      * @param uuid UUID of the session
      */
-    public synchronized static void removeSession(UUID uuid)
+    public static synchronized void removeSession(UUID uuid)
     {
         SESSIONS.remove(uuid);
     }
@@ -35,7 +36,7 @@ public class SessionsService {
      * @param uuid UUID of the session
      * @return the context of the session
      */
-    public synchronized static Context getContext(UUID uuid)
+    public static synchronized Context getContext(UUID uuid)
     {
         return SESSIONS.get(uuid);
     }
@@ -45,7 +46,7 @@ public class SessionsService {
      * @param uuid UUID of the session
      * @return if the session has context
      */
-    public synchronized static boolean containsSession(UUID uuid)
+    public static synchronized boolean containsSession(UUID uuid)
     {
         return SESSIONS.containsKey(uuid);
     }
@@ -55,7 +56,7 @@ public class SessionsService {
     /**
      * Increases the number of sessions
      */
-    public synchronized static void increaseSessionNum()
+    public static synchronized void increaseSessionNum()
     {
         SESSION_NUM++;
     }
@@ -63,7 +64,7 @@ public class SessionsService {
     /**
      * Decreases the number of sessions
      */
-    public synchronized static void removeSessionNum()
+    public static synchronized void removeSessionNum()
     {
         SESSION_NUM--;
     }
@@ -72,7 +73,7 @@ public class SessionsService {
      * Gets the session number
      * @return Session number
      */
-    public synchronized static int getSessionNum()
+    public static synchronized int getSessionNum()
     {
         return SESSION_NUM;
     }

@@ -14,10 +14,12 @@ import java.util.*;
  */
 public class ClassroomService {
 
+	private ClassroomService(){}
+
 	//region GETTERS
 	/**
 	 * Getter for specified capacity
-	 *
+	 * @deprecated
 	 * @param capacity integer
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 */
@@ -34,7 +36,7 @@ public class ClassroomService {
 
 	/**
 	 * Getter for specified Examcapacity
-	 *
+	 * @deprecated
 	 * @param capacity integer
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 */
@@ -51,7 +53,7 @@ public class ClassroomService {
 
 	/**
 	 * Getter for specified characteristics
-	 *
+	 *@deprecated
 	 * @param characteristics List<String>
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
 	 */
@@ -68,7 +70,7 @@ public class ClassroomService {
 
 	/**
 	 * Getter for a specified characteristic
-	 *
+	 * @deprecated
 	 * @param characteristic String
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 */
@@ -85,7 +87,7 @@ public class ClassroomService {
 
 	/**
 	 * Getter for a specified characteristic
-	 *
+	 * @deprecated
 	 * @param building String
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 */
@@ -102,7 +104,7 @@ public class ClassroomService {
 
 	/**
 	 * Getter for a specified characteristic
-	 *
+	 * @deprecated
 	 * @param buildings List<String>
 	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
 	 */
@@ -118,6 +120,7 @@ public class ClassroomService {
 	}
 	/**
 	 * <p>Method to get all the classroms that fulfill the requirements in the requestInformation</p>
+	 * @deprecated
 	 * <p>
 	 * @param classrooms List<Classroom>
 	 * @param requestInformation RequestInformation
@@ -180,11 +183,11 @@ public class ClassroomService {
 	 *</p>
 	 *
 	 */
-	public static void allocate(ClassCourse classCourse, List<Classroom> classrooms, TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
+	public static void allocate(ClassCourse classCourse, SortedMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap, Float percentageCharacteristicsNeeded){
 		Date date = classCourse.getDate();
 		TimeShift timeShift = classCourse.getBeginningHour();
 		List <Classroom> availableClassrooms = new LinkedList<>();
-		classRoomAvailabilityMap.get(date).get(timeShift).forEach(classroom -> availableClassrooms.add(classroom));
+		availableClassrooms.addAll(classRoomAvailabilityMap.get(date).get(timeShift));
 
 		Iterator<Classroom> iterator = availableClassrooms.iterator();
 		boolean foundClassroom = false;
@@ -238,17 +241,17 @@ public class ClassroomService {
 	 */
 	private static boolean checkClassRoomFeatures(Classroom classRoom, ClassCourse classCourse, Float percentageCharacteristicsNeeded) {
 		final boolean  capacity_bool = classRoom.getNormalCapacity() < classCourse.getNumberOfStudentsInClass();
-		int characteristics_counter = 0;
-		LinkedList<String> askedCharacteristics = classCourse.getAskedCharacteristics();
+		int characteristicsCounter = 0;
+		List<String> askedCharacteristics = classCourse.getAskedCharacteristics();
 		for(String classroomCharacteristic: classRoom.getCharacteristicsToString()){
 			if(askedCharacteristics.contains(classroomCharacteristic)){
-				characteristics_counter ++;
+				characteristicsCounter ++;
 			}
 		}
-		final float includedCharacteristicsPercentage = (characteristics_counter / askedCharacteristics.size());
-		boolean  characteristics_bool = includedCharacteristicsPercentage > percentageCharacteristicsNeeded;
+		final float includedCharacteristicsPercentage = (characteristicsCounter / askedCharacteristics.size());
+		boolean  characteristicsBool = includedCharacteristicsPercentage > percentageCharacteristicsNeeded;
 
-		return capacity_bool && characteristics_bool;
+		return capacity_bool && characteristicsBool;
 	}
 	/**
 	 * <p>Checks whether the given Classroom is asvailable for the given TimeShift and Date in the given TreeMap</p>
@@ -275,9 +278,8 @@ public class ClassroomService {
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
 	 */
-	public static  TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizeClassCourseByClassStudents(List<ClassCourse> classCourses) {
+	public static  SortedMap<Date, HashMap<String, HashSet<ClassCourse>>> organizeClassCourseByClassStudents(List<ClassCourse> classCourses) {
 		TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
-		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
 
 	    for (ClassCourse classCourse : classCourses) {
 		    classCourseMap.computeIfAbsent(classCourse.getDate(), k -> new HashMap<>());
@@ -296,9 +298,8 @@ public class ClassroomService {
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
 	 */
-	public static  TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(List<ClassCourse> classCourses) {
-		TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
-		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
+	public static  SortedMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(List<ClassCourse> classCourses) {
+		SortedMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
 
 	    for (ClassCourse classCourse : classCourses) {
 		    classCourseMap.computeIfAbsent(classCourse.getDate(), k -> new HashMap<>());
@@ -324,8 +325,8 @@ public class ClassroomService {
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>
 	 */
-	public static  TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizeClassCourseByDate(List<ClassCourse> classCourses) {
-	    TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
+	public static  SortedMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> organizeClassCourseByDate(List<ClassCourse> classCourses) {
+	    SortedMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = new TreeMap<>();
 	    for (ClassCourse classCourse : classCourses) {
 	        classCoursedateMap.computeIfAbsent(classCourse.getDate(), k -> new EnumMap<TimeShift, HashSet<ClassCourse>>(TimeShift.class));
 	        classCoursedateMap.get(classCourse.getDate()).computeIfAbsent(classCourse.getBeginningHour(), k -> new HashSet<ClassCourse>());
@@ -342,8 +343,8 @@ public class ClassroomService {
 	 * @return TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>>
 	 * </p>
 	 */
-	public static TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> organizeClassroomByDate(TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap, List<Classroom> classroomList) {
-	    TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
+	public static SortedMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> organizeClassroomByDate(SortedMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap, List<Classroom> classroomList) {
+	    SortedMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomDateMap = new TreeMap<>();
 
 	    for (Map.Entry<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> date : classCoursedateMap.entrySet()) {
 	        for (Map.Entry<TimeShift, HashSet<ClassCourse>> hour : date.getValue().entrySet()) {
@@ -364,7 +365,7 @@ public class ClassroomService {
 	 * <p>
 	 * Object created to Store information about a request for the algorithm
 	 * </p>
-	 *
+	 * @deprecated
 	 */
 	@Deprecated
 	public static final class RequestInformation {

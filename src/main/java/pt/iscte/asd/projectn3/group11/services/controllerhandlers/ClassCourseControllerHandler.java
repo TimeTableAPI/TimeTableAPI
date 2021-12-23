@@ -1,22 +1,17 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
-import pt.iscte.asd.projectn3.group11.controllers.Application;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.*;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
@@ -34,6 +29,12 @@ import java.io.IOException;
 import java.util.*;
 
 public class ClassCourseControllerHandler {
+
+    public static final String TIMETABLE_HTML = "timetable";
+    public static final String MESSAGE_HTML = "message";
+    public static final String REDIRECT = "redirect:";
+
+    private ClassCourseControllerHandler (){}
 
     private static final String BASIC = "basic";
     private static final String OWL = "owl";
@@ -57,9 +58,9 @@ public class ClassCourseControllerHandler {
             Context context = SessionsService.getContext(uuid);LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
 
-            model.addAttribute("timetable", loadedClassCoursesJSON);
+            model.addAttribute(TIMETABLE_HTML, loadedClassCoursesJSON);
 
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
+            final Map<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
             final List<MetricResult> metricResultList = new LinkedList<>();
             for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
                 metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
@@ -68,7 +69,7 @@ public class ClassCourseControllerHandler {
         }
 
         LoggerService.LOGGER.info("Exiting FetchTimeTable Endpoint Handler");
-        return "timetable";
+        return TIMETABLE_HTML;
     }
 
     /**
@@ -90,7 +91,7 @@ public class ClassCourseControllerHandler {
         }
 
         Context context = SessionsService.getContext(uuid);
-        model.addAttribute("timetable", context.getClassCourses());
+        model.addAttribute(TIMETABLE_HTML, context.getClassCourses());
 
         try {
             File file = ClassCourseLoaderService.export(context.getClassCourses());
@@ -142,9 +143,9 @@ public class ClassCourseControllerHandler {
 
         // check if file is empty
         if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
-            attributes.addFlashAttribute("message", "Please select a file to upload.");
+            attributes.addFlashAttribute(MESSAGE_HTML, "Please select a file to upload.");
             LoggerService.LOGGER.info("Exiting TimeTableUpload Endpoint Handler - No file selected");
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
         }
 
         // normalize the file path
@@ -152,10 +153,10 @@ public class ClassCourseControllerHandler {
             if(algorithm == null || algorithm.isEmpty()){
                 algorithm = BASIC;
             }
-            attributes.addFlashAttribute("message", "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
+            attributes.addFlashAttribute(MESSAGE_HTML, "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
 
-            LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
-            LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
+            List<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
+            List<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
 
             IAlgorithmService iAlgorithmService;
 
@@ -164,7 +165,7 @@ public class ClassCourseControllerHandler {
             }
             else if (algorithm.equals(OWL)) {
                 List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
-                if(querryResult == null) {
+                if(querryResult == null || querryResult.isEmpty()) {
                     iAlgorithmService = new BasicAlgorithmService();
                 }else {
                     iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
@@ -181,11 +182,11 @@ public class ClassCourseControllerHandler {
             SessionsService.putSession(uuid, context);
 
             LoggerService.LOGGER.info("Exiting TimeTableUpload Endpoint Handler");
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
         } catch (IOException e) {
-            attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
+            attributes.addFlashAttribute(MESSAGE_HTML, "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
             LoggerService.LOGGER.error("Exiting TimeTableUpload Endpoint Handler - " + e.getMessage());
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
         }
     }
 

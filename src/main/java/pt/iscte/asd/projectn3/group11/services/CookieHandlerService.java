@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class CookieHandlerService {
-
+    private CookieHandlerService(){}
     private static final String ID_NAME = "id";
 
     //region PUBLIC_HANDLER
@@ -37,8 +37,7 @@ public class CookieHandlerService {
         {
             id = UUID.randomUUID();
         }
-        final Cookie cookie = addCookie(response, ID_NAME, id.toString());
-        return cookie;
+        return addCookie(response, ID_NAME, id.toString());
     }
 
     /**
@@ -105,8 +104,11 @@ public class CookieHandlerService {
         for (Cookie cookie: cookies)
         {
             if(cookie.getName().equals(name))
-                if(cookie.getValue() == null) throw new NullPointerException("ID_IS_NULL");
-                else return cookie;
+                if(cookie.getValue() == null) {
+                    throw new NullPointerException("ID_IS_NULL");
+                }else {
+                    return cookie;
+                }
         }
         return null;
     }

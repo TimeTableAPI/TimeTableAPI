@@ -6,6 +6,9 @@ import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
 import java.io.IOException;
 
+/**
+ * @deprecated
+ */
 @Deprecated
 @RestController
 public class FileUploadController {

@@ -1,10 +1,7 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.ui.Model;
 import pt.iscte.asd.projectn3.group11.Context;
-import pt.iscte.asd.projectn3.group11.controllers.Application;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.LoggerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
@@ -14,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class ClassroomControllerHandler {
+    private ClassroomControllerHandler(){}
 
     //region HANDLERS
 

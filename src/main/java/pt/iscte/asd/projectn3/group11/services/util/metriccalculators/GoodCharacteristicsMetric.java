@@ -29,7 +29,12 @@ public class GoodCharacteristicsMetric implements MetricCalculator{
 				totalAskedCharacteristics += classCourse.getAskedCharacteristics().size();
 			}
 		}
-		return totalRealCharacteristics / totalAskedCharacteristics;
+		if(totalAskedCharacteristics != 0){
+			return totalRealCharacteristics / totalAskedCharacteristics;
+		}else{
+			return 0;
+
+		}
 	}
 
 	/**

@@ -26,7 +26,6 @@ public class RoomMovementsMetric implements MetricCalculator{
 				organizeClassCourseByClass(classCourseList);
 
 		int classMoveCounter = 0;
-		int nClassSameRoom = 0;
 
 		LinkedList<Classroom> uniqueClassroomsList;
 
@@ -39,15 +38,13 @@ public class RoomMovementsMetric implements MetricCalculator{
 						uniqueClassroomsList.add(innerClassCourse.getClassroom());
 					}
 				}
-				if (uniqueClassroomsList.size() == 1){
-					nClassSameRoom++;
-				}else{
+				if (uniqueClassroomsList.size() != 1){
 					classMoveCounter++;
 				}
 			}
 		}
 
-		return (float)classMoveCounter ;
+		return classMoveCounter ;
 	}
 
 	@Override

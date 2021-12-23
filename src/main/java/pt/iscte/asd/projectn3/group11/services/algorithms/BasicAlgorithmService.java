@@ -21,13 +21,13 @@ public class BasicAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
-            TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
+            SortedMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
+            SortedMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
 
             for( ClassCourse classCourse : classCourses){
                 final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
                 if(!hasClassRoomAllocated){
-                    ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
+                    ClassroomService.allocate(classCourse, classRoomAvailabilityMap, 0.5F);
                 }
             }
         }

@@ -11,10 +11,12 @@ import org.swrlapi.sqwrl.SQWRLResult;
 import org.swrlapi.sqwrl.exceptions.SQWRLException;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class SwrlService {
+    private SwrlService(){}
 
     public static final String OWL_FILE = "src/main/resources/ADS.owl";
 
@@ -47,16 +49,16 @@ public class SwrlService {
 
         } catch (OWLOntologyCreationException e) {
             System.err.println("Error creating OWL ontology: " + e.getMessage());
-            return null;
+            return Collections.emptyList();
         } catch (SWRLParseException e) {
             System.err.println("Error parsing SWRL rule or SQWRL query: " + e.getMessage());
-            return null;
+            return Collections.emptyList();
         } catch (SQWRLException e) {
             System.err.println("Error running SWRL rule or SQWRL query: " + e.getMessage());
-            return null;
+            return Collections.emptyList();
         } catch (RuntimeException e) {
             System.err.println("Error starting application: " + e.getMessage());
-            return null;
+            return Collections.emptyList();
         }
     }
 }
