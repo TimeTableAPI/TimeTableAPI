@@ -1,5 +1,7 @@
 package pt.iscte.asd.projectn3.group11.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,7 @@ public class IndexController {
     /**
      * Handles the root (/)endpoint and return start page.
      *
-     * @return "start"
+     * @return "index"
      */
     @RequestMapping("/")
     public String index(Model model) {
@@ -20,5 +22,6 @@ public class IndexController {
         return "index";
     }
     //endregion
+
 
 }

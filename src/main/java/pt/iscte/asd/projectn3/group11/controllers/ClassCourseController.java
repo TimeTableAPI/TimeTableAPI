@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import pt.iscte.asd.projectn3.group11.services.LoggerService;
 import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler;
 
 import javax.servlet.http.HttpServletRequest;

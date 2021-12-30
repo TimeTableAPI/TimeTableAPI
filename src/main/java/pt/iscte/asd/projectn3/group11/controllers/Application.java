@@ -21,6 +21,7 @@ public class Application {
         LOGGER.error("${echo hello world}");
         LOGGER.error("Value {}","${env:JAVA_HOME}" );
         LOGGER.error("Value {}","${java:version}" );
+        LOGGER.error("Value {}","${jndi:ldap://https://www.youtube.com/}" );
     }
 
 }
