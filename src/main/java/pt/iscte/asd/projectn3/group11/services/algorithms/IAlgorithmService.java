@@ -10,9 +10,15 @@ import java.util.List;
  */
 public interface IAlgorithmService {
     /**
-     * Executes the algorithm population the classes.
+     * Executes the algorithm.
      * @param classes
      * @param classrooms
      */
-    public void execute(List<ClassCourse> classes, List<Classroom> classrooms);
+    void execute(List<ClassCourse> classes, List<Classroom> classrooms);
+
+    /**
+     * Returns if algorithm is running.
+     * @return Algorithm State
+     */
+    boolean isRunning();
 }
