@@ -1,8 +1,6 @@
 package pt.iscte.asd.projectn3.group11.controllers;
 
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getMetricResultsHandler;
-import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getTimeTableHandler;
+import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getClassesHandler;
 
 @Controller
 public class ClassCourseController {
@@ -35,7 +33,7 @@ public class ClassCourseController {
      */
     @GetMapping(value = ClassCourseController.TIMETABLE_PATH)
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
-        model.addAttribute("timetable", getTimeTableHandler(response, request));
+        model.addAttribute("timetable", getClassesHandler(response, request));
         model.addAttribute("metrics", getMetricResultsHandler(response, request));
         return "timetable";
     }
