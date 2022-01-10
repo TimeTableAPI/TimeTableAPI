@@ -86,16 +86,14 @@ public class ClassCourseControllerHandler {
      * downloadTimeTable endpoint handler.
      * @param response
      * @param request
-     * @param model
      * @return
      */
-    public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
+    public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
 
         Context context = SessionsService.getContext(uuid);
-        model.addAttribute("timetable", context.getClassCourses());
 
         try {
             File file = ClassCourseLoaderService.export(context.getClassCourses());
