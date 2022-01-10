@@ -12,6 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class AlgorithmControllerHandler {
+    public static final String algorithmRequestHandler(HttpServletResponse response, HttpServletRequest request)
+    {
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if(SessionsService.containsSession(uuid)) {
+            Context context = SessionsService.getContext(uuid);
+            return context.getAlgorithm().getName();
+
+        }
+        return "";
+
+    }
     public static final Double algorithmProgressRequestHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
