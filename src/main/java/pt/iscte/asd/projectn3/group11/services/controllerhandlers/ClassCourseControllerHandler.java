@@ -52,7 +52,8 @@ public class ClassCourseControllerHandler {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
-            Context context = SessionsService.getContext(uuid);LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            Context context = SessionsService.getContext(uuid);
+            LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
 
             model.addAttribute("timetable", loadedClassCoursesJSON);
@@ -163,11 +164,15 @@ public class ClassCourseControllerHandler {
             }
 
             Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
-            context.computeSolutionWithAlgorithm();
-
             UUID uuid = CookieHandlerService.getUUID(request, response);
             SessionsService.putSession(uuid, context);
 
+            Thread computingThread = new Thread(){
+                public void run(){
+                    context.computeSolutionWithAlgorithm();
+                }
+            };
+            computingThread.start();
 
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         } catch (IOException e) {

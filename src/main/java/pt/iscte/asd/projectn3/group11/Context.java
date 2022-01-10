@@ -20,6 +20,8 @@ public class Context {
     private final List<ClassCourse> classCourses;
     private final List<Classroom> classrooms;
     private final IAlgorithmService algorithm;
+
+
     /**
      *
      * @param classCourses List<{@link ClassCourse}>
@@ -53,4 +55,12 @@ public class Context {
     public List<Classroom> getClassrooms() {
         return classrooms;
     }
+
+    /**
+     * @return {@link IAlgorithmService}
+     */
+    public IAlgorithmService getAlgorithm() {
+        return algorithm;
+    }
+
 }
