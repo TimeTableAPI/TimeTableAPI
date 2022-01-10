@@ -1,10 +1,12 @@
 package pt.iscte.asd.projectn3.group11;
 
+import pt.iscte.asd.projectn3.group11.models.MetricResult;
+import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * <h1>Context</h1>
@@ -20,6 +22,8 @@ public class Context {
     private final List<ClassCourse> classCourses;
     private final List<Classroom> classrooms;
     private final IAlgorithmService algorithm;
+
+    private List<MetricResult> metricResults;
     /**
      *
      * @param classCourses List<{@link ClassCourse}>
@@ -30,6 +34,7 @@ public class Context {
         this.classCourses = classCourses;
         this.classrooms = classrooms;
         this.algorithm = algorithm;
+        this.metricResults = new LinkedList<>();
     }
 
     /**
@@ -38,6 +43,26 @@ public class Context {
     public void computeSolutionWithAlgorithm()
     {
         algorithm.execute(classCourses, classrooms);
+    }
+
+    /**
+     * Calculates metrics of current context.
+     */
+    public void calculateMetrics()
+    {
+        final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(classCourses, classrooms);
+        this.metricResults = new LinkedList<>();
+        for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
+            metricResults.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
+        }
+    }
+
+    /**
+     * @return List<MetricResult> of metrics.
+     */
+    public List<MetricResult> getMetricResults()
+    {
+        return metricResults;
     }
 
     /**
