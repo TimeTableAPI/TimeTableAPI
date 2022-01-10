@@ -1,5 +1,6 @@
 package pt.iscte.asd.projectn3.group11;
 
+import pt.iscte.asd.projectn3.group11.services.AlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
@@ -19,7 +20,7 @@ import java.util.List;
 public class Context {
     private final List<ClassCourse> classCourses;
     private final List<Classroom> classrooms;
-    private final IAlgorithmService algorithm;
+    private IAlgorithmService algorithm;
 
 
     /**
@@ -63,4 +64,8 @@ public class Context {
         return algorithm;
     }
 
+    public void changeAlgorithm(String newAlgoName) {
+        this.algorithm.stop();
+        this.algorithm = AlgorithmService.generateAlgorithm(newAlgoName);
+    }
 }

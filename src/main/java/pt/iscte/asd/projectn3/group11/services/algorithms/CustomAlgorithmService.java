@@ -5,6 +5,7 @@ import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.apache.logging.log4j.Logger;
+import org.moeaframework.util.progress.ProgressHelper;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
@@ -19,6 +20,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
     private final int maxEvaluation;
     private boolean isRunning;
     private double progress;
+    private Executor executor;
 
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
@@ -32,15 +34,16 @@ public class CustomAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            LOGGER.info(algorithmName + "::EXECUTE");
+            LOGGER.info(this.algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
             //configure and run this experiment
-            NondominatedPopulation result = new Executor()
-                    .withProblemClass(Problem.class,classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
-                    .withAlgorithm(algorithmName)
-                    .withMaxEvaluations(maxEvaluation)
-                    .run();
+            Executor executor = new Executor()
+                    .withProblemClass(Problem.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
+                    .withAlgorithm(this.algorithmName)
+                    .withMaxEvaluations(this.maxEvaluation)
+                    .withProgressListener(this.customProgressListener);
+            setExecutor(executor);
 
             LOGGER.info(result);
 
@@ -71,9 +74,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
             this.isRunning = false;
             this.progress = 1.0;
             LOGGER.info("Finished " + algorithmName);
-
         }
-
     }
 
     @Override
@@ -90,6 +91,22 @@ public class CustomAlgorithmService implements IAlgorithmService {
     public String getName() {
         return this.algorithmName;
     }
+
+    @Override
+    public void stop() {
+        stopExecutor();
+    }
+
+    public void setProgress(Double progressValue) {
+        this.progress = progressValue;
+    }
+    private void setExecutor(Executor executor) {
+        this.executor = executor;
+    }
+    private void stopExecutor() {
+        this.executor.cancel();
+    }
+
 
     private static Solution getBestSolution (NondominatedPopulation result){
         List<Double> distancesList = new LinkedList<>();

@@ -12,26 +12,64 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class AlgorithmControllerHandler {
-    public static final String algorithmRequestHandler(HttpServletResponse response, HttpServletRequest request)
-    {
+
+    /**
+     * Handler for Algorithm Name requests
+     * @param response
+     * @param request
+     * @return
+     */
+    public static final String algorithmRequestHandler(HttpServletResponse response, HttpServletRequest request) {
+        String result = "";
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(SessionsService.containsSession(uuid)) {
+        if (SessionsService.containsSession(uuid)) {
             Context context = SessionsService.getContext(uuid);
-            return context.getAlgorithm().getName();
+            result = context.getAlgorithm().getName();
 
         }
-        return "";
 
+        return result;
     }
-    public static final Double algorithmProgressRequestHandler(HttpServletResponse response, HttpServletRequest request)
-    {
+
+    /**
+     * Handler for Algorithm Progress requests
+     *
+     * @param response
+     * @param request
+     * @return
+     */
+    public static final Double algorithmProgressRequestHandler(HttpServletResponse response, HttpServletRequest request) {
+        Double result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(SessionsService.containsSession(uuid)) {
+        if (SessionsService.containsSession(uuid)) {
             Context context = SessionsService.getContext(uuid);
-            return context.getAlgorithm().getProgress();
+            result = context.getAlgorithm().getProgress();
 
+        } else {
+            result = (double) 0;
         }
-        return (double) 0;
 
+        return result;
+    }
+    /**
+     * Handler for Algorithm Progress requests
+     *
+     * @param response
+     * @param request
+     * @return
+     */
+    public static final ResponseEntity algorithmChangeRequestHandler(HttpServletResponse response, HttpServletRequest request) {
+        String newAlgoName = "";
+        ResponseEntity<Object> result;
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if (SessionsService.containsSession(uuid)) {
+            Context context = SessionsService.getContext(uuid);
+            context.changeAlgorithm(newAlgoName);
+            result = ResponseEntity.ok().build();
+        } else {
+            result = ResponseEntity.noContent().build();
+        }
+
+        return result;
     }
 }

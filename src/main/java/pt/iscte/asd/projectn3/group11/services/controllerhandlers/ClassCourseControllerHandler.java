@@ -15,10 +15,7 @@ import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
-import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
-import pt.iscte.asd.projectn3.group11.services.SessionsService;
-import pt.iscte.asd.projectn3.group11.services.SwrlService;
-import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
+import pt.iscte.asd.projectn3.group11.services.*;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
@@ -33,11 +30,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
+import static pt.iscte.asd.projectn3.group11.services.AlgorithmService.BASIC_ALGORITHM_NAME;
+
 public class ClassCourseControllerHandler {
 
-    private static final String BASIC = "basic";
-    private static final String OWL = "owl";
-    private static final int MAX_EVALUATION = 3;
+
     //region HANDLERS
 
     /**
@@ -139,29 +136,14 @@ public class ClassCourseControllerHandler {
         // normalize the file path
         try {
             if(algorithm == null || algorithm.isEmpty()){
-                algorithm = BASIC;
+                algorithm = BASIC_ALGORITHM_NAME;
             }
             attributes.addFlashAttribute("message", "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
 
             LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
             LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
 
-            IAlgorithmService iAlgorithmService;
-
-            if(algorithm.equals(BASIC)) {
-                iAlgorithmService = new BasicAlgorithmService();
-            }
-            else if (algorithm.equals(OWL)) {
-                List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
-                if(querryResult == null) {
-                    iAlgorithmService = new BasicAlgorithmService();
-                }else {
-                    iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
-                }
-            }
-            else {
-                iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
-            }
+            IAlgorithmService iAlgorithmService = AlgorithmService.generateAlgorithm(algorithm);
 
             Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
             UUID uuid = CookieHandlerService.getUUID(request, response);
