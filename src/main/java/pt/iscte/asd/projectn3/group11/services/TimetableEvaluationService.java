@@ -27,8 +27,9 @@ import java.util.concurrent.ArrayBlockingQueue;
  * </p>
  */
 public class TimetableEvaluationService {
+	private TimetableEvaluationService(){}
 
-	public static final LinkedList<MetricCalculator> METRICSLIST = new LinkedList<MetricCalculator>(Arrays.asList(
+	public static final List<MetricCalculator> METRICSLIST = new LinkedList<>(Arrays.asList(
 			new AllocationMetric(),
 			new GoodCharacteristicsMetric(),
 			new EnoughCapacityMetric(),
@@ -50,9 +51,9 @@ public class TimetableEvaluationService {
 	 * @see Classroom
 	 * </p>
 	 */
-	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> timetableList, List<Classroom> classroomsList){
-		List<MetricResult> results = new LinkedList<>();
-		Queue<MetricResult> globalQueue = new ArrayBlockingQueue<MetricResult>(METRICSLIST.size());
+	public static Map<String, Float> evaluateTimetable(List<ClassCourse> timetableList, List<Classroom> classroomsList){
+		//List<MetricResult> results = new LinkedList<>();
+		Queue<MetricResult> globalQueue = new ArrayBlockingQueue<>(METRICSLIST.size());
 		List<Thread> threadList = new LinkedList<>();
 
 		for(MetricCalculator metric : METRICSLIST){
@@ -74,7 +75,7 @@ public class TimetableEvaluationService {
 			}
 		}
 
-		Hashtable<String, Float> result = new Hashtable<String, Float>();
+		HashMap<String, Float> result = new HashMap<>();
 		for(MetricResult metricResult : globalQueue){
 			result.put(metricResult.metricName,metricResult.result);
 		}

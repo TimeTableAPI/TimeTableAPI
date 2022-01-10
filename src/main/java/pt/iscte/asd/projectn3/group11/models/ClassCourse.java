@@ -55,8 +55,8 @@ public class ClassCourse {
 
     //region MEMBERS
 
-    private final LinkedList<String> courses;
-    private final LinkedList<String> units;
+    private final List<String> courses;
+    private final List<String> units;
     private final String shift;
     private final int numberOfStudentsInClass;
     private final int shiftsWithFreeSpots;
@@ -65,10 +65,10 @@ public class ClassCourse {
     private final TimeShift beginningHour;
     private final TimeShift endHour;
     private final Date date;
-    private final LinkedList<String> askedCharacteristics;
-    private final LinkedList<String> classesOfCourse;
+    private final List<String> askedCharacteristics;
+    private final List<String> classesOfCourse;
     private int capacity;
-    private LinkedList<String> realCharacteristics;
+    private List<String> realCharacteristics;
 
     private Classroom classroom;
 
@@ -98,7 +98,6 @@ public class ClassCourse {
         try{
         return (capacity > 0 || realCharacteristics.size() > 1  || !classroom.isDummy()) &&  (classroom != null);
         }catch (NullPointerException e ){
-            //e.printStackTrace();
             return false;
         }
     }
@@ -218,8 +217,8 @@ public class ClassCourse {
      * <p>This is to more easily transfer all of the information into our frontEnd, kinda like a JSON</p>
      */
     public static class ClassCourseJson{
-        public final LinkedList<String> courses;
-        public final LinkedList<String> units;
+        public final List<String> courses;
+        public final List<String> units;
         public final String shift;
         public final String numberOfStudentsInClass;
         public final String shiftsWithFreeSpots;
@@ -228,15 +227,15 @@ public class ClassCourse {
         public final String beginningHour;
         public final String endHour;
         public final String date;
-        public final LinkedList<String> askedCharacteristics;
-        public final LinkedList<String> classesOfCourse;
+        public final List<String> askedCharacteristics;
+        public final List<String> classesOfCourse;
         public final String capacity;
-        public final LinkedList<String> realCharacteristics;
+        public final List<String> realCharacteristics;
 
-        public String classroom;
+        public final String classroom;
 
 
-        public ClassCourseJson(LinkedList<String> courses, LinkedList<String> units, String shift, int numberOfStudentsInClass, int shiftsWithFreeSpots, int shiftsWithMoreThanTheCapacity, String weekday, TimeShift beginningHour, TimeShift endHour, Date date, LinkedList<String> askedCharacteristics, LinkedList<String> classesOfCourse, int capacity, LinkedList<String> realCharacteristics, Classroom classroom) {
+        public ClassCourseJson(List<String> courses, List<String> units, String shift, int numberOfStudentsInClass, int shiftsWithFreeSpots, int shiftsWithMoreThanTheCapacity, String weekday, TimeShift beginningHour, TimeShift endHour, Date date, List<String> askedCharacteristics, List<String> classesOfCourse, int capacity, List<String> realCharacteristics, Classroom classroom) {
             this.courses = courses;
             this.units = units;
             this.shift = shift;
@@ -283,7 +282,7 @@ public class ClassCourse {
      * Gets Course.
      * @return {@link ClassCourse#courses}
      */
-    public final LinkedList<String> getCourses() {
+    public final List<String> getCourses() {
         return courses;
     }
 
@@ -291,7 +290,7 @@ public class ClassCourse {
      * Gets Unit.
      * @return {@link ClassCourse#units}
      */
-    public final LinkedList<String> getUnits() {
+    public final List<String> getUnits() {
         return units;
     }
 
@@ -307,7 +306,7 @@ public class ClassCourse {
      * Gets Class of course.
      * @return {@link ClassCourse#classesOfCourse}
      */
-    public final LinkedList<String> getClassesOfCourse() {
+    public final List<String> getClassesOfCourse() {
         return classesOfCourse;
     }
 
@@ -371,7 +370,7 @@ public class ClassCourse {
      * Gets asked characteristics.
      * @return {@link ClassCourse#askedCharacteristics}
      */
-    public final LinkedList<String> getAskedCharacteristics() {
+    public final List<String> getAskedCharacteristics() {
         return askedCharacteristics;
     }
 
@@ -395,7 +394,7 @@ public class ClassCourse {
      * Gets real characteristics
      * @return {@link ClassCourse#realCharacteristics}
      */
-    public final LinkedList<String> getRealCharacteristics() {
+    public final List<String> getRealCharacteristics() {
         return realCharacteristics;
     }
 
@@ -411,7 +410,7 @@ public class ClassCourse {
     public void setClassroom(Classroom classroom) {
         this.classroom = classroom;
         capacity = classroom.getNormalCapacity();
-        realCharacteristics = (LinkedList<String>) classroom.getCharacteristicsToString();
+        realCharacteristics = classroom.getCharacteristicsToString();
     }
 
     //endregion
@@ -475,7 +474,6 @@ public class ClassCourse {
      * */
     @Override
     public boolean equals(Object o) {
-        //if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         ClassCourse that = (ClassCourse) o;

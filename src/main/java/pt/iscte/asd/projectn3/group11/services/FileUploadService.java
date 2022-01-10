@@ -6,9 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @deprecated
+ */
 @Deprecated
 @Service
 public class FileUploadService {
+    private FileUploadService(){}
 
     public static final String UPLOADED_FILES_LOCATION = "./";
 

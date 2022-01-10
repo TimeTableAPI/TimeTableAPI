@@ -5,13 +5,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pt.iscte.asd.projectn3.group11.models.FormResponse;
+import pt.iscte.asd.projectn3.group11.services.LoggerService;
 import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,11 +73,33 @@ public class ClassCourseController {
                                   @RequestPart(value = "algorithm") String algorithm,
                                   RedirectAttributes attributes,
                                   Model model) {
-        //System.out.println(algorithm);
         return ClassCourseControllerHandler.timeTableRequestHandler(response,
                 request,
                 fileClasses,
                 fileClassrooms,
+                attributes,
+                algorithm
+        );
+    }
+
+
+    /**
+     * Requests timetable.
+     * @param response response
+     * @param request request
+     * @param algorithm formResponse
+     * @param attributes redirect
+     * @param model model
+     * @return html filled with the variables
+     */
+    @PostMapping(value = ClassCourseController.TIMETABLE_PATH + "/algorithm")
+    public String algorithmChoice(HttpServletResponse response,
+                                  HttpServletRequest request,
+                                  @RequestParam(value = "algorithm") String algorithm,
+                                  RedirectAttributes attributes,
+                                  Model model) {
+        return ClassCourseControllerHandler.algorithmChoiceRequestHandler(response,
+                request,
                 attributes,
                 algorithm
         );

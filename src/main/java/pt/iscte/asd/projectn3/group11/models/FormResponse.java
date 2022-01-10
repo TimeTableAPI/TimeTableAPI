@@ -1,7 +1,6 @@
 package pt.iscte.asd.projectn3.group11.models;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.MultipartFile;
 @EntityScan
 public class FormResponse {

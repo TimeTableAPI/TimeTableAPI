@@ -22,11 +22,10 @@ public class RoomMovementsMetric implements MetricCalculator{
 	 */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
-		final TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizedClassCourseByClass =
+		final Map<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizedClassCourseByClass =
 				organizeClassCourseByClass(classCourseList);
 
 		int classMoveCounter = 0;
-		int nClassSameRoom = 0;
 
 		LinkedList<Classroom> uniqueClassroomsList;
 
@@ -39,15 +38,13 @@ public class RoomMovementsMetric implements MetricCalculator{
 						uniqueClassroomsList.add(innerClassCourse.getClassroom());
 					}
 				}
-				if (uniqueClassroomsList.size() == 1){
-					nClassSameRoom++;
-				}else{
+				if (uniqueClassroomsList.size() != 1){
 					classMoveCounter++;
 				}
 			}
 		}
 
-		return (float)classMoveCounter ;
+		return classMoveCounter ;
 	}
 
 	@Override

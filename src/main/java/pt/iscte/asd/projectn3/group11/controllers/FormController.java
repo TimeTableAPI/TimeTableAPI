@@ -3,7 +3,6 @@ package pt.iscte.asd.projectn3.group11.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +12,9 @@ import java.io.IOException;
 import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 
+/**
+ * @deprecated
+ */
 @Deprecated
 @Controller
 public class FormController {

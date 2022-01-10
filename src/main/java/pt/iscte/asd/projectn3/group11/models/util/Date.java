@@ -1,5 +1,7 @@
 package pt.iscte.asd.projectn3.group11.models.util;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <h1>Date</h1>
  * <p>The Date class hold the day of the month, the month and the year all in {@link Integer} varaibles</p>
@@ -7,9 +9,9 @@ package pt.iscte.asd.projectn3.group11.models.util;
  * @implNote Comparable
  * </p>
  */
-public class Date implements Comparable {
+public class Date implements Comparable<Date> {
 
-    private final int NOTHING = 0;
+    private static final int NOTHING = 0;
     private final int day;
     private final int month;
     private final int year;
@@ -106,14 +108,11 @@ public class Date implements Comparable {
         if(getClass() != obj.getClass())
             return false;
         final Date other = (Date) obj;
-        if(other.day == this.day && other.month == this.month && other.year == this.year)
-            return true;
-
-        return false;
+        return other.day == this.day && other.month == this.month && other.year == this.year;
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NotNull Date o) {
         return this.hashCode() - o.hashCode();
     }
 }

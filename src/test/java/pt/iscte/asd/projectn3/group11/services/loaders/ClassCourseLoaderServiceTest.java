@@ -14,11 +14,11 @@ import java.util.*;
 import static java.lang.Math.min;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ClassCourseLoaderServiceTest {
+class ClassCourseLoaderServiceTest {
     private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/test/resources/classTest.csv";
     private static ClassCourse classCourse1;
     private static ClassCourse classCourse2;
-    private static LinkedList<ClassCourse> loadedClassCourses ;
+    private static List<ClassCourse> loadedClassCourses ;
     private static ClassCourse aClassCourse;
 
     @BeforeAll
@@ -47,7 +47,7 @@ public class ClassCourseLoaderServiceTest {
         final String monthDay = "23-11-2015";
 
 
-        final LinkedList<Boolean> characteristics = new LinkedList<>();
+        final List<Boolean> characteristics = new LinkedList<>();
         //realCharacteristics.stream().map(realCharacteristic ->characteristics.add(realCharacteristic.equals("X") || realCharacteristic.equals("x")));
         Arrays.stream(Classroom.CHARACTERISTICS_LIST).forEach(realCharacteristic -> {
             characteristics.add(realCharacteristics.contains(realCharacteristic));
@@ -125,16 +125,11 @@ public class ClassCourseLoaderServiceTest {
     }
 
     @Test
-    void clear() {
-
-    }
-
-    @Test
     void export() {
         try {
-            LinkedList<ClassCourse> classCourses = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
+            List<ClassCourse> classCourses = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
             File file = ClassCourseLoaderService.export(classCourses);
-            LinkedList<ClassCourse> classesExported = ClassCourseLoaderService.load(file);
+            List<ClassCourse> classesExported = ClassCourseLoaderService.load(file);
             for (int i = 0; i < min(classCourses.size(), classesExported.size()); i++) {
                 assertEquals(classCourses.get(i), classesExported.get(i));
             }

@@ -22,11 +22,11 @@ public class StudentBuildingMovementsMetric implements MetricCalculator{
 	 */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
-		final TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizedClassCourseByClass = organizeClassCourseByClassStudents(classCourseList);
+		final Map<Date, HashMap<String, HashSet<ClassCourse>>> organizedClassCourseByClass = organizeClassCourseByClassStudents(classCourseList);
 
 		int classMoveBuildingCounter = 0;
 
-		LinkedList<Classroom> uniqueClassroomsList;
+
 		HashSet<String> buildingsHashSet = new HashSet<>();
 		for(Map.Entry<Date, HashMap<String, HashSet<ClassCourse>>> dateEntry:organizedClassCourseByClass.entrySet()){
 			for(Map.Entry<String, HashSet<ClassCourse>> StudentsGroupEntry: dateEntry.getValue().entrySet()){
@@ -43,7 +43,7 @@ public class StudentBuildingMovementsMetric implements MetricCalculator{
 			}
 		}
 
-		return (float)classMoveBuildingCounter ;
+		return classMoveBuildingCounter ;
 	}
 	@Override
 	public float getObjective() {

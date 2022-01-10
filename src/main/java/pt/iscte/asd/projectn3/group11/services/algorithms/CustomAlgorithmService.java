@@ -28,7 +28,6 @@ public class CustomAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            System.out.println(algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
             //configure and run this experiment
@@ -54,7 +53,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
                 );
             }
             final Solution bestSolution = getBestSolution(result);
-            final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
+            final List<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
 
             System.out.println(Arrays.toString(bestSolution.getObjectives()));
             System.out.println(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));

@@ -6,19 +6,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
-import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
-import pt.iscte.asd.projectn3.group11.services.SessionsService;
-import pt.iscte.asd.projectn3.group11.services.SwrlService;
-import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
+import pt.iscte.asd.projectn3.group11.services.*;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
@@ -35,6 +30,12 @@ import java.util.*;
 
 public class ClassCourseControllerHandler {
 
+    public static final String TIMETABLE_HTML = "timetable";
+    public static final String MESSAGE_HTML = "message";
+    public static final String REDIRECT = "redirect:";
+
+    private ClassCourseControllerHandler (){}
+
     private static final String BASIC = "basic";
     private static final String OWL = "owl";
     private static final int MAX_EVALUATION = 3;
@@ -49,15 +50,17 @@ public class ClassCourseControllerHandler {
      */
     public static final String fetchTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
     {
+        LoggerService.LOGGER.info("Entering FetchTimeTable Endpoint Handler");
+
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
             Context context = SessionsService.getContext(uuid);LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
 
-            model.addAttribute("timetable", loadedClassCoursesJSON);
+            model.addAttribute(TIMETABLE_HTML, loadedClassCoursesJSON);
 
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
+            final Map<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
             final List<MetricResult> metricResultList = new LinkedList<>();
             for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
                 metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
@@ -65,7 +68,8 @@ public class ClassCourseControllerHandler {
             model.addAttribute("timetablestats",metricResultList);
         }
 
-        return "timetable";
+        LoggerService.LOGGER.info("Exiting FetchTimeTable Endpoint Handler");
+        return TIMETABLE_HTML;
     }
 
     /**
@@ -77,11 +81,17 @@ public class ClassCourseControllerHandler {
      */
     public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
     {
+        LoggerService.LOGGER.info("Entering DownloadTimeTable Endpoint Handler");
+
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
+        if(!SessionsService.containsSession(uuid))
+        {
+            LoggerService.LOGGER.info("Exiting DownloadTimeTable Endpoint Handler - No session");
+            return (ResponseEntity<Resource>) ResponseEntity.notFound();
+        }
 
         Context context = SessionsService.getContext(uuid);
-        model.addAttribute("timetable", context.getClassCourses());
+        model.addAttribute(TIMETABLE_HTML, context.getClassCourses());
 
         try {
             File file = ClassCourseLoaderService.export(context.getClassCourses());
@@ -95,6 +105,7 @@ public class ClassCourseControllerHandler {
                 header.add("Pragma", "no-cache");
                 header.add("Expires", "0");
 
+                LoggerService.LOGGER.info("Exiting DownloadTimeTable Endpoint Handler");
                 return ResponseEntity.ok()
                         .headers(header)
                         .contentLength(file.length())
@@ -102,11 +113,11 @@ public class ClassCourseControllerHandler {
                         .body(resource);
 
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                LoggerService.LOGGER.error("Exiting DownloadTimeTable Endpoint Handler - " + e.getMessage());
                 return (ResponseEntity<Resource>) ResponseEntity.notFound();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerService.LOGGER.error("Exiting DownloadTimeTable Endpoint Handler - " + e.getMessage());
             return (ResponseEntity<Resource>) ResponseEntity.notFound();
         }
     }
@@ -119,7 +130,6 @@ public class ClassCourseControllerHandler {
      * @param fileClassrooms
      * @param algorithm
      * @param attributes
-     * @param model
      * @return
      */
     public static final String timeTableRequestHandler(HttpServletResponse response,
@@ -129,10 +139,13 @@ public class ClassCourseControllerHandler {
                                                        RedirectAttributes attributes,
                                                        String algorithm)
     {
+        LoggerService.LOGGER.info("Entering TimeTableUpload Endpoint Handler");
+
         // check if file is empty
         if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
-            attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+            attributes.addFlashAttribute(MESSAGE_HTML, "Please select a file to upload.");
+            LoggerService.LOGGER.info("Exiting TimeTableUpload Endpoint Handler - No file selected");
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
         }
 
         // normalize the file path
@@ -140,42 +153,71 @@ public class ClassCourseControllerHandler {
             if(algorithm == null || algorithm.isEmpty()){
                 algorithm = BASIC;
             }
-            attributes.addFlashAttribute("message", "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
+            attributes.addFlashAttribute(MESSAGE_HTML, "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
 
-            LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
-            LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
+            List<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
+            List<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
 
-            IAlgorithmService iAlgorithmService;
+            treatAlgorithmContext(response, request, algorithm, loadedClassCourses, loadedClassRooms);
 
-            if(algorithm.equals(BASIC)) {
-                iAlgorithmService = new BasicAlgorithmService();
-            }
-            else if (algorithm.equals(OWL)) {
-                List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
-                if(querryResult == null) {
-                    iAlgorithmService = new BasicAlgorithmService();
-                }else {
-                    iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
-                }
-            }
-            else {
-                iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
-            }
-
-            Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
-            context.computeSolutionWithAlgorithm();
-
-            UUID uuid = CookieHandlerService.getUUID(request, response);
-            SessionsService.putSession(uuid, context);
-
-
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+            LoggerService.LOGGER.info("Exiting TimeTableUpload Endpoint Handler");
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
         } catch (IOException e) {
-            attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
-            e.printStackTrace();
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+            attributes.addFlashAttribute(MESSAGE_HTML, "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
+            LoggerService.LOGGER.error("Exiting TimeTableUpload Endpoint Handler - " + e.getMessage());
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
         }
     }
 
+
+
+    public static String algorithmChoiceRequestHandler(HttpServletResponse response, HttpServletRequest request, RedirectAttributes attributes, String algorithm) {
+        LoggerService.LOGGER.info("Entering algorithmChoiceRequestHandler Endpoint Handler");
+        //LoggerService.LOGGER.info("Chosen algorithm: ["+algorithm+"]");
+        LoggerService.LOGGER.info(algorithm);
+
+        final UUID uuid = CookieHandlerService.getUUID(request, response);
+        final Context originalContext = SessionsService.getContext(uuid);
+
+        try {
+
+            treatAlgorithmContext(response, request, algorithm, originalContext.getClassCourses(), originalContext.getClassrooms());
+
+            LoggerService.LOGGER.info("Exiting algorithmChoiceRequestHandler Endpoint Handler");
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
+        }catch (NullPointerException e){
+            attributes.addFlashAttribute(MESSAGE_HTML, "We dont have any classes or classrooms...");
+
+            LoggerService.LOGGER.error("algorithmChoiceRequestHandler Endpoint Handler - NULLPOINTER");
+            LoggerService.LOGGER.info("Exiting algorithmChoiceRequestHandler Endpoint Handler");
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
+        }
+    }
+
+
+    private static void treatAlgorithmContext(HttpServletResponse response, HttpServletRequest request, String algorithm, List<ClassCourse> loadedClassCourses, List<Classroom> loadedClassRooms) {
+        IAlgorithmService iAlgorithmService;
+
+        if(algorithm.equals(BASIC)) {
+            iAlgorithmService = new BasicAlgorithmService();
+        }
+        else if (algorithm.equals(OWL)) {
+            List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
+            if(querryResult == null || querryResult.isEmpty()) {
+                iAlgorithmService = new BasicAlgorithmService();
+            }else {
+                iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
+            }
+        }
+        else {
+            iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
+        }
+
+        Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
+        context.computeSolutionWithAlgorithm();
+
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        SessionsService.putSession(uuid, context);
+    }
     //endregion
 }

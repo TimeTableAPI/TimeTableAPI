@@ -4,7 +4,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
-import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
@@ -27,9 +26,9 @@ public class Problem extends AbstractProblem {
     public void evaluate(Solution solution) {
         double[] metricNumber = new double[numberOfObjectives];
 
-        LinkedList<ClassCourse> solutionClassCourses = solutionToTimetable(solution, classCourses, classrooms);
+        List<ClassCourse> solutionClassCourses = solutionToTimetable(solution, classCourses, classrooms);
 
-        Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
+        Map<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
 
         int itr = 0;
 
@@ -48,8 +47,8 @@ public class Problem extends AbstractProblem {
         solution.setObjectives(arr);
     }
 
-    public static  LinkedList<ClassCourse> solutionToTimetable(Solution solution, List<ClassCourse> inputClasses, List<Classroom> classrooms) {
-        LinkedList<ClassCourse> classCourses = new LinkedList<>();
+    public static  List<ClassCourse> solutionToTimetable(Solution solution, List<ClassCourse> inputClasses, List<Classroom> classrooms) {
+        List<ClassCourse> classCourses = new LinkedList<>();
         double[] doubles = EncodingUtils.getReal(solution);
         for(int i = 0; i < doubles.length; i++)
         {

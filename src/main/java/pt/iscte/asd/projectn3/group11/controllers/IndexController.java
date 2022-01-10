@@ -1,12 +1,10 @@
 package pt.iscte.asd.projectn3.group11.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 
 @Controller
 public class IndexController {
@@ -16,7 +14,7 @@ public class IndexController {
     /**
      * Handles the root (/)endpoint and return start page.
      *
-     * @return "start"
+     * @return "index"
      */
     @RequestMapping("/")
     public String index(Model model) {
@@ -25,17 +23,5 @@ public class IndexController {
     }
     //endregion
 
-}
 
-/*
- JSON FOR POSTMAN TESTS
-
- {
-"building":"Ala Autónoma (ISCTE-IUL)",
-"classroomName":"Auditório Afonso de Barros",
-"normalCapacity":80,
-"examCapacity":39,
-"numberCharacteristics":4,
-"characteristics":[false,false,false]
 }
-* */

@@ -8,8 +8,8 @@ import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.*;
 
-import java.util.Hashtable;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,9 +19,9 @@ class TimetableEvaluationServiceTest {
 	private static final String SAMPLE_CSV_FILE_CLASS_FILLED_PATH = "src/test/resources/classTest-Filled.csv";
 
 	//private LinkedList<MetricResult> metricResultList = new LinkedList<>();
-	private static  Hashtable<String, Float> metricResultListTimetable;
-	private static LinkedList<ClassCourse> classCoursesTestList;
-	private static LinkedList<Classroom> classroomsTestList;
+	private static Map<String, Float> metricResultListTimetable;
+	private static List<ClassCourse> classCoursesTestList;
+	private static List<Classroom> classroomsTestList;
 
 	@BeforeAll
 	static void setUp()
@@ -30,7 +30,6 @@ class TimetableEvaluationServiceTest {
 		classCoursesTestList = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_FILLED_PATH);
 
 		metricResultListTimetable = TimetableEvaluationService.evaluateTimetable(classCoursesTestList, classroomsTestList);
-		System.out.println(metricResultListTimetable);
 	}
 
 
