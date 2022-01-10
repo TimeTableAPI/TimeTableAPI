@@ -20,6 +20,8 @@
 async function getTest(){
     let  response = await fetch("http://localhost:9090/rest/algorithm")
     let data = await response.json()
+    var e = document.getElementById('algorithmProgressBar');
+    e.setAttribute("value",data)
     console.log(data)
     return data;
 }
@@ -27,6 +29,12 @@ var getClassRooms = setInterval(getTest , 1000);
 </script>
 <header th:insert="fragments/headerFooter.html :: header"></header>
 <footer th:insert="fragments/headerFooter.html :: footer"></footer>
+
+<div>
+    <label></label>
+    <progress id="algorithmProgressBar" value="0" max="1"> </progress>
+
+</div>
 
 <a href="javascript:showhide('requestSection')">
     <button>
