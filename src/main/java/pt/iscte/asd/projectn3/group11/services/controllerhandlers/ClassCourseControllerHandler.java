@@ -41,31 +41,45 @@ public class ClassCourseControllerHandler {
     //region HANDLERS
 
     /**
-     * fetchTimeTable endpoint handler.
+     * Gets the timetable handler.
      * @param response
      * @param request
-     * @param model
-     * @return
+     * @return List of class courses.
      */
-    public static final String fetchTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
+    public static final List<ClassCourse.ClassCourseJson> getTimeTableHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
-            Context context = SessionsService.getContext(uuid);LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            Context context = SessionsService.getContext(uuid);
+            List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+            return loadedClassCoursesJSON;
+        }
+        return new LinkedList<>();
+    }
 
-            model.addAttribute("timetable", loadedClassCoursesJSON);
-
+    /**
+     * Gets the metric results handler.
+     * @param response
+     * @param request
+     * @return List of metric results.
+     */
+    public static final List<MetricResult> getMetricResultsHandler(HttpServletResponse response, HttpServletRequest request)
+    {
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if(SessionsService.containsSession(uuid))
+        {
+            Context context = SessionsService.getContext(uuid);
             final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
             final List<MetricResult> metricResultList = new LinkedList<>();
             for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
                 metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
             }
-            model.addAttribute("timetablestats",metricResultList);
+            return metricResultList;
         }
 
-        return "timetable";
+        return new LinkedList<>();
     }
 
     /**
@@ -119,7 +133,6 @@ public class ClassCourseControllerHandler {
      * @param fileClassrooms
      * @param algorithm
      * @param attributes
-     * @param model
      * @return
      */
     public static final String timeTableRequestHandler(HttpServletResponse response,
