@@ -82,6 +82,29 @@ public class ClassCourseController {
         );
     }
 
+
+    /**
+     * Requests timetable.
+     * @param response response
+     * @param request request
+     * @param algorithm formResponse
+     * @param attributes redirect
+     * @param model model
+     * @return html filled with the variables
+     */
+    @PostMapping(value = ClassCourseController.TIMETABLE_PATH + "/algorithm")
+    public String algorithmChoice(HttpServletResponse response,
+                                  HttpServletRequest request,
+                                  @RequestParam(value = "algorithm") String algorithm,
+                                  RedirectAttributes attributes,
+                                  Model model) {
+        return ClassCourseControllerHandler.algorithmChoiceRequestHandler(response,
+                request,
+                attributes,
+                algorithm
+        );
+    }
+
     //endregion
 
 }

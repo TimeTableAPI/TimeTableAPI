@@ -14,10 +14,6 @@
        	var e = document.getElementById(id);
        	e.style.display = (e.style.display == 'block') ? 'none' : 'block';
     }
-
-
-
-
 </script>
 <header th:insert="fragments/headerFooter.html :: header"></header>
 <footer th:insert="fragments/headerFooter.html :: footer"></footer>
@@ -41,8 +37,8 @@
                  <input type="file" name="file_classes" id="file_classes"/>
                 <label for="file_classrooms">Classrooms:</label>
                  <input type="file" name="file_classrooms" id="file_classrooms"/>
-                <label for="algorithm">Algorithm:</label>
-                 <input type="text" name="algorithm" id="algorithm" value="basic"/>
+                <label for="algorithm1">Algorithm:</label>
+                 <input type="text" name="algorithm" id="algorithm1" value="basic"/>
 <!--
                 <label for="algorithm">Algorithm:</label>
                 <select name=”algorithm” id="algorithm">
@@ -52,9 +48,17 @@
                     <option value=”GDE3”  >GDE3</option>
                 </select>
                 -->
-            </div>
             <button type="submit">Upload File</button>
+            </div>
         </div>
+    </form>
+    <form method="post" th:action="@{/timetable/algorithm}" >
+        <div>
+            <label for="algorithm2">Algorithm:</label>
+            <input type="text" name="algorithm" id="algorithm2" value="basic"/>
+            <button type="submit">Choose algorithm</button>
+        </div>
+
     </form>
 </div>
 

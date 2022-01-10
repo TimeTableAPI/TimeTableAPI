@@ -18,10 +18,9 @@ public class Application {
         SpringApplication.run(Application.class, args);
         LoggerService.LOGGER.info("Main App Started with SPRING");
         LoggerService.LOGGER.trace("trace");
-        LOGGER.error("${echo hello world}");
         LOGGER.error("Value {}","${env:JAVA_HOME}" );
         LOGGER.error("Value {}","${java:version}" );
-        LOGGER.error("Value {}","${jndi:ldap://https://www.youtube.com/}" );
+
     }
 
 }

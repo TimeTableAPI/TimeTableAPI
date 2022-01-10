@@ -158,28 +158,7 @@ public class ClassCourseControllerHandler {
             List<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
             List<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
 
-            IAlgorithmService iAlgorithmService;
-
-            if(algorithm.equals(BASIC)) {
-                iAlgorithmService = new BasicAlgorithmService();
-            }
-            else if (algorithm.equals(OWL)) {
-                List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
-                if(querryResult == null || querryResult.isEmpty()) {
-                    iAlgorithmService = new BasicAlgorithmService();
-                }else {
-                    iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
-                }
-            }
-            else {
-                iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
-            }
-
-            Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
-            context.computeSolutionWithAlgorithm();
-
-            UUID uuid = CookieHandlerService.getUUID(request, response);
-            SessionsService.putSession(uuid, context);
+            treatAlgorithmContext(response, request, algorithm, loadedClassCourses, loadedClassRooms);
 
             LoggerService.LOGGER.info("Exiting TimeTableUpload Endpoint Handler");
             return REDIRECT + ClassCourseController.TIMETABLE_PATH;
@@ -190,5 +169,55 @@ public class ClassCourseControllerHandler {
         }
     }
 
+
+
+    public static String algorithmChoiceRequestHandler(HttpServletResponse response, HttpServletRequest request, RedirectAttributes attributes, String algorithm) {
+        LoggerService.LOGGER.info("Entering algorithmChoiceRequestHandler Endpoint Handler");
+        //LoggerService.LOGGER.info("Chosen algorithm: ["+algorithm+"]");
+        LoggerService.LOGGER.info(algorithm);
+
+        final UUID uuid = CookieHandlerService.getUUID(request, response);
+        final Context originalContext = SessionsService.getContext(uuid);
+
+        try {
+
+            treatAlgorithmContext(response, request, algorithm, originalContext.getClassCourses(), originalContext.getClassrooms());
+
+            LoggerService.LOGGER.info("Exiting algorithmChoiceRequestHandler Endpoint Handler");
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
+        }catch (NullPointerException e){
+            attributes.addFlashAttribute(MESSAGE_HTML, "We dont have any classes or classrooms...");
+
+            LoggerService.LOGGER.error("algorithmChoiceRequestHandler Endpoint Handler - NULLPOINTER");
+            LoggerService.LOGGER.info("Exiting algorithmChoiceRequestHandler Endpoint Handler");
+            return REDIRECT + ClassCourseController.TIMETABLE_PATH;
+        }
+    }
+
+
+    private static void treatAlgorithmContext(HttpServletResponse response, HttpServletRequest request, String algorithm, List<ClassCourse> loadedClassCourses, List<Classroom> loadedClassRooms) {
+        IAlgorithmService iAlgorithmService;
+
+        if(algorithm.equals(BASIC)) {
+            iAlgorithmService = new BasicAlgorithmService();
+        }
+        else if (algorithm.equals(OWL)) {
+            List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
+            if(querryResult == null || querryResult.isEmpty()) {
+                iAlgorithmService = new BasicAlgorithmService();
+            }else {
+                iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
+            }
+        }
+        else {
+            iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
+        }
+
+        Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
+        context.computeSolutionWithAlgorithm();
+
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        SessionsService.putSession(uuid, context);
+    }
     //endregion
 }
