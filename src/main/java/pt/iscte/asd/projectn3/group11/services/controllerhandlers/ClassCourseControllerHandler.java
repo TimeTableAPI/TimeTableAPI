@@ -5,15 +5,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
@@ -46,7 +43,7 @@ public class ClassCourseControllerHandler {
      * @param request
      * @return List of class courses.
      */
-    public static final List<ClassCourse.ClassCourseJson> getTimeTableHandler(HttpServletResponse response, HttpServletRequest request)
+    public static final List<ClassCourse.ClassCourseJson> getClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
@@ -83,7 +80,7 @@ public class ClassCourseControllerHandler {
      * @param request
      * @return
      */
-    public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request)
+    public static final ResponseEntity<Resource> downloadClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
