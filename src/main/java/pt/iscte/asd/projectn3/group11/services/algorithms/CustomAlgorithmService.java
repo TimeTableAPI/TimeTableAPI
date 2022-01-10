@@ -1,8 +1,10 @@
 package pt.iscte.asd.projectn3.group11.services.algorithms;
 
+import org.apache.logging.log4j.LogManager;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.apache.logging.log4j.Logger;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
@@ -12,15 +14,17 @@ import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.MetricCalc
 import java.util.*;
 
 public class CustomAlgorithmService implements IAlgorithmService {
-
+    private static final Logger LOGGER  = LogManager.getLogger(CustomAlgorithmService.class);
     private final String algorithmName;
     private final int maxEvaluation;
     private boolean isRunning;
+    private double progress;
 
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;
         this.isRunning = false;
+        this.progress = 0;
     }
 
     @Override
@@ -28,7 +32,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            System.out.println(algorithmName + "::EXECUTE");
+            LOGGER.info(algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
             //configure and run this experiment
@@ -38,11 +42,12 @@ public class CustomAlgorithmService implements IAlgorithmService {
                     .withMaxEvaluations(maxEvaluation)
                     .run();
 
-            System.out.println(result);
+            LOGGER.info(result);
+
             //display the results
-            System.out.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n");
+            LOGGER.info(String.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n"));
             for (Solution solution : result) {
-                System.out.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
+                LOGGER.info(String.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
                         solution.getObjective(0),
                         solution.getObjective(1),
                         solution.getObjective(2),
@@ -51,18 +56,22 @@ public class CustomAlgorithmService implements IAlgorithmService {
                         solution.getObjective(5),
                         solution.getObjective(6),
                         solution.getObjective(7)
-                );
+                ));
             }
             final Solution bestSolution = getBestSolution(result);
             final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
 
-            System.out.println(Arrays.toString(bestSolution.getObjectives()));
-            System.out.println(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
+            LOGGER.info(Arrays.toString(bestSolution.getObjectives()));
+            LOGGER.info(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
+
             inputClasses = bestClassCourses;
         }
         finally
         {
             this.isRunning = false;
+            this.progress = 1.0;
+            LOGGER.info("Finished " + algorithmName);
+
         }
 
     }
@@ -70,6 +79,11 @@ public class CustomAlgorithmService implements IAlgorithmService {
     @Override
     public boolean isRunning() {
         return this.isRunning;
+    }
+
+    @Override
+    public double getProgress() {
+        return this.progress;
     }
 
     private static Solution getBestSolution (NondominatedPopulation result){
