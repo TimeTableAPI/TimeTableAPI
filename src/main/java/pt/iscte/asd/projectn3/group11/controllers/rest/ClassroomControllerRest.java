@@ -15,7 +15,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.Classro
 public class ClassroomControllerRest {
 
     //region PATH_CONSTANTS
-    public static final String CLASSROOM_PATH = "/rest/classrooms";
+    public static final String CLASSROOM_REST_PATH = "/rest/classrooms";
     //endregion
 
     //region CLASSROOM
@@ -26,7 +26,7 @@ public class ClassroomControllerRest {
      * @param request request
      * @return Classrooms list
      */
-    @GetMapping(value = CLASSROOM_PATH)
+    @GetMapping(value = CLASSROOM_REST_PATH)
     public List<Classroom> getAllClassRooms(HttpServletResponse response, HttpServletRequest request) {
         return getAllClassRoomsHandler(response, request);
     }
