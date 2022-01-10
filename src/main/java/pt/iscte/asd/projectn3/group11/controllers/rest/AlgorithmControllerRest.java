@@ -1,5 +1,6 @@
 package pt.iscte.asd.projectn3.group11.controllers.rest;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,8 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.AlgorithmControllerHandler.algorithmProgressRequestHandler;
-import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.AlgorithmControllerHandler.algorithmRequestHandler;
+import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.AlgorithmControllerHandler.*;
 
 @RestController
 public class AlgorithmControllerRest {
@@ -48,11 +48,10 @@ public class AlgorithmControllerRest {
      * @param request request
      * @return Classrooms list
      */
-  /*  @PostMapping(value = CLASSCOURSE_REST_PATH)
-    public Double getClassCourseAlgorithmProgress(HttpServletResponse response, HttpServletRequest request) {
-        return algorithmChangeRequestHandler(response,request);
+  @PostMapping(value = CLASSCOURSE_REST_PATH)
+    public ResponseEntity changeClassCourseAlgorithm(HttpServletResponse response, HttpServletRequest request, String newAlgorithmName) {
+        return algorithmChangeRequestHandler(response,request,newAlgorithmName);
     }
-*/
 
     //endregion
 

@@ -147,13 +147,17 @@ public class ClassCourseControllerHandler {
 
             Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
             UUID uuid = CookieHandlerService.getUUID(request, response);
+
+            if(SessionsService.containsSession(uuid)) {
+                Context existingContext = SessionsService.getContext(uuid);
+                final IAlgorithmService existingContextAlgorithm = existingContext.getAlgorithm();
+                if(existingContextAlgorithm.isRunning()){
+                    existingContextAlgorithm.stop();
+                }
+            }
             SessionsService.putSession(uuid, context);
 
-            Thread computingThread = new Thread(){
-                public void run(){
-                    context.computeSolutionWithAlgorithm();
-                }
-            };
+            Thread computingThread = new Thread(context::computeSolutionWithAlgorithm);
             computingThread.start();
 
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;

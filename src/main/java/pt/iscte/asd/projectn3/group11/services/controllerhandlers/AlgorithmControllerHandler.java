@@ -58,13 +58,14 @@ public class AlgorithmControllerHandler {
      * @param request
      * @return
      */
-    public static final ResponseEntity algorithmChangeRequestHandler(HttpServletResponse response, HttpServletRequest request) {
-        String newAlgoName = "";
+    public static final ResponseEntity algorithmChangeRequestHandler(HttpServletResponse response, HttpServletRequest request,String newAlgorithmName) {
+
         ResponseEntity<Object> result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
+
         if (SessionsService.containsSession(uuid)) {
             Context context = SessionsService.getContext(uuid);
-            context.changeAlgorithm(newAlgoName);
+            context.changeAlgorithm(newAlgorithmName);
             result = ResponseEntity.ok().build();
         } else {
             result = ResponseEntity.noContent().build();
