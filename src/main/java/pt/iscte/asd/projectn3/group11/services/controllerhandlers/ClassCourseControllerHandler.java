@@ -71,12 +71,7 @@ public class ClassCourseControllerHandler {
         if(SessionsService.containsSession(uuid))
         {
             Context context = SessionsService.getContext(uuid);
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
-            final List<MetricResult> metricResultList = new LinkedList<>();
-            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
-                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
-            }
-            return metricResultList;
+            return context.getMetricResults();
         }
 
         return new LinkedList<>();
@@ -175,6 +170,7 @@ public class ClassCourseControllerHandler {
 
             Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
             context.computeSolutionWithAlgorithm();
+            context.calculateMetrics();
 
             UUID uuid = CookieHandlerService.getUUID(request, response);
             SessionsService.putSession(uuid, context);
