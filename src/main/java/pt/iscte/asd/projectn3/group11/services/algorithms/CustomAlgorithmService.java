@@ -86,6 +86,11 @@ public class CustomAlgorithmService implements IAlgorithmService {
         return this.progress;
     }
 
+    @Override
+    public String getName() {
+        return this.algorithmName;
+    }
+
     private static Solution getBestSolution (NondominatedPopulation result){
         List<Double> distancesList = new LinkedList<>();
         List<double[]> listObjectives = new LinkedList<>();

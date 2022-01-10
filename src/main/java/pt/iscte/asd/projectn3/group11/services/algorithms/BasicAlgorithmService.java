@@ -13,11 +13,14 @@ import java.util.*;
 public class BasicAlgorithmService implements IAlgorithmService {
     private static final Logger LOGGER  = LogManager.getLogger(BasicAlgorithmService.class);
     private double progress;
+    private final String name;
 
     private boolean isRunning;
     public BasicAlgorithmService() {
         this.isRunning = false;
         this.progress = 0;
+        this.name = "Basic";
+
     }
 
     @Override
@@ -58,6 +61,11 @@ public class BasicAlgorithmService implements IAlgorithmService {
     @Override
     public double getProgress() {
         return this.progress;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 
 }
