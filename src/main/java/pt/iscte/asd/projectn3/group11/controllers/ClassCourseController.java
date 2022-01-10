@@ -17,6 +17,9 @@ import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseCon
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getMetricResultsHandler;
+import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getTimeTableHandler;
+
 @Controller
 public class ClassCourseController {
 
@@ -35,7 +38,9 @@ public class ClassCourseController {
      */
     @GetMapping(value = ClassCourseController.TIMETABLE_PATH)
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
-        return ClassCourseControllerHandler.fetchTimeTableHandler(response, request, model);
+        model.addAttribute("timetable", getTimeTableHandler(response, request));
+        model.addAttribute("metrics", getMetricResultsHandler(response, request));
+        return "timetable";
     }
     //endregion
 
