@@ -25,4 +25,6 @@ public interface IAlgorithmService {
     double getProgress();
 
     String getName();
+
+    void stop();
 }

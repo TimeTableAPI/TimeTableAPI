@@ -16,11 +16,13 @@ public class BasicAlgorithmService implements IAlgorithmService {
     private final String name;
 
     private boolean isRunning;
+    private boolean canRun;
+
     public BasicAlgorithmService() {
         this.isRunning = false;
         this.progress = 0;
         this.name = "Basic";
-
+        this.canRun = true;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
             TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
             TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
 
-            for (int i = 0; i < quanityOfClassCourses; i++) {
+            for (int i = 0; i < quanityOfClassCourses && this.canRun; i++) {
                 ClassCourse classCourse = classCourses.get(i);
                 final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
                 if (!hasClassRoomAllocated) {
@@ -48,7 +50,9 @@ public class BasicAlgorithmService implements IAlgorithmService {
         finally
         {
             this.isRunning = false;
-            this.progress = 1;
+            if(this.canRun) {
+                this.progress = 1;
+            }
             LOGGER.info("Finished BASIC_ALGORITHM");
         }
     }
@@ -66,6 +70,12 @@ public class BasicAlgorithmService implements IAlgorithmService {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public void stop() {
+        this.canRun = false;
+
     }
 
 }
