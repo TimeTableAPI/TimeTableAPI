@@ -126,6 +126,28 @@ public class ClassroomService {
 	//region ORGANIZER
 
 	/**
+	 * <p>Organizes a List of ClassCourses into a TreeMap organized by ClassCourseStudentGroups which is then organized by Date </p>
+	 * @param classCourses List<ClassCourse>
+	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
+	 */
+	public static  TreeMap<String , HashMap<Date, EnumMap<TimeShift,HashSet<ClassCourse>>>> organizeClassCourseByClassStudentsByDate(List<ClassCourse> classCourses) {
+		TreeMap<String , HashMap<Date, EnumMap<TimeShift,HashSet<ClassCourse>>>> classCourseMap = new TreeMap<>();
+
+	    for (ClassCourse classCourse : classCourses) {
+			for (String className :	classCourse.getClassesOfCourse()) {
+		        classCourseMap.computeIfAbsent(className, k -> new HashMap<>());
+				final Date date = classCourse.getDate();
+				classCourseMap.get(className).computeIfAbsent(date, k -> new EnumMap<>(TimeShift.class));
+
+				final TimeShift beginningHour = classCourse.getBeginningHour();
+				classCourseMap.get(className).get(date).computeIfAbsent(beginningHour, k -> new HashSet<>());
+				classCourseMap.get(className).get(date).get(beginningHour).add(classCourse);
+				}
+			}
+
+	    return classCourseMap;
+	}
+	/**
 	 * <p>Organizes a List of ClassCourses into a TreeMap organized by Date which is then organized by ClassCourseStudentGroups </p>
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>

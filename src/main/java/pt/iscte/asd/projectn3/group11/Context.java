@@ -1,7 +1,8 @@
 package pt.iscte.asd.projectn3.group11;
 
-import org.apache.commons.math3.exception.NullArgumentException;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.AlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
@@ -9,6 +10,8 @@ import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
 import java.util.*;
+
+import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByClassStudentsByDate;
 
 /**
  * <h1>Context</h1>
@@ -36,6 +39,7 @@ public class Context {
         this.classrooms = classrooms;
         this.algorithm = algorithm;
         this.metricResults = new LinkedList<>();
+
     }
 
     public Context(Builder builder)
@@ -57,6 +61,7 @@ public class Context {
             throw new IllegalStateException();
         }
         algorithm.execute(classCourses, classrooms);
+
     }
 
     /**
@@ -103,7 +108,20 @@ public class Context {
         }else{
             throw new NullPointerException();
         }
+    }
 
+    public TreeMap<String, HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>> getClassesByStudents(){
+        return organizeClassCourseByClassStudentsByDate(this.classCourses);
+    }
+
+    /**
+     * Gets the current timetable as JSON
+     * @return
+     */
+    public List<ClassCourse.ClassCourseJson> getClassCourseJSON(){
+        List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+        getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+        return loadedClassCoursesJSON;
     }
 
     /**
@@ -114,7 +132,7 @@ public class Context {
     }
 
 
-
+    //region Setters
     /**
      * Sets classCourses
      * @param classCourses
@@ -143,6 +161,7 @@ public class Context {
         this.algorithm = AlgorithmService.generateAlgorithm(newAlgoName);
     }
 
+    //endregion
     //region BUILDER
 
     public static class Builder {
