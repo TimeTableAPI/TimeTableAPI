@@ -59,21 +59,21 @@ public class ClassCourseControllerHandler {
      * Handler for {@link ClassCourseControllerRest#getClassesOfClass}
      * @param response
      * @param request
-     * @param calssName
+     * @param className
      * @return List of class courses.
      */
     public static final HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> getClassesOfClassHandler(HttpServletResponse response,
                                                                                                          HttpServletRequest request,
-                                                                                                         String calssName)
+                                                                                                         String className)
     {
-        LOGGER.info(calssName);
+        LOGGER.info(className);
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
             Context context = SessionsService.getContext(uuid);
             List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             final TreeMap<String, HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>> classesByStudents = context.getClassesByStudents();
-            return classesByStudents.get(calssName);
+            return classesByStudents.get(className);
         }
         return new HashMap<>();
     }
