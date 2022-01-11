@@ -58,7 +58,7 @@ public class AlgorithmControllerHandler {
      * @param request
      * @return
      */
-    public static final ResponseEntity algorithmChangeRequestHandler(HttpServletResponse response, HttpServletRequest request,String newAlgorithmName) {
+    public static final ResponseEntity algorithmChangeRequestHandler(HttpServletResponse response, HttpServletRequest request, String newAlgorithmName) {
 
         ResponseEntity<Object> result;
         UUID uuid = CookieHandlerService.getUUID(request, response);

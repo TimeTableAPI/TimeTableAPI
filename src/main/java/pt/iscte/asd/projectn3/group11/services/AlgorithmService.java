@@ -15,7 +15,7 @@ public class AlgorithmService {
 	public static final String BASIC_ALGORITHM_NAME = "basic";
 	public static final String OWL_ALGORITHM_NAME = "owl";
 
-	private static final int MAX_EVALUATION = 3;
+	private static final int MAX_EVALUATION = 1000;
 
 	public static IAlgorithmService generateAlgorithm(String algoName){
 		algoName = algoName.toLowerCase(Locale.ROOT).trim();

@@ -22,11 +22,14 @@ public class CustomAlgorithmService implements IAlgorithmService {
     private double progress;
     private Executor executor;
 
+
+    private CustomProgressListener customProgressListener;
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;
         this.isRunning = false;
         this.progress = 0;
+        this.customProgressListener = new CustomProgressListener(this);
     }
 
     @Override
@@ -37,6 +40,9 @@ public class CustomAlgorithmService implements IAlgorithmService {
             LOGGER.info(this.algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
+
+            long maxTime = 3600;
+
             //configure and run this experiment
             Executor executor = new Executor()
                     .withProblemClass(Problem.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
@@ -45,6 +51,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
                     .withProgressListener(this.customProgressListener);
             setExecutor(executor);
 
+            NondominatedPopulation result = executor.run();
             LOGGER.info(result);
 
             //display the results
@@ -72,7 +79,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
         finally
         {
             this.isRunning = false;
-            this.progress = 1.0;
+            //this.progress = 1.0;
             LOGGER.info("Finished " + algorithmName);
         }
     }

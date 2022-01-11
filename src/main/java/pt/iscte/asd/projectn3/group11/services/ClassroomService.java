@@ -296,7 +296,7 @@ public class ClassroomService {
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
 	 */
-	public static  TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(List<ClassCourse> classCourses) {
+	public static synchronized TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(List<ClassCourse> classCourses) {
 		TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
 		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
 
@@ -304,16 +304,20 @@ public class ClassroomService {
 		    classCourseMap.computeIfAbsent(classCourse.getDate(), k -> new HashMap<>());
 
 			boolean foundClassInMap = false;
-			for(ClassCourse classCourseInMap : classCourseMap.get(classCourse.getDate()).keySet() ){
+		    final HashMap<ClassCourse, HashSet<ClassCourse>> classCourseHashSetHashMap = classCourseMap.get(classCourse.getDate());
+		    for(ClassCourse classCourseInMap : classCourseHashSetHashMap.keySet() ){
 				if(classCourseInMap.equals(classCourse)){
-					classCourseMap.get(classCourse.getDate()).get(classCourseInMap).add(classCourse);
+					classCourseHashSetHashMap.computeIfAbsent(classCourseInMap, k -> new HashSet<>());
+
+					final HashSet<ClassCourse> classCourses1 = classCourseHashSetHashMap.get(classCourseInMap);
+					classCourses1.add(classCourse);
 					foundClassInMap = true;
 					break;
 				}
 			}
 		    if(!foundClassInMap){
-			    classCourseMap.get(classCourse.getDate()).computeIfAbsent(classCourse, k -> new HashSet<>());
-				classCourseMap.get(classCourse.getDate()).get(classCourse).add(classCourse);
+			    classCourseHashSetHashMap.computeIfAbsent(classCourse, k -> new HashSet<>());
+				classCourseHashSetHashMap.get(classCourse).add(classCourse);
 		    }
 	    }
 	    return classCourseMap;
