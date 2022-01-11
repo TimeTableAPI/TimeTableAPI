@@ -14,152 +14,7 @@ import java.util.*;
  */
 public class ClassroomService {
 
-	//region GETTERS
-	/**
-	 * Getter for specified capacity
-	 *
-	 * @param capacity integer
-	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
-	 */
-	@Deprecated
-	public static List<Classroom> getWithCapacity(List<Classroom> classrooms, int capacity) {
-		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x : classrooms) {
-			if (x.getNormalCapacity() >= capacity) {
-				result.add(x);
-			}
-		}
-		return result;
-	}
 
-	/**
-	 * Getter for specified Examcapacity
-	 *
-	 * @param capacity integer
-	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
-	 */
-	@Deprecated
-	public static List<Classroom> getWithExamCapacity(List<Classroom> classrooms, int capacity) {
-		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x : classrooms) {
-			if (x.getExamCapacity() >= capacity) {
-				result.add(x);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Getter for specified characteristics
-	 *
-	 * @param characteristics List<String>
-	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirements
-	 */
-	@Deprecated
-	public static List<Classroom> getWithCharacteristics(List<Classroom> classrooms, List<String> characteristics) {
-		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x : classrooms) {
-			if (x.hasALLCharacteristics(characteristics)) {
-				result.add(x);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Getter for a specified characteristic
-	 *
-	 * @param characteristic String
-	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
-	 */
-	@Deprecated
-	public static List<Classroom> getWithCharacteristic(List<Classroom> classrooms, String characteristic) {
-		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x : classrooms) {
-			if (x.hasCharacteristic(characteristic)) {
-				result.add(x);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Getter for a specified characteristic
-	 *
-	 * @param building String
-	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
-	 */
-	@Deprecated
-	public static List<Classroom> getInBuilding(List<Classroom> classrooms, String building) {
-		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x : classrooms) {
-			if (x.isInBuilding(building)) {
-				result.add(x);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Getter for a specified characteristic
-	 *
-	 * @param buildings List<String>
-	 * @return {@link LinkedList<Classroom>} with all the ClassRooms that fulfill the requirement
-	 */
-	@Deprecated
-	public static List<Classroom> getInAnyBuilding(List<Classroom> classrooms, List<String> buildings) {
-		final LinkedList<Classroom> result = new LinkedList<>();
-		for (Classroom x : classrooms) {
-			if (x.isInANYBuilding(buildings)) {
-				result.add(x);
-			}
-		}
-		return result;
-	}
-	/**
-	 * <p>Method to get all the classroms that fulfill the requirements in the requestInformation</p>
-	 * <p>
-	 * @param classrooms List<Classroom>
-	 * @param requestInformation RequestInformation
-	 * @param logicOp LogicOperation
-	 * @see LogicOperation
-	 * @see RequestInformation
-	 * @see Classroom
-	 * @return List<Classroom> of classrooms gotten
-	 * </p>
-	 */
-	@Deprecated
-	public static List<Classroom> get(List<Classroom> classrooms, RequestInformation requestInformation, LogicOperation logicOp) {
-		List<List<Classroom>> requestClassRooms = new LinkedList<>();
-		requestClassRooms.add(ClassroomService.getWithCapacity(classrooms, requestInformation.capacity));
-		requestClassRooms.add(ClassroomService.getWithExamCapacity(classrooms, requestInformation.examCapacity));
-		requestClassRooms.add(ClassroomService.getWithCharacteristics(classrooms, requestInformation.characteristics));
-		requestClassRooms.add(ClassroomService.getInAnyBuilding(classrooms, requestInformation.buildings));
-
-		List<Classroom> agregatedRequestClassRooms = new LinkedList<>();
-		for (List<Classroom> requestClassRoomList : requestClassRooms) {
-			for (Classroom cls : requestClassRoomList) {
-				if (!agregatedRequestClassRooms.contains(cls)) {
-					agregatedRequestClassRooms.add(cls);
-				}
-			}
-		}
-		List<Classroom> finalrequestClassRooms = new LinkedList<>();
-		for (Classroom cls : agregatedRequestClassRooms) {
-			boolean isClassRoomPresentInAll = true;
-			for (List<Classroom> requestClassRoomList : requestClassRooms) {
-				boolean listContain = requestClassRoomList.contains(cls);
-				isClassRoomPresentInAll = logicOp.op(isClassRoomPresentInAll, listContain);
-			}
-			if (isClassRoomPresentInAll) {
-				finalrequestClassRooms.add(cls);
-			}
-		}
-
-		return finalrequestClassRooms;
-
-	}
-//endregion
 //region ALLOCATOR
 
 	/**
@@ -275,7 +130,7 @@ public class ClassroomService {
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
 	 */
-	public static  TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizeClassCourseByClassStudents(List<ClassCourse> classCourses) {
+	public static  TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizeClassCourseByDateByClassStudents(List<ClassCourse> classCourses) {
 		TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
 		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
 
@@ -296,7 +151,7 @@ public class ClassroomService {
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
 	 */
-	public static synchronized TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByClass(List<ClassCourse> classCourses) {
+	public static synchronized TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizeClassCourseByDateByClassCourse(List<ClassCourse> classCourses) {
 		TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> classCourseMap = new TreeMap<>();
 		//LinkedList<ClassCourse> classCoursesClone = new LinkedList<>(classCourses);
 
