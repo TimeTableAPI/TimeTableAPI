@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
-import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,9 +43,9 @@ public class ClassCourseControllerRest {
      * @return
      */
     @GetMapping(value = CLASSES_REST_PATH + "/{className}")
-    public HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> getClassesOfClass(HttpServletResponse response,
-                                                                                     HttpServletRequest request,
-                                                                                     @PathVariable(value ="className") String className) {
+    public HashMap<Date, HashMap<Integer, HashSet<ClassCourse>>> getClassesOfClass(HttpServletResponse response,
+                                                                                   HttpServletRequest request,
+                                                                                   @PathVariable(value ="className") String className) {
         return getClassesOfClassHandler(response, request, className);
     }
     /**
