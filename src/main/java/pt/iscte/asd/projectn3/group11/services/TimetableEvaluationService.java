@@ -51,7 +51,6 @@ public class TimetableEvaluationService {
 	 * </p>
 	 */
 	public static Hashtable<String, Float> evaluateTimetable(List<ClassCourse> timetableList, List<Classroom> classroomsList){
-		List<MetricResult> results = new LinkedList<>();
 		Queue<MetricResult> globalQueue = new ArrayBlockingQueue<MetricResult>(METRICSLIST.size());
 		List<Thread> threadList = new LinkedList<>();
 
