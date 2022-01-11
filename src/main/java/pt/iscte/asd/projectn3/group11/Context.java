@@ -2,7 +2,6 @@ package pt.iscte.asd.projectn3.group11;
 
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
-import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.AlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
@@ -110,7 +109,7 @@ public class Context {
         }
     }
 
-    public TreeMap<String, HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>> getClassesByStudents(){
+    public TreeMap<String, HashMap<Date, HashMap<Integer, HashSet<ClassCourse>>>> getClassesByStudents(){
         return organizeClassCourseByClassStudentsByDate(this.classCourses);
     }
 

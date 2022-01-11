@@ -13,7 +13,6 @@ import pt.iscte.asd.projectn3.group11.controllers.rest.ClassCourseControllerRest
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
-import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import pt.iscte.asd.projectn3.group11.services.*;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
 
@@ -62,9 +61,9 @@ public class ClassCourseControllerHandler {
      * @param className
      * @return List of class courses.
      */
-    public static final HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> getClassesOfClassHandler(HttpServletResponse response,
-                                                                                                         HttpServletRequest request,
-                                                                                                         String className)
+    public static final HashMap<Date, HashMap<Integer, HashSet<ClassCourse>>> getClassesOfClassHandler(HttpServletResponse response,
+                                                                                                       HttpServletRequest request,
+                                                                                                       String className)
     {
         LOGGER.info(className);
         UUID uuid = CookieHandlerService.getUUID(request, response);
@@ -72,7 +71,7 @@ public class ClassCourseControllerHandler {
         {
             Context context = SessionsService.getContext(uuid);
             List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
-            final TreeMap<String, HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>> classesByStudents = context.getClassesByStudents();
+            final TreeMap<String, HashMap<Date, HashMap<Integer, HashSet<ClassCourse>>>> classesByStudents = context.getClassesByStudents();
             return classesByStudents.get(className);
         }
         return new HashMap<>();

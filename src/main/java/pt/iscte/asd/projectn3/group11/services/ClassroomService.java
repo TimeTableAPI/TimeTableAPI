@@ -130,17 +130,17 @@ public class ClassroomService {
 	 * @param classCourses List<ClassCourse>
 	 * @return TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>>
 	 */
-	public static  TreeMap<String , HashMap<Date, EnumMap<TimeShift,HashSet<ClassCourse>>>> organizeClassCourseByClassStudentsByDate(List<ClassCourse> classCourses) {
-		TreeMap<String , HashMap<Date, EnumMap<TimeShift,HashSet<ClassCourse>>>> classCourseMap = new TreeMap<>();
+	public static  TreeMap<String , HashMap<Date, HashMap<Integer,HashSet<ClassCourse>>>> organizeClassCourseByClassStudentsByDate(List<ClassCourse> classCourses) {
+		TreeMap<String , HashMap<Date, HashMap<Integer,HashSet<ClassCourse>>>> classCourseMap = new TreeMap<>();
 
 	    for (ClassCourse classCourse : classCourses) {
 			for (String className :	classCourse.getClassesOfCourse()) {
 		        classCourseMap.computeIfAbsent(className, k -> new HashMap<>());
 				final Date date = classCourse.getDate();
-				classCourseMap.get(className).computeIfAbsent(date, k -> new EnumMap<>(TimeShift.class));
+				classCourseMap.get(className).computeIfAbsent(date, k -> new HashMap<>());
 
 				final TimeShift beginningHour = classCourse.getBeginningHour();
-				classCourseMap.get(className).get(date).computeIfAbsent(beginningHour, k -> new HashSet<>());
+				classCourseMap.get(className).get(date).computeIfAbsent(beginningHour.getId(), k -> new HashSet<>());
 				classCourseMap.get(className).get(date).get(beginningHour).add(classCourse);
 				}
 			}
