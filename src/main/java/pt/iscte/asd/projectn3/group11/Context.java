@@ -48,10 +48,10 @@ public class Context {
     /**
      *<p>Method that modifies the stored classCourses and runs the algorithm to allocate classrooms to the classcourses that dont have classrooms </p>
      */
-    public void computeSolutionWithAlgorithm()  throws NullArgumentException , IllegalStateException
+    public void computeSolutionWithAlgorithm()  throws NullPointerException , IllegalStateException
     {
         if(algorithm == null ||classCourses == null ||classrooms == null){
-            throw new NullArgumentException();
+            throw new NullPointerException();
         }
         if (classCourses.isEmpty() || classrooms.isEmpty()){
             throw new IllegalStateException();
@@ -97,8 +97,13 @@ public class Context {
      * Gets the current algorithm
      * @return {@link IAlgorithmService}
      */
-    public IAlgorithmService getAlgorithm() {
-        return algorithm;
+    public IAlgorithmService getAlgorithm() throws NullPointerException{
+        if(algorithm != null){
+            return algorithm;
+        }else{
+            throw new NullPointerException();
+        }
+
     }
 
     /**
@@ -130,7 +135,11 @@ public class Context {
      * Stops the current algorithm and changes it to a new one
      * */
     public void changeAlgorithm(String newAlgoName) {
-        this.algorithm.stop();
+        if(this.algorithm != null){
+            if(this.algorithm.isRunning()){
+                this.algorithm.stop();
+            }
+        }
         this.algorithm = AlgorithmService.generateAlgorithm(newAlgoName);
     }
 
