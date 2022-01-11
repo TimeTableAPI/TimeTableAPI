@@ -18,18 +18,18 @@
 </script>
 <script type="text/javascript">
     async function getTest(){
-        let  response = await fetch("http://localhost:9090/rest/algorithm/progress")
-        let data = await response.json()
+        let  response = await fetch("http://localhost:9090/rest/algorithm/progress");
+        let data = await response.json();
         var e = document.getElementById('algorithmProgressBar');
-        e.setAttribute("value",data)
-        console.log(data)
+        e.setAttribute("value",data);
+        console.log(data);
         return data;
     }
     var getClassRooms = setInterval(getTest , 1000);
 </script>
 
 <script>
-    function send (e,form) {
+    function sendPOST(e,form) {
         e.preventDefault();
         fetch(form.action,{method:'post', body: new FormData(form)});
 
@@ -60,7 +60,7 @@
 <p th:text="${message}" th:if="${message ne null}"></p>
 
 <div id="requestSection" style="display:none">
-    <form method="post" action="/rest/classes"  onsubmit="send(event,this)"  enctype="multipart/form-data">
+    <form method="post" action="/rest/classes"  onsubmit="sendPOST(event,this)"  enctype="multipart/form-data">
         <div>
             <div><label for="file_classes">Classes:</label>
                  <input type="file" name="file_classes" id="file_classes"/>
@@ -68,7 +68,7 @@
             <button type="submit">Upload Classes</button>
         </div>
     </form>
-    <form method="post" action="/rest/classrooms"  onsubmit="send(event,this)" enctype="multipart/form-data">
+    <form method="post" action="/rest/classrooms"  onsubmit="sendPOST(event,this)" enctype="multipart/form-data">
         <div>
             <div>
                 <label for="file_classrooms">Classrooms:</label>
@@ -77,7 +77,7 @@
             <button type="submit">Upload classrooms</button>
         </div>
     </form>
-    <form method="post" action="/rest/algorithm"  onsubmit="send(event,this)" enctype="multipart/form-data">
+    <form method="post" action="/rest/algorithm"  onsubmit="sendPOST(event,this)" enctype="multipart/form-data">
         <div>
             <div>
                 <label for="algorithm">Algorithm:</label>
@@ -86,7 +86,7 @@
             <button type="submit">Choose Algorithm</button>
         </div>
     </form>
-    <form method="post" action="/rest/algorithm/run" onsubmit="send(event,this)" enctype="multipart/form-data">
+    <form method="post" action="/rest/algorithm/run" onsubmit="sendPOST(event,this)" enctype="multipart/form-data">
         <div>
             <button type="submit">Run Algorithm</button>
         </div>
@@ -134,10 +134,6 @@
 
                 ]
             });
-
-
-
-
 </script>
 <script th:inline="javascript">
 /*<![CDATA[*/
