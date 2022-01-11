@@ -8,19 +8,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
-import pt.iscte.asd.projectn3.group11.controllers.Application;
-import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
+import pt.iscte.asd.projectn3.group11.controllers.rest.ClassCourseControllerRest;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
-import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import pt.iscte.asd.projectn3.group11.services.*;
-import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
-import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-import static pt.iscte.asd.projectn3.group11.services.AlgorithmService.BASIC_ALGORITHM_NAME;
-
 public class ClassCourseControllerHandler {
 
 
@@ -40,7 +33,7 @@ public class ClassCourseControllerHandler {
     //region HANDLERS
 
     /**
-     * Gets the timetable handler.
+     * Handler for {@link ClassCourseControllerRest#getClasses}
      * @param response
      * @param request
      * @return List of class courses.
@@ -52,10 +45,37 @@ public class ClassCourseControllerHandler {
         {
             Context context = SessionsService.getContext(uuid);
             List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
-            context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+            try {
+                context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+            } catch (NullPointerException e) {
+                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
+            }
             return loadedClassCoursesJSON;
         }
         return new LinkedList<>();
+    }
+
+    /**
+     * Handler for {@link ClassCourseControllerRest#getClassesOfClass}
+     * @param response
+     * @param request
+     * @param calssName
+     * @return List of class courses.
+     */
+    public static final HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> getClassesOfClassHandler(HttpServletResponse response,
+                                                                                                         HttpServletRequest request,
+                                                                                                         String calssName)
+    {
+        LOGGER.info(calssName);
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if(SessionsService.containsSession(uuid))
+        {
+            Context context = SessionsService.getContext(uuid);
+            List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            final TreeMap<String, HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>>> classesByStudents = context.getClassesByStudents();
+            return classesByStudents.get(calssName);
+        }
+        return new HashMap<>();
     }
 
     /**

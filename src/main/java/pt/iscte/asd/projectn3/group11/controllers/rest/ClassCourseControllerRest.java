@@ -3,19 +3,19 @@ package pt.iscte.asd.projectn3.group11.controllers.rest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
 
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.*;
+
 
 @RestController
 public class ClassCourseControllerRest {
@@ -38,6 +38,18 @@ public class ClassCourseControllerRest {
     }
 
     /**
+     * Gets classrooms of a specific Class.
+     * @param response response
+     * @param request request
+     * @return
+     */
+    @GetMapping(value = CLASSES_REST_PATH + "/{className}")
+    public HashMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> getClassesOfClass(HttpServletResponse response,
+                                                                                     HttpServletRequest request,
+                                                                                     @PathVariable(value ="className") String className) {
+        return getClassesOfClassHandler(response, request, className);
+    }
+    /**
      * Sets classrooms.
      * @param response response
      * @param request request
@@ -46,6 +58,7 @@ public class ClassCourseControllerRest {
     public ResponseEntity setClasses(HttpServletResponse response, HttpServletRequest request, @RequestPart(value = "file_classes" ) MultipartFile classesFile) {
         return setClassesHandler(response, request, classesFile);
     }
+
 
     //endregion
 
