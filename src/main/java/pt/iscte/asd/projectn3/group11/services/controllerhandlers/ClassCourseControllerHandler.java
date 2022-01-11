@@ -1,5 +1,7 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
+import pt.iscte.asd.projectn3.group11.controllers.Application;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
@@ -31,6 +34,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class ClassCourseControllerHandler {
+
+    private static final Logger LOGGER  = LogManager.getLogger(ClassCourseControllerHandler.class);
 
     private static final String BASIC = "basic";
     private static final String OWL = "owl";
@@ -113,6 +118,40 @@ public class ClassCourseControllerHandler {
             e.printStackTrace();
             return (ResponseEntity<Resource>) ResponseEntity.notFound();
         }
+    }
+
+    /**
+     * setClasses endpoint handler.
+     * @param response
+     * @param request
+     * @param classesFile
+     * @return
+     */
+    public static final ResponseEntity setClassesHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile)
+    {
+        LOGGER.info("In set classes handler");
+        LinkedList<ClassCourse> loadedClassCourses;
+        try {
+            loadedClassCourses = ClassCourseLoaderService.load(classesFile, false);
+        }
+        catch (IOException e)
+        {
+            LOGGER.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+
+        if (SessionsService.containsSession(uuid)) {
+            LOGGER.info("Context found setting new classcourses");
+            Context context = SessionsService.getContext(uuid);
+            context.setClassCourses(loadedClassCourses);
+        } else {
+            LOGGER.info("Context not found, creating empty and setting new classcourses");
+            Context context = new Context.Builder().classCourses(loadedClassCourses).build();
+            SessionsService.putSession(uuid, context);
+        }
+        return ResponseEntity.ok().build();
     }
 
     /**

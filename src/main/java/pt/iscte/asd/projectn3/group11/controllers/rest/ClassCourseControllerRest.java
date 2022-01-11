@@ -1,10 +1,12 @@
 package pt.iscte.asd.projectn3.group11.controllers.rest;
 
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 
@@ -39,9 +41,9 @@ public class ClassCourseControllerRest {
      * @param response response
      * @param request request
      */
-    @PostMapping(value = CLASSES_PATH)
-    public List<ClassCourse.ClassCourseJson> setClasses(HttpServletResponse response, HttpServletRequest request) {
-        return getClassesHandler(response, request);
+    @PostMapping(value = CLASSES_PATH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity setClasses(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile) {
+        return setClassesHandler(response, request, classesFile);
     }
 
     //endregion
