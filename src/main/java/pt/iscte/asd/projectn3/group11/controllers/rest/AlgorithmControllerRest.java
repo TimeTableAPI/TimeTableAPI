@@ -3,6 +3,7 @@ package pt.iscte.asd.projectn3.group11.controllers.rest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +51,7 @@ public class AlgorithmControllerRest {
      * @return Classrooms list
      */
     @PostMapping(value = ALGORITHM_REST_PATH)
-    public ResponseEntity changeAlgorithm(HttpServletResponse response, HttpServletRequest request, String newAlgorithmName) {
+    public ResponseEntity changeAlgorithm(HttpServletResponse response, HttpServletRequest request, @RequestPart(value = "algorithm") String newAlgorithmName) {
         return changeAlgorithmRequestHandler(response,request,newAlgorithmName);
     }
     /**

@@ -1,7 +1,10 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import pt.iscte.asd.projectn3.group11.Context;
+import pt.iscte.asd.projectn3.group11.controllers.Application;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class AlgorithmControllerHandler {
+    private static final Logger LOGGER  = LogManager.getLogger(AlgorithmControllerHandler.class);
 
     /**
      * Handler for Algorithm Name requests
@@ -22,7 +26,12 @@ public class AlgorithmControllerHandler {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if (SessionsService.containsSession(uuid)) {
             Context context = SessionsService.getContext(uuid);
-            result = context.getAlgorithm().getName();
+            try {
+                result = context.getAlgorithm().getName();
+            } catch (NullPointerException e) {
+                LOGGER.trace("getAlgorithmNameHandler::No algorithm in context "+e.getMessage());
+                result = "";
+            }
 
         }
 
@@ -41,7 +50,12 @@ public class AlgorithmControllerHandler {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if (SessionsService.containsSession(uuid)) {
             Context context = SessionsService.getContext(uuid);
-            result = context.getAlgorithm().getProgress();
+            try {
+                result = context.getAlgorithm().getProgress();
+            } catch (NullPointerException e) {
+                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
+                result = 0.0;
+            }
 
         } else {
             result = (double) 0;
