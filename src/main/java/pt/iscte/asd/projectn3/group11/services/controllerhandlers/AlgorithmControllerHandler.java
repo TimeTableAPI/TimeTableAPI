@@ -1,9 +1,10 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
-import org.springframework.core.io.Resource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import pt.iscte.asd.projectn3.group11.Context;
+import pt.iscte.asd.projectn3.group11.controllers.Application;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class AlgorithmControllerHandler {
+    private static final Logger LOGGER  = LogManager.getLogger(AlgorithmControllerHandler.class);
 
     /**
      * Handler for Algorithm Name requests
@@ -19,12 +21,17 @@ public class AlgorithmControllerHandler {
      * @param request
      * @return
      */
-    public static final String algorithmRequestHandler(HttpServletResponse response, HttpServletRequest request) {
+    public static final String getAlgorithmNameHandler(HttpServletResponse response, HttpServletRequest request) {
         String result = "";
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if (SessionsService.containsSession(uuid)) {
             Context context = SessionsService.getContext(uuid);
-            result = context.getAlgorithm().getName();
+            try {
+                result = context.getAlgorithm().getName();
+            } catch (NullPointerException e) {
+                LOGGER.trace("getAlgorithmNameHandler::No algorithm in context "+e.getMessage());
+                result = "";
+            }
 
         }
 
@@ -38,12 +45,17 @@ public class AlgorithmControllerHandler {
      * @param request
      * @return
      */
-    public static final Double algorithmProgressRequestHandler(HttpServletResponse response, HttpServletRequest request) {
+    public static final Double getAlgorithmProgressHandler(HttpServletResponse response, HttpServletRequest request) {
         Double result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if (SessionsService.containsSession(uuid)) {
             Context context = SessionsService.getContext(uuid);
-            result = context.getAlgorithm().getProgress();
+            try {
+                result = context.getAlgorithm().getProgress();
+            } catch (NullPointerException e) {
+                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
+                result = 0.0;
+            }
 
         } else {
             result = (double) 0;
@@ -58,7 +70,7 @@ public class AlgorithmControllerHandler {
      * @param request
      * @return
      */
-    public static final ResponseEntity algorithmChangeRequestHandler(HttpServletResponse response, HttpServletRequest request, String newAlgorithmName) {
+    public static final ResponseEntity changeAlgorithmRequestHandler(HttpServletResponse response, HttpServletRequest request, String newAlgorithmName) {
 
         ResponseEntity<Object> result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
@@ -73,4 +85,34 @@ public class AlgorithmControllerHandler {
 
         return result;
     }
+
+    /**
+     * Handler for running the algorithm
+     * @param response
+     * @param request
+     * @return
+     */
+    public static final ResponseEntity runAlgorithmHandler(HttpServletResponse response, HttpServletRequest request ) {
+        ResponseEntity<Object> result;
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+
+        if (SessionsService.containsSession(uuid)) {
+            Context context = SessionsService.getContext(uuid);
+
+            Thread computingThread = new Thread(() -> {
+                context.computeSolutionWithAlgorithm();
+                context.calculateMetrics();
+            });
+            computingThread.start();
+
+            result = ResponseEntity.ok().build();
+        } else {
+            result = ResponseEntity.noContent().build();
+        }
+
+        return result;
+    }
+
+
+
 }

@@ -16,17 +16,28 @@
        	e.style.display = (e.style.display == 'block') ? 'none' : 'block';
     }
 </script>
-<script>
-async function getTest(){
-    let  response = await fetch("http://localhost:9090/rest/algorithm/progress")
-    let data = await response.json()
-    var e = document.getElementById('algorithmProgressBar');
-    e.setAttribute("value",data)
-    console.log(data)
-    return data;
-}
-var getClassRooms = setInterval(getTest , 1000);
+<script type="text/javascript">
+    async function getTest(){
+        let  response = await fetch("http://localhost:9090/rest/algorithm/progress")
+        let data = await response.json()
+        var e = document.getElementById('algorithmProgressBar');
+        e.setAttribute("value",data)
+        console.log(data)
+        return data;
+    }
+    var getClassRooms = setInterval(getTest , 1000);
 </script>
+
+<script>
+    function send (e,form) {
+        e.preventDefault();
+        fetch(form.action,{method:'post', body: new FormData(form)});
+
+        console.log('Sent data');
+    };
+</script>
+
+
 <header th:insert="fragments/headerFooter.html :: header"></header>
 <footer th:insert="fragments/headerFooter.html :: footer"></footer>
 
@@ -49,27 +60,40 @@ var getClassRooms = setInterval(getTest , 1000);
 <p th:text="${message}" th:if="${message ne null}"></p>
 
 <div id="requestSection" style="display:none">
-    <form method="post" th:action="@{/timetable/upload}" enctype="multipart/form-data">
+    <form method="post" action="/rest/classes"  onsubmit="send(event,this)"  enctype="multipart/form-data">
         <div>
             <div><label for="file_classes">Classes:</label>
                  <input type="file" name="file_classes" id="file_classes"/>
-                <label for="file_classrooms">Classrooms:</label>
-                 <input type="file" name="file_classrooms" id="file_classrooms"/>
-                <label for="algorithm">Algorithm:</label>
-                 <input type="text" name="algorithm" id="algorithm" value="basic"/>
-<!--
-                <label for="algorithm">Algorithm:</label>
-                <select name=”algorithm” id="algorithm">
-                    <option value=”basic” >Basic </option>
-                    <option value=”NSGAII” >NSGAII</option>
-                    <option value=”NSGAIII” >NSGAIII</option>
-                    <option value=”GDE3”  >GDE3</option>
-                </select>
-                -->
             </div>
-            <button type="submit">Upload File</button>
+            <button type="submit">Upload Classes</button>
         </div>
     </form>
+    <form method="post" action="/rest/classrooms"  onsubmit="send(event,this)" enctype="multipart/form-data">
+        <div>
+            <div>
+                <label for="file_classrooms">Classrooms:</label>
+                 <input type="file" name="file_classrooms" id="file_classrooms"/>
+            </div>
+            <button type="submit">Upload classrooms</button>
+        </div>
+    </form>
+    <form method="post" action="/rest/algorithm"  onsubmit="send(event,this)" enctype="multipart/form-data">
+        <div>
+            <div>
+                <label for="algorithm">Algorithm:</label>
+                 <input type="text" name="algorithm" id="algorithm" value="basic"/>
+            </div>
+            <button type="submit">Choose Algorithm</button>
+        </div>
+    </form>
+    <form method="post" action="/rest/algorithm/run" onsubmit="send(event,this)" enctype="multipart/form-data">
+        <div>
+            <button type="submit">Run Algorithm</button>
+        </div>
+    </form>
+
+
+
 </div>
 
 <div id="timetable_tabulator"></div>
