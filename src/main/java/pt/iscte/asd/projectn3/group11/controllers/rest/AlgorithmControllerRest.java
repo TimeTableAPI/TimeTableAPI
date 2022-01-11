@@ -40,10 +40,11 @@ public class AlgorithmControllerRest {
         return algorithmProgressRequestHandler(response,request);
     }
     //endregion
+
     //region POST
 
     /**
-     * Changes Algorithm  and his name.
+     * Set Algorithm  and his name.
      * @param response response
      * @param request request
      * @return Classrooms list

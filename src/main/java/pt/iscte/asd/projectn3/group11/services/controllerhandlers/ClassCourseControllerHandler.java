@@ -161,6 +161,7 @@ public class ClassCourseControllerHandler {
      * @param attributes
      * @return
      */
+    /*
     public static final String timeTableRequestHandler(HttpServletResponse response,
                                                        HttpServletRequest request,
                                                        MultipartFile fileClasses,
@@ -211,6 +212,7 @@ public class ClassCourseControllerHandler {
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;
         }
     }
+    */
 
     //endregion
 }

@@ -51,7 +51,7 @@ public class ClassCourseController {
      * @param attributes redirect
      * @return html filled with the variables
      */
-    @PostMapping(value = ClassCourseController.TIMETABLE_PATH + "/upload" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+/*    @PostMapping(value = ClassCourseController.TIMETABLE_PATH + "/upload" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String timeTableUpload(HttpServletResponse response,
                                   HttpServletRequest request,
                                   @RequestPart(value = "file_classes" ) MultipartFile fileClasses,
@@ -65,7 +65,7 @@ public class ClassCourseController {
                 attributes,
                 algorithm
         );
-    }
+    }*/
 
     //endregion
 
