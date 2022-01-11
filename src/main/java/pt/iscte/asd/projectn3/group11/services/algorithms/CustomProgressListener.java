@@ -17,7 +17,9 @@ public class CustomProgressListener implements ProgressListener {
 	@Override
 	public void progressUpdate(ProgressEvent progressEvent) {
 		final double progress = progressEvent.getPercentComplete();
-		LOGGER.info(progress);
+		final double timeLeft = progressEvent.getRemainingTime();
+		final String resultForLogging = progress + "%;" + timeLeft + " sec left";
+		LOGGER.info(resultForLogging);
 		this.algorithmService.setProgress(progress);
 	}
 }

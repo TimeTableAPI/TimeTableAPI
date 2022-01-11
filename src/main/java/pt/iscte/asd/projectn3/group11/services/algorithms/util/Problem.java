@@ -74,7 +74,7 @@ public class Problem extends AbstractProblem {
                 getNumberOfObjectives());
 
         for (int i = 0; i < getNumberOfVariables(); i++) {
-            solution.setVariable(i, new RealVariable(0.0, this.classrooms.size()));
+            solution.setVariable(i, new RealVariable(0.0, this.classrooms.size()-1));
         }
 
         return solution;
