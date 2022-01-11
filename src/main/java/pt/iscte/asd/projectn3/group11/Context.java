@@ -1,5 +1,6 @@
 package pt.iscte.asd.projectn3.group11;
 
+import org.apache.commons.math3.exception.NullArgumentException;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.AlgorithmService;
@@ -45,10 +46,16 @@ public class Context {
     }
 
     /**
-     *<p>Method that modifies the stored classCourses and allocates classrooms to the classcourses that dont have classrooms </p>
+     *<p>Method that modifies the stored classCourses and runs the algorithm to allocate classrooms to the classcourses that dont have classrooms </p>
      */
-    public void computeSolutionWithAlgorithm()
+    public void computeSolutionWithAlgorithm()  throws NullArgumentException , IllegalStateException
     {
+        if(algorithm == null ||classCourses == null ||classrooms == null){
+            throw new NullArgumentException();
+        }
+        if (classCourses.isEmpty() || classrooms.isEmpty()){
+            throw new IllegalStateException();
+        }
         algorithm.execute(classCourses, classrooms);
     }
 
@@ -126,6 +133,7 @@ public class Context {
         this.algorithm.stop();
         this.algorithm = AlgorithmService.generateAlgorithm(newAlgoName);
     }
+
     //region BUILDER
 
     public static class Builder {
