@@ -1,19 +1,19 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
+import pt.iscte.asd.projectn3.group11.controllers.Application;
 import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.*;
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
@@ -35,51 +35,59 @@ import static pt.iscte.asd.projectn3.group11.services.AlgorithmService.BASIC_ALG
 public class ClassCourseControllerHandler {
 
 
+    private static final Logger LOGGER  = LogManager.getLogger(ClassCourseControllerHandler.class);
+
     //region HANDLERS
 
     /**
-     * fetchTimeTable endpoint handler.
+     * Gets the timetable handler.
      * @param response
      * @param request
-     * @param model
-     * @return
+     * @return List of class courses.
      */
-    public static final String fetchTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
+    public static final List<ClassCourse.ClassCourseJson> getClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
             Context context = SessionsService.getContext(uuid);
-            LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+            return loadedClassCoursesJSON;
+        }
+        return new LinkedList<>();
+    }
 
-            model.addAttribute("timetable", loadedClassCoursesJSON);
-
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
-            final List<MetricResult> metricResultList = new LinkedList<>();
-            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
-                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
-            }
-            model.addAttribute("timetablestats",metricResultList);
+    /**
+     * Gets the metric results handler.
+     * @param response
+     * @param request
+     * @return List of metric results.
+     */
+    public static final List<MetricResult> getMetricResultsHandler(HttpServletResponse response, HttpServletRequest request)
+    {
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if(SessionsService.containsSession(uuid))
+        {
+            Context context = SessionsService.getContext(uuid);
+            return context.getMetricResults();
         }
 
-        return "timetable";
+        return new LinkedList<>();
     }
 
     /**
      * downloadTimeTable endpoint handler.
      * @param response
      * @param request
-     * @param model
      * @return
      */
-    public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
+    public static final ResponseEntity<Resource> downloadClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
 
         Context context = SessionsService.getContext(uuid);
-        model.addAttribute("timetable", context.getClassCourses());
 
         try {
             File file = ClassCourseLoaderService.export(context.getClassCourses());
@@ -110,6 +118,40 @@ public class ClassCourseControllerHandler {
     }
 
     /**
+     * setClasses endpoint handler.
+     * @param response
+     * @param request
+     * @param classesFile
+     * @return
+     */
+    public static final ResponseEntity setClassesHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile)
+    {
+        LOGGER.info("In set classes handler");
+        LinkedList<ClassCourse> loadedClassCourses;
+        try {
+            loadedClassCourses = ClassCourseLoaderService.load(classesFile, false);
+        }
+        catch (IOException e)
+        {
+            LOGGER.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+
+        if (SessionsService.containsSession(uuid)) {
+            LOGGER.info("Context found setting new classcourses");
+            Context context = SessionsService.getContext(uuid);
+            context.setClassCourses(loadedClassCourses);
+        } else {
+            LOGGER.info("Context not found, creating empty and setting new classcourses");
+            Context context = new Context.Builder().classCourses(loadedClassCourses).build();
+            SessionsService.putSession(uuid, context);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * timeTableUpload endpoint handler.
      * @param response
      * @param request
@@ -117,7 +159,6 @@ public class ClassCourseControllerHandler {
      * @param fileClassrooms
      * @param algorithm
      * @param attributes
-     * @param model
      * @return
      */
     public static final String timeTableRequestHandler(HttpServletResponse response,
@@ -157,7 +198,10 @@ public class ClassCourseControllerHandler {
             }
             SessionsService.putSession(uuid, context);
 
-            Thread computingThread = new Thread(context::computeSolutionWithAlgorithm);
+            Thread computingThread = new Thread(() -> {
+                context.computeSolutionWithAlgorithm();
+                context.calculateMetrics();
+            });
             computingThread.start();
 
             return "redirect:" + ClassCourseController.TIMETABLE_PATH;

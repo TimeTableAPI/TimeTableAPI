@@ -13,7 +13,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.Algorit
 @RestController
 public class AlgorithmControllerRest {
     //region PATH_CONSTANTS
-    public static final String CLASSCOURSE_REST_PATH = "/rest/algorithm";
+    public static final String ALGORITHM_REST_PATH = "/rest/algorithm";
     //endregion
 
     //region GETTERS
@@ -24,7 +24,7 @@ public class AlgorithmControllerRest {
      * @param request request
      * @return String, name of the algorithm
      */
-    @GetMapping(value = CLASSCOURSE_REST_PATH)
+    @GetMapping(value = ALGORITHM_REST_PATH)
     public String getClassCourseAlgorithmName(HttpServletResponse response, HttpServletRequest request) {
         return algorithmRequestHandler(response,request);
     }
@@ -35,7 +35,7 @@ public class AlgorithmControllerRest {
      * @param request request
      * @return Classrooms list
      */
-    @GetMapping(value = CLASSCOURSE_REST_PATH+ "/progress")
+    @GetMapping(value = ALGORITHM_REST_PATH + "/progress")
     public Double getClassCourseAlgorithmProgress(HttpServletResponse response, HttpServletRequest request) {
         return algorithmProgressRequestHandler(response,request);
     }
@@ -48,7 +48,7 @@ public class AlgorithmControllerRest {
      * @param request request
      * @return Classrooms list
      */
-  @PostMapping(value = CLASSCOURSE_REST_PATH)
+  @PostMapping(value = ALGORITHM_REST_PATH)
     public ResponseEntity changeClassCourseAlgorithm(HttpServletResponse response, HttpServletRequest request, String newAlgorithmName) {
         return algorithmChangeRequestHandler(response,request,newAlgorithmName);
     }
