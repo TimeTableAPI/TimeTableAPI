@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassroomControllerHandler.getAllClassRoomsHandler;
+import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassroomControllerHandler.getClassroomsHandler;
 
 
 @Controller
@@ -28,7 +28,7 @@ public class ClassroomController {
      */
     @GetMapping(value = CLASSROOM_PATH)
     public String fetchAllClassRooms(HttpServletResponse response, HttpServletRequest request, Model model) {
-        model.addAttribute("classrooms", getAllClassRoomsHandler(response, request));
+        model.addAttribute("classrooms", getClassroomsHandler(response, request));
         return "classrooms";
     }
 
