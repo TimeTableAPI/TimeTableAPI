@@ -20,7 +20,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.Classro
 public class ClassroomControllerRest {
 
     //region PATH_CONSTANTS
-    public static final String CLASSROOM_PATH = "/rest/classrooms";
+    public static final String CLASSROOM_REST_PATH = "/rest/classrooms";
     //endregion
 
     //region CLASSROOM
@@ -31,7 +31,7 @@ public class ClassroomControllerRest {
      * @param request request
      * @return Classrooms list
      */
-    @GetMapping(value = CLASSROOM_PATH)
+    @GetMapping(value = CLASSROOM_REST_PATH)
     public List<Classroom> getClassrooms(HttpServletResponse response, HttpServletRequest request) {
         return getClassroomsHandler(response, request);
     }
@@ -41,7 +41,7 @@ public class ClassroomControllerRest {
      * @param response response
      * @param request request
      */
-    @PostMapping(value = CLASSROOM_PATH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = CLASSROOM_REST_PATH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity setClassrooms(HttpServletResponse response, HttpServletRequest request, MultipartFile classroomsFile) {
         return setClassroomsHandler(response, request, classroomsFile);
     }

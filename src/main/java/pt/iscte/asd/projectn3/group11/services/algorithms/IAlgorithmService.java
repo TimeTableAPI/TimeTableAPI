@@ -6,7 +6,7 @@ import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import java.util.List;
 
 /**
- *
+ *  Interface to encapsulate the behaviour of all algorithms used in the project.
  */
 public interface IAlgorithmService {
     /**
@@ -21,4 +21,10 @@ public interface IAlgorithmService {
      * @return Algorithm State
      */
     boolean isRunning();
+
+    double getProgress();
+
+    String getName();
+
+    void stop();
 }

@@ -2,6 +2,7 @@ package pt.iscte.asd.projectn3.group11;
 
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
+import pt.iscte.asd.projectn3.group11.services.AlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
@@ -21,7 +22,7 @@ import java.util.*;
 public class Context {
     private List<ClassCourse> classCourses;
     private List<Classroom> classrooms;
-    private final IAlgorithmService algorithm;
+    private IAlgorithmService algorithm;
 
     private List<MetricResult> metricResults;
     /**
@@ -86,6 +87,23 @@ public class Context {
     }
 
     /**
+     * Gets the current algorithm
+     * @return {@link IAlgorithmService}
+     */
+    public IAlgorithmService getAlgorithm() {
+        return algorithm;
+    }
+
+    /**
+     * Stops the current algorithm
+     */
+    public void stopAlgorithm() {
+        algorithm.stop();
+    }
+
+
+
+    /**
      * Sets classCourses
      * @param classCourses
      */
@@ -101,6 +119,13 @@ public class Context {
         this.classrooms = classrooms;
     }
 
+    /**
+     * Stops the current algorithm and changes it to a new one
+     * */
+    public void changeAlgorithm(String newAlgoName) {
+        this.algorithm.stop();
+        this.algorithm = AlgorithmService.generateAlgorithm(newAlgoName);
+    }
     //region BUILDER
 
     public static class Builder {

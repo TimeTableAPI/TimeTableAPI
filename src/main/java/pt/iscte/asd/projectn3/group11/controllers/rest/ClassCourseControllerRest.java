@@ -20,7 +20,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCo
 public class ClassCourseControllerRest {
 
     //region PATH_CONSTANTS
-    public static final String CLASSES_PATH = "/rest/classes";
+    public static final String CLASSES_REST_PATH = "/rest/classes";
     //endregion
 
     //region TIMETABLE
@@ -31,7 +31,7 @@ public class ClassCourseControllerRest {
      * @param request request
      * @return List of classes.
      */
-    @GetMapping(value = CLASSES_PATH)
+    @GetMapping(value = CLASSES_REST_PATH)
     public List<ClassCourse.ClassCourseJson> getClasses(HttpServletResponse response, HttpServletRequest request) {
         return getClassesHandler(response, request);
     }
@@ -41,7 +41,7 @@ public class ClassCourseControllerRest {
      * @param response response
      * @param request request
      */
-    @PostMapping(value = CLASSES_PATH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = CLASSES_REST_PATH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity setClasses(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile) {
         return setClassesHandler(response, request, classesFile);
     }
@@ -55,7 +55,7 @@ public class ClassCourseControllerRest {
      * @param request request
      * @return The metrics.
      */
-    @GetMapping(value = CLASSES_PATH + "/metrics")
+    @GetMapping(value = CLASSES_REST_PATH + "/metrics")
     public List<MetricResult> getMetricResults(HttpServletResponse response, HttpServletRequest request) {
         return getMetricResultsHandler(response, request);
     }
@@ -70,7 +70,7 @@ public class ClassCourseControllerRest {
      * @param request request
      * @return File
      */
-    @GetMapping(value = CLASSES_PATH + "/download")
+    @GetMapping(value = CLASSES_REST_PATH + "/download")
     public ResponseEntity<Resource> downloadClasses(HttpServletResponse response, HttpServletRequest request) {
         return downloadClassesHandler(response, request);
     }
