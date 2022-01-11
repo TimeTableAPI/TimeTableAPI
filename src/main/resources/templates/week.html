@@ -16,6 +16,34 @@
         let  response = await fetch("http://localhost:9090/rest/classes/" + classname);
         let data = await response.json();
 
+        for (let date in data) {
+            if (data.hasOwnProperty(date)) {
+                value = data[date];
+                console.log(date, value);
+
+                for (let hour in value) {
+                    if (value.hasOwnProperty(hour)) {
+                        classList = value[hour];
+                        console.log(hour, classList);
+
+                        for (let classIndex in classList) {
+                            if (classList.hasOwnProperty(classIndex)) {
+                                classObject = classList[classIndex];
+                                console.log(classIndex,classObject);
+
+                                for (let variableIndex in classObject) {
+                                    if (classObject.hasOwnProperty(variableIndex)) {
+                                        variable =  classObject[variableIndex];
+                                        console.log(variableIndex, variable);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         console.log(data);
         return data;
     }
