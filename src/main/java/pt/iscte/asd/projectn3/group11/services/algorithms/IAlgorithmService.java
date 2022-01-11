@@ -22,9 +22,20 @@ public interface IAlgorithmService {
      */
     boolean isRunning();
 
+    /**
+     * Gets the algorithm Progress
+     * @return progress
+     */
     double getProgress();
 
+    /**
+     * Gets the algorithm Name
+     * @return String the algorithm name
+     */
     String getName();
 
+    /**
+     * Stops the algorithm
+     */
     void stop();
 }

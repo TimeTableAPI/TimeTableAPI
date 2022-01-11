@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
@@ -42,7 +43,7 @@ public class ClassCourseControllerRest {
      * @param request request
      */
     @PostMapping(value = CLASSES_REST_PATH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity setClasses(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile) {
+    public ResponseEntity setClasses(HttpServletResponse response, HttpServletRequest request, @RequestPart(value = "file_classes" ) MultipartFile classesFile) {
         return setClassesHandler(response, request, classesFile);
     }
 
