@@ -16,22 +16,26 @@
        	e.style.display = (e.style.display == 'block') ? 'none' : 'block';
     }
 </script>
-<script>
-async function getTest(){
-    let  response = await fetch("http://localhost:9090/rest/algorithm/progress")
-    let data = await response.json()
-    var e = document.getElementById('algorithmProgressBar');
-    e.setAttribute("value",data)
-    console.log(data)
-    return data;
-}
-var getClassRooms = setInterval(getTest , 1000);
+<script type="text/javascript">
+    async function getTest(){
+        let  response = await fetch("http://localhost:9090/rest/algorithm/progress")
+        let data = await response.json()
+        var e = document.getElementById('algorithmProgressBar');
+        e.setAttribute("value",data)
+        console.log(data)
+        return data;
+    }
+    var getClassRooms = setInterval(getTest , 1000);
 </script>
-<scprit>
 
+<script>
+    function send (e,form) {
+        e.preventDefault();
+        fetch(form.action,{method:'post', body: new FormData(form)});
 
-
-</scprit>
+        console.log('Sent data');
+    };
+</script>
 
 
 <header th:insert="fragments/headerFooter.html :: header"></header>
