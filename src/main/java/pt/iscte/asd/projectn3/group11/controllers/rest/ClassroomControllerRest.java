@@ -2,10 +2,7 @@ package pt.iscte.asd.projectn3.group11.controllers.rest;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 
@@ -35,6 +32,17 @@ public class ClassroomControllerRest {
     @GetMapping(value = CLASSROOM_REST_PATH)
     public List<Classroom> getClassrooms(HttpServletResponse response, HttpServletRequest request) {
         return getClassroomsHandler(response, request);
+    }
+
+    /**
+     * Gets classrooms of building.
+     * @param response response
+     * @param request request
+     * @return Classrooms list
+     */
+    @GetMapping(value = CLASSROOM_REST_PATH+ "/{buildingName}")
+    public List<Classroom> getClassrooms(HttpServletResponse response, HttpServletRequest request, @PathVariable(value = "buildingName") String buildingName) {
+        return getClassroomsHandler(response, request, buildingName);
     }
 
     /**

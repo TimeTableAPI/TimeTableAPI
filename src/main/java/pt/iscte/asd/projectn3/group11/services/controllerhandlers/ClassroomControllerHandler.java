@@ -43,6 +43,30 @@ public class ClassroomControllerHandler {
     }
 
     /**
+     * getClassRooms endpoint handler.
+     * @param response
+     * @param request
+     * @return
+     */
+    public static final List<Classroom> getClassroomsHandler(HttpServletResponse response, HttpServletRequest request, String buildingName)
+    {
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if(SessionsService.containsSession(uuid))
+        {
+            Context context = SessionsService.getContext(uuid);
+            List<Classroom> classrooms = new LinkedList<>();
+            for(Classroom classroom: context.getClassrooms())
+            {
+                if(classroom.getBuilding().equals(buildingName))
+                    classrooms.add(classroom);
+            }
+            return classrooms;
+        }
+
+        return new ArrayList<>();
+    }
+
+    /**
      * setClassrooms endpoint handler.
      * @param response
      * @param request
