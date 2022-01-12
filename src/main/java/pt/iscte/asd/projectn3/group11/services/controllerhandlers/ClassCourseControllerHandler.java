@@ -1,29 +1,20 @@
 package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pt.iscte.asd.projectn3.group11.Context;
-import pt.iscte.asd.projectn3.group11.controllers.ClassCourseController;
+import pt.iscte.asd.projectn3.group11.controllers.rest.ClassCourseControllerRest;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
-import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.models.FormResponse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
-import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
-import pt.iscte.asd.projectn3.group11.services.SessionsService;
-import pt.iscte.asd.projectn3.group11.services.SwrlService;
-import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.services.*;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassCourseLoaderService;
-import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,53 +26,87 @@ import java.util.*;
 
 public class ClassCourseControllerHandler {
 
-    private static final String BASIC = "basic";
-    private static final String OWL = "owl";
-    private static final int MAX_EVALUATION = 3;
+
+    private static final Logger LOGGER  = LogManager.getLogger(ClassCourseControllerHandler.class);
+
     //region HANDLERS
 
     /**
-     * fetchTimeTable endpoint handler.
+     * Handler for {@link ClassCourseControllerRest#getClasses}
      * @param response
      * @param request
-     * @param model
-     * @return
+     * @return List of class courses.
      */
-    public static final String fetchTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
+    public static final List<ClassCourse.ClassCourseJson> getClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(SessionsService.containsSession(uuid))
         {
-            Context context = SessionsService.getContext(uuid);LinkedList<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
-            context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
-
-            model.addAttribute("timetable", loadedClassCoursesJSON);
-
-            final Hashtable<String, Float> stringFloatHashtable =  TimetableEvaluationService.evaluateTimetable(context.getClassCourses(), context.getClassrooms());
-            final List<MetricResult> metricResultList = new LinkedList<>();
-            for(Map.Entry<String,Float> resultEntry : stringFloatHashtable.entrySet()){
-                metricResultList.add(new MetricResult(resultEntry.getKey(),resultEntry.getValue()));
+            Context context = SessionsService.getContext(uuid);
+            List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            try {
+                context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
+            } catch (NullPointerException e) {
+                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
             }
-            model.addAttribute("timetablestats",metricResultList);
+            return loadedClassCoursesJSON;
+        }
+        return new LinkedList<>();
+    }
+
+    /**
+     * Handler for {@link ClassCourseControllerRest#getClassesOfClass}
+     * @param response
+     * @param request
+     * @param className
+     * @return List of class courses.
+     */
+    public static final HashMap<Date, HashMap<Integer, HashSet<ClassCourse>>> getClassesOfClassHandler(HttpServletResponse response,
+                                                                                                       HttpServletRequest request,
+                                                                                                       String className)
+    {
+        LOGGER.info(className);
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if(SessionsService.containsSession(uuid))
+        {
+            Context context = SessionsService.getContext(uuid);
+            List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
+            final TreeMap<String, HashMap<Date, HashMap<Integer, HashSet<ClassCourse>>>> classesByStudents = context.getClassesByStudents();
+            return classesByStudents.get(className);
+        }
+        return new HashMap<>();
+    }
+
+    /**
+     * Gets the metric results handler.
+     * @param response
+     * @param request
+     * @return List of metric results.
+     */
+    public static final List<MetricResult> getMetricResultsHandler(HttpServletResponse response, HttpServletRequest request)
+    {
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+        if(SessionsService.containsSession(uuid))
+        {
+            Context context = SessionsService.getContext(uuid);
+            return context.getMetricResults();
         }
 
-        return "timetable";
+        return new LinkedList<>();
     }
 
     /**
      * downloadTimeTable endpoint handler.
      * @param response
      * @param request
-     * @param model
      * @return
      */
-    public static final ResponseEntity<Resource> downloadTimeTableHandler(HttpServletResponse response, HttpServletRequest request, Model model)
+    public static final ResponseEntity<Resource> downloadClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
         if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
 
         Context context = SessionsService.getContext(uuid);
-        model.addAttribute("timetable", context.getClassCourses());
 
         try {
             File file = ClassCourseLoaderService.export(context.getClassCourses());
@@ -112,70 +137,37 @@ public class ClassCourseControllerHandler {
     }
 
     /**
-     * timeTableUpload endpoint handler.
+     * setClasses endpoint handler.
      * @param response
      * @param request
-     * @param fileClasses
-     * @param fileClassrooms
-     * @param algorithm
-     * @param attributes
-     * @param model
+     * @param classesFile
      * @return
      */
-    public static final String timeTableRequestHandler(HttpServletResponse response,
-                                                       HttpServletRequest request,
-                                                       MultipartFile fileClasses,
-                                                       MultipartFile fileClassrooms,
-                                                       RedirectAttributes attributes,
-                                                       String algorithm)
+    public static final ResponseEntity setClassesHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile)
     {
-        // check if file is empty
-        if (fileClasses.isEmpty() || fileClassrooms.isEmpty()) {
-            attributes.addFlashAttribute("message", "Please select a file to upload.");
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
-        }
-
-        // normalize the file path
+        LOGGER.info("In set classes handler");
+        LinkedList<ClassCourse> loadedClassCourses;
         try {
-            if(algorithm == null || algorithm.isEmpty()){
-                algorithm = BASIC;
-            }
-            attributes.addFlashAttribute("message", "You successfully uploaded\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
-
-            LinkedList<ClassCourse> loadedClassCourses = ClassCourseLoaderService.load(fileClasses, false);
-            LinkedList<Classroom> loadedClassRooms = ClassroomLoaderService.load(fileClassrooms, false);
-
-            IAlgorithmService iAlgorithmService;
-
-            if(algorithm.equals(BASIC)) {
-                iAlgorithmService = new BasicAlgorithmService();
-            }
-            else if (algorithm.equals(OWL)) {
-                List<String> querryResult = SwrlService.querry(TimetableEvaluationService.METRICSLIST.size());
-                if(querryResult == null) {
-                    iAlgorithmService = new BasicAlgorithmService();
-                }else {
-                    iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
-                }
-            }
-            else {
-                iAlgorithmService = new CustomAlgorithmService(algorithm, MAX_EVALUATION);
-            }
-
-            Context context = new Context(loadedClassCourses, loadedClassRooms, iAlgorithmService);
-            context.computeSolutionWithAlgorithm();
-
-            UUID uuid = CookieHandlerService.getUUID(request, response);
-            SessionsService.putSession(uuid, context);
-
-
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
-        } catch (IOException e) {
-            attributes.addFlashAttribute("message", "Something went wrong with the upload or the files...\n" + fileClasses.getOriginalFilename() + "and" + fileClassrooms.getOriginalFilename() + '!');
-            e.printStackTrace();
-            return "redirect:" + ClassCourseController.TIMETABLE_PATH;
+            loadedClassCourses = ClassCourseLoaderService.load(classesFile, false);
         }
-    }
+        catch (IOException e)
+        {
+            LOGGER.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
 
+        UUID uuid = CookieHandlerService.getUUID(request, response);
+
+        if (SessionsService.containsSession(uuid)) {
+            LOGGER.info("Context found setting new classcourses");
+            Context context = SessionsService.getContext(uuid);
+            context.setClassCourses(loadedClassCourses);
+        } else {
+            LOGGER.info("Context not found, creating empty and setting new classcourses");
+            Context context = new Context.Builder().classCourses(loadedClassCourses).build();
+            SessionsService.putSession(uuid, context);
+        }
+        return ResponseEntity.ok().build();
+    }
     //endregion
 }

@@ -6,7 +6,7 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 
 import java.util.*;
 
-import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByClass;
+import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByDateByClassCourse;
 
 /**
  * <p>Metric that calculates the number of classes where the students have to move mid-Class</p>
@@ -23,7 +23,7 @@ public class RoomMovementsMetric implements MetricCalculator{
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
 		final TreeMap<Date, HashMap<ClassCourse, HashSet<ClassCourse>>> organizedClassCourseByClass =
-				organizeClassCourseByClass(classCourseList);
+				organizeClassCourseByDateByClassCourse(classCourseList);
 
 		int classMoveCounter = 0;
 		int nClassSameRoom = 0;
