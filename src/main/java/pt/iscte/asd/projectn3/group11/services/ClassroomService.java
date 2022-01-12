@@ -141,7 +141,7 @@ public class ClassroomService {
 
 				final TimeShift beginningHour = classCourse.getBeginningHour();
 				classCourseMap.get(className).get(date).computeIfAbsent(beginningHour.getId(), k -> new HashSet<>());
-				classCourseMap.get(className).get(date).get(beginningHour).add(classCourse);
+				classCourseMap.get(className).get(date).get(beginningHour.getId()).add(classCourse);
 				}
 			}
 
