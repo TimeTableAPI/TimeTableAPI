@@ -1,8 +1,11 @@
 package pt.iscte.asd.projectn3.group11.services.algorithms;
 
+import org.apache.logging.log4j.LogManager;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.apache.logging.log4j.Logger;
+import org.moeaframework.util.progress.ProgressHelper;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
@@ -12,15 +15,21 @@ import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.MetricCalc
 import java.util.*;
 
 public class CustomAlgorithmService implements IAlgorithmService {
-
+    private static final Logger LOGGER  = LogManager.getLogger(CustomAlgorithmService.class);
     private final String algorithmName;
     private final int maxEvaluation;
     private boolean isRunning;
+    private double progress;
+    private Executor executor;
 
+
+    private CustomProgressListener customProgressListener;
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;
         this.isRunning = false;
+        this.progress = 0;
+        this.customProgressListener = new CustomProgressListener(this);
     }
 
     @Override
@@ -28,21 +37,27 @@ public class CustomAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            System.out.println(algorithmName + "::EXECUTE");
+            LOGGER.info(this.algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
-            //configure and run this experiment
-            NondominatedPopulation result = new Executor()
-                    .withProblemClass(Problem.class,classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
-                    .withAlgorithm(algorithmName)
-                    .withMaxEvaluations(maxEvaluation)
-                    .run();
 
-            System.out.println(result);
+            long maxTime = 3600;
+
+            //configure and run this experiment
+            Executor executor = new Executor()
+                    .withProblemClass(Problem.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
+                    .withAlgorithm(this.algorithmName)
+                    .withMaxEvaluations(this.maxEvaluation)
+                    .withProgressListener(this.customProgressListener);
+            setExecutor(executor);
+
+            NondominatedPopulation result = executor.run();
+            LOGGER.info(result);
+
             //display the results
-            System.out.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n");
+            LOGGER.info(String.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n"));
             for (Solution solution : result) {
-                System.out.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
+                LOGGER.info(String.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
                         solution.getObjective(0),
                         solution.getObjective(1),
                         solution.getObjective(2),
@@ -51,26 +66,54 @@ public class CustomAlgorithmService implements IAlgorithmService {
                         solution.getObjective(5),
                         solution.getObjective(6),
                         solution.getObjective(7)
-                );
+                ));
             }
             final Solution bestSolution = getBestSolution(result);
             final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
 
-            System.out.println(Arrays.toString(bestSolution.getObjectives()));
-            System.out.println(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
+            LOGGER.info(Arrays.toString(bestSolution.getObjectives()));
+            LOGGER.info(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
+
             inputClasses = bestClassCourses;
         }
         finally
         {
             this.isRunning = false;
+            //this.progress = 1.0;
+            LOGGER.info("Finished " + algorithmName);
         }
-
     }
 
     @Override
     public boolean isRunning() {
         return this.isRunning;
     }
+
+    @Override
+    public double getProgress() {
+        return this.progress;
+    }
+
+    @Override
+    public String getName() {
+        return this.algorithmName;
+    }
+
+    @Override
+    public void stop() {
+        stopExecutor();
+    }
+
+    public void setProgress(Double progressValue) {
+        this.progress = progressValue;
+    }
+    private void setExecutor(Executor executor) {
+        this.executor = executor;
+    }
+    private void stopExecutor() {
+        this.executor.cancel();
+    }
+
 
     private static Solution getBestSolution (NondominatedPopulation result){
         List<Double> distancesList = new LinkedList<>();

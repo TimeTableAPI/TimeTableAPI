@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <script src="./../timetable/Timetables.min.js"></script>
+    <title>大学课表</title>
+    <style>
+        #coursesTable {
+            padding: 15px 10px;
+        }
+
+        .Courses-head {
+            background-color: #edffff;
+        }
+
+        .Courses-head > div {
+            text-align: center;
+            font-size: 14px;
+            line-height: 28px;
+        }
+
+        .left-hand-TextDom, .Courses-head {
+            background-color: #f2f6f7;
+        }
+
+        .Courses-leftHand {
+            background-color: #f2f6f7;
+            font-size: 12px;
+        }
+
+        .Courses-leftHand .left-hand-index {
+            color: #9c9c9c;
+            margin-bottom: 4px !important;
+        }
+
+        .Courses-leftHand .left-hand-name {
+            color: #666;
+        }
+
+        .Courses-leftHand p {
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .Courses-head > div {
+            border-left: none !important;
+        }
+
+        .Courses-leftHand > div {
+            padding-top: 5px;
+            border-bottom: 1px dashed rgb(219, 219, 219);
+        }
+
+        .Courses-leftHand > div:last-child {
+            border-bottom: none !important;
+        }
+
+        .left-hand-TextDom, .Courses-head {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .Courses-content > ul {
+            border-bottom: 1px dashed rgb(219, 219, 219);
+            box-sizing: border-box;
+        }
+
+        .Courses-content > ul:last-child {
+            border-bottom: none !important;
+        }
+
+        .highlight-week {
+            color: #02a9f5 !important;
+        }
+
+        .Courses-content li {
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+            line-height: 50px;
+        }
+
+        .Courses-content li span {
+            padding: 6px 2px;
+            box-sizing: border-box;
+            line-height: 18px;
+            border-radius: 4px;
+            white-space: normal;
+            word-break: break-all;
+            cursor: pointer;
+        }
+
+        .grid-active {
+            z-index: 9999;
+        }
+
+        .grid-active span {
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+<div id="coursesTable"></div>
+<button onclick="onChange()"
+        style="background-color: #00a2ae; color: #fff; padding: 5px 10px; border-radius: 4px;border: none">
+    switch timetable
+</button>
+<script>
+  var timetables = [
+  ['College English(Ⅳ)@10203', 'College English(Ⅳ)@10203', '', '', '', '', 'Physical@14208', 'Physical@14208', '', '', '', 'Elective course'],
+  ['', '', 'Operating System@11302', 'Operating System@11302', 'Computer Principle @16204', 'Computer Principle @16204', '', '', '', '', '', ''],
+  ['College Sports(Ⅳ)', 'College Sports(Ⅳ)', 'Algorithm(Ⅳ)@15208', 'Algorithm(Ⅳ)@15208', '', '', 'Operating System', 'Operating System', '', '', '', ''],
+  ['', '', '', '', 'Art lessons@11301', 'Art lessons@11301', '', '', '', 'College Sports', 'College Sports', ''],
+  ['', '', 'Data Structure and Algorithms', 'Data Structure and Algorithms', '', '', '', '', 'Computer Principle', 'Computer Principle', '', ''],
+];
+var timetableType = [
+  [{index: '1',name: '8:30'}, 1],
+  [{index: '2',name: '9:30'}, 1],
+  [{index: '3',name: '10:30'}, 1],
+  [{index: '4',name: '11:30'}, 1],
+  [{index: '5',name: '12:30'}, 1],
+  [{index: '6',name: '14:30'}, 1],
+  [{index: '7',name: '15:30'}, 1],
+  [{index: '8',name: '16:30'}, 1],
+  [{index: '9',name: '17:30'}, 1],
+  [{index: '10',name: '18:30'}, 1],
+  [{index: '11',name: '19:30'}, 1],
+  [{index: '12',name: '20:30'}, 1]
+];
+var week =  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+var highlightWeek = new Date().getDay();
+var styles = {
+    Gheight: 50,
+    leftHandWidth: 50,
+    palette: ['#ff6633', '#eeeeee']
+};
+
+// Instantiate(init timetable)
+var timetable = new Timetables({
+    el: '#coursesTable',
+    timetables: timetables,
+    week: week,
+    timetableType: timetableType,
+    highlightWeek: highlightWeek,
+    gridOnClick: function (e) {
+      alert('name:' + e.name + ' week:' + e.week + ' index:' + e.index + 'length: ' + e.length)
+      console.log(e)
+    },
+    styles: styles
+});
+
+//reset options
+function onChange() {
+  timetable.setOption({
+    timetables: courseListOther,
+    week: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Saturday'],
+    styles:{
+      palette: ['#dedcda', '#ff4081']
+    },
+    timetableType:courseType,
+    gridOnClick: function (e) {
+      console.log(e)
+    }})
+};
+
+</script>
+</body>
+</html>

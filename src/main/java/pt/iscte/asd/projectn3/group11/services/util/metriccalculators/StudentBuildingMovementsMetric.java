@@ -6,7 +6,7 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 
 import java.util.*;
 
-import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByClassStudents;
+import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeClassCourseByDateByClassStudents;
 
 /**
  * <p>Metric to evaluate the quantity of Movements between buildings that the Students have to make throughout the day.</p>
@@ -22,7 +22,7 @@ public class StudentBuildingMovementsMetric implements MetricCalculator{
 	 */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
-		final TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizedClassCourseByClass = organizeClassCourseByClassStudents(classCourseList);
+		final TreeMap<Date, HashMap<String, HashSet<ClassCourse>>> organizedClassCourseByClass = organizeClassCourseByDateByClassStudents(classCourseList);
 
 		int classMoveBuildingCounter = 0;
 

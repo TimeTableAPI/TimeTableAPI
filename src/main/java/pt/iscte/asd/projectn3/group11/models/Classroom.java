@@ -104,8 +104,6 @@ public class Classroom {
 
     //endregion
 
-    //region BUILDER
-
     /**
      * Retrieves the Characteristics this ClassRoom has as a list of Booleans
      *
@@ -114,8 +112,6 @@ public class Classroom {
     public final LinkedList<Boolean> getCharacteristics() {
         return characteristics;
     }
-
-    //endregion
 
     //region GETTERS
 
