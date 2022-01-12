@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCo
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getClassesHandler;
 
 @Controller
+@ApiIgnore
 public class ClassCourseController {
 
     //region PATH_CONSTANTS
