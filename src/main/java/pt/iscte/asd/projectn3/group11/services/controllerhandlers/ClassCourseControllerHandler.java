@@ -8,7 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import pt.iscte.asd.projectn3.group11.Context;
+import pt.iscte.asd.projectn3.group11.services.Context;
 import pt.iscte.asd.projectn3.group11.controllers.rest.ClassCourseControllerRest;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.MetricResult;

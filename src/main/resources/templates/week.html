@@ -35,7 +35,7 @@
 		async function fetchClassNameForm(e, form) {
 			e.preventDefault();
 			let classname = document.getElementById("classNameFormInput").value;
-			let response = await fetch("http://localhost:9090/rest/classes/" + classname);
+			let response = await fetch("/rest/classes/" + classname);
 			let data = await response.json();
 			courseList = organizeData(data);
 			chooseClassesOfWeekN(0,courseList)

@@ -1,9 +1,7 @@
-package pt.iscte.asd.projectn3.group11;
+package pt.iscte.asd.projectn3.group11.services;
 
 import pt.iscte.asd.projectn3.group11.models.MetricResult;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
-import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
-import pt.iscte.asd.projectn3.group11.services.AlgorithmService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
