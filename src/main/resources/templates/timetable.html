@@ -18,7 +18,7 @@
 </script>
 <script type="text/javascript">
     async function getTest(){
-        let  response = await fetch("http://localhost:9090/rest/algorithm/progress");
+        let  response = await fetch("/rest/algorithm/progress");
         let data = await response.json();
         var e = document.getElementById('algorithmProgressBar');
         e.setAttribute("value",data);
