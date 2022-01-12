@@ -3,8 +3,7 @@ package pt.iscte.asd.projectn3.group11.services.controllerhandlers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import pt.iscte.asd.projectn3.group11.Context;
-import pt.iscte.asd.projectn3.group11.controllers.Application;
+import pt.iscte.asd.projectn3.group11.services.Context;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 
@@ -113,6 +112,32 @@ public class AlgorithmControllerHandler {
         return result;
     }
 
+    /**
+     * Handler for stopping the algorithm
+     * @param response
+     * @param request
+     * @return
+     */
+    public static final ResponseEntity stopAlgorithmHandler(HttpServletResponse response, HttpServletRequest request ) {
+        ResponseEntity<Object> result;
+        UUID uuid = CookieHandlerService.getUUID(request, response);
 
+        if (SessionsService.containsSession(uuid)) {
+            Context context = SessionsService.getContext(uuid);
+
+            try {
+                context.getAlgorithm().stop();
+            } catch (NullPointerException e) {
+                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
+                return ResponseEntity.noContent().build();
+            }
+
+            result = ResponseEntity.ok().build();
+        } else {
+            result = ResponseEntity.noContent().build();
+        }
+
+        return result;
+    }
 
 }
