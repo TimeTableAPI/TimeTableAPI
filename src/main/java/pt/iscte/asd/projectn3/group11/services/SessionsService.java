@@ -1,7 +1,5 @@
 package pt.iscte.asd.projectn3.group11.services;
 
-import pt.iscte.asd.projectn3.group11.Context;
-
 import java.util.HashMap;
 import java.util.UUID;
 
