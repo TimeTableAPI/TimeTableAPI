@@ -3,6 +3,7 @@ package pt.iscte.asd.projectn3.group11.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassroomControllerHandler.getClassroomsHandler;
 
 @Controller
+@ApiIgnore
 public class WeekController {
 
 	//region PATH_CONSTANTS
