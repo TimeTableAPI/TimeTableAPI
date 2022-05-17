@@ -10,7 +10,7 @@ import java.util.List;
  * <p>Metric that calculates the percentage of Characteristics fulfilled</p>
  * <p>The <b>bigger</b> the result the better.</p>
  */
-public class GoodCharacteristicsMetric implements MetricCalculator{
+public final class GoodCharacteristicsMetric implements IMetricCalculator {
 	private static float objective =1f;
 
 	/**

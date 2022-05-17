@@ -3,7 +3,7 @@ package pt.iscte.asd.projectn3.group11.services;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class SessionsService {
+public final class SessionsService {
 
     private static final HashMap<UUID, Context> SESSIONS = new HashMap<>();
     private static int SESSION_NUM = 0;

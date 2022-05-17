@@ -24,7 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-public class ClassCourseControllerHandler {
+public final class ClassCourseControllerHandler {
 
 
     private static final Logger LOGGER  = LogManager.getLogger(ClassCourseControllerHandler.class);

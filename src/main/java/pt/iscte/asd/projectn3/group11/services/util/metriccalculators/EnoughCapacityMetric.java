@@ -9,7 +9,7 @@ import java.util.List;
  * <p>Metric to evaluate the capacity of the assigned Classrooms compared to the number of students in each class.</p>
  * <p>The <b>bigger</b> the result the better.</p>
  */
-public class EnoughCapacityMetric implements MetricCalculator {
+public final class EnoughCapacityMetric implements IMetricCalculator {
 	private static float objective = 1f;
 
 	/**

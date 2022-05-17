@@ -11,7 +11,7 @@ import java.util.Locale;
 /**
  * Service to create Algorithms based on String names
  */
-public class AlgorithmService {
+public final class AlgorithmService {
 	public static final String BASIC_ALGORITHM_NAME = "basic";
 	public static final String OWL_ALGORITHM_NAME = "owl";
 

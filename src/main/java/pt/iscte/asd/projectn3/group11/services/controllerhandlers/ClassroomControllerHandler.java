@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class ClassroomControllerHandler {
+public final class ClassroomControllerHandler {
 
     private static final Logger LOGGER  = LogManager.getLogger(ClassroomControllerHandler.class);
 

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.moeaframework.util.progress.ProgressEvent;
 import org.moeaframework.util.progress.ProgressListener;
 
-public class CustomProgressListener implements ProgressListener {
+public final class CustomProgressListener implements ProgressListener {
 	private static final Logger LOGGER  = LogManager.getLogger(CustomProgressListener.class);
 
 	private final CustomAlgorithmService algorithmService;

@@ -10,7 +10,7 @@ import pt.iscte.asd.projectn3.group11.services.ClassroomService;
 
 import java.util.*;
 
-public class BasicAlgorithmService implements IAlgorithmService {
+public final class BasicAlgorithmService implements IAlgorithmService {
     private static final Logger LOGGER  = LogManager.getLogger(BasicAlgorithmService.class);
     private double progress;
     private final String name;

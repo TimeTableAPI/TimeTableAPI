@@ -11,7 +11,7 @@ import java.util.List;
  *<p>Has a single method {@link #evaluate(List, List)} </p>
  *
  */
-public interface MetricCalculator {
+public interface IMetricCalculator {
 
 	/**
 	 * <p>Method to analyze a List of classCourse  </p>
