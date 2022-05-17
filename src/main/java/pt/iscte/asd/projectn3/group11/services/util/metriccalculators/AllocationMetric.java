@@ -9,7 +9,7 @@ import java.util.List;
  * <p>Metric to evaluate the quantity of classes with assigned Classrooms.</p>
  */
 public class AllocationMetric implements MetricCalculator{
-	private static float objective = 1f;
+	private static final float objective = 1f;
 	/**
 	 * <p> The <b>bigger</b> the result the better.</p>
 	 * @param classCourseList List<ClassCourse>

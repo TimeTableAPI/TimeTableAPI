@@ -11,7 +11,7 @@ import java.util.List;
  * <p>The <b>bigger</b> the result the better.</p>
  */
 public class GoodCharacteristicsMetric implements MetricCalculator{
-	private static float objective =1f;
+	private static final float objective =1f;
 
 	/**
 	 * @param classCourseList List<ClassCourse>

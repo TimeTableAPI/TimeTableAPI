@@ -14,7 +14,7 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * <p>The <b>smaller</b> the result the better.</p>
  */
 public class UnderbookingMetric implements MetricCalculator{
-	private static float objective = 0f;
+	private static final float objective = 0f;
 	/**
 	 * @param classCourseList List<ClassCourse>
 	 * @param classroomsList List<Classroom>
