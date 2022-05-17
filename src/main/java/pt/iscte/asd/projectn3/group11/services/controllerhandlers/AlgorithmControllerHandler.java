@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-public class AlgorithmControllerHandler {
+public final class AlgorithmControllerHandler {
     private static final Logger LOGGER  = LogManager.getLogger(AlgorithmControllerHandler.class);
 
     /**

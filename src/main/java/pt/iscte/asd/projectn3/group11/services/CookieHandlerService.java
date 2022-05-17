@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-public class CookieHandlerService {
+public final class CookieHandlerService {
 
     private static final String ID_NAME = "id";
 

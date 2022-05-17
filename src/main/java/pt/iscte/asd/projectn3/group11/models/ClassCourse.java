@@ -35,7 +35,7 @@ import java.util.Objects;
  * </ul>
  *
  */
-public class ClassCourse {
+public final class ClassCourse {
 
     public static final String[] HEADER = {
             "Curso",

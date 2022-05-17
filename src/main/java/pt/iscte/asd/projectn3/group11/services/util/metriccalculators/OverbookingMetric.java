@@ -14,8 +14,8 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * <p>Metric that calculates the number of classes booked two or more times in the same timeshift</p>
  * 	<p>The <b>smaller</b> the result the better.</p>
  */
-public class OverbookingMetric  implements  MetricCalculator{
-	private static final float objective = 0f;
+public final class OverbookingMetric  implements IMetricCalculator {
+	private static final float OBJECTIVE = 0f;
 	/**
 	 * @param classCourseList List<ClassCourse>
 	 * @param classroomsList List<Classroom>
@@ -55,6 +55,6 @@ public class OverbookingMetric  implements  MetricCalculator{
 	}
 	@Override
 	public float getObjective() {
-		return objective;
+		return OBJECTIVE;
 	}
 }

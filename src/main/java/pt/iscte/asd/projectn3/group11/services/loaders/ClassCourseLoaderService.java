@@ -21,7 +21,7 @@ import java.util.List;
 /**
  *
  */
-public class ClassCourseLoaderService {
+public final class ClassCourseLoaderService {
 
     /**
      * Loads a Class csv file from given path.

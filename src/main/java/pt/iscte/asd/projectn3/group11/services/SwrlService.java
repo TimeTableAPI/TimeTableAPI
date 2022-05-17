@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SwrlService {
+public final class SwrlService {
 
     public static final String OWL_FILE = "src/main/resources/ADS.owl";
 

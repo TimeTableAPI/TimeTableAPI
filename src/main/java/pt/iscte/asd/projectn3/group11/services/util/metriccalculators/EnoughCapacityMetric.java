@@ -9,8 +9,8 @@ import java.util.List;
  * <p>Metric to evaluate the capacity of the assigned Classrooms compared to the number of students in each class.</p>
  * <p>The <b>bigger</b> the result the better.</p>
  */
-public class EnoughCapacityMetric implements MetricCalculator {
-	private static final float objective = 1f;
+public final class EnoughCapacityMetric implements IMetricCalculator {
+	private static final float OBJECTIVE = 1f;
 
 	/**
 	 * @param classCourseList List<ClassCourse>
@@ -34,6 +34,6 @@ public class EnoughCapacityMetric implements MetricCalculator {
 	}
 	@Override
 	public float getObjective() {
-		return objective;
+		return OBJECTIVE;
 	}
 }

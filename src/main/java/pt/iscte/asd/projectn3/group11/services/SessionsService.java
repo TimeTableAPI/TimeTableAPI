@@ -3,7 +3,8 @@ package pt.iscte.asd.projectn3.group11.services;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class SessionsService {
+public final class SessionsService {
+
     private final HashMap<UUID, Context> sessions;
     private int sessionNum;
 

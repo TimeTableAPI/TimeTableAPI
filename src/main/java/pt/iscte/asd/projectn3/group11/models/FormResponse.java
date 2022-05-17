@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.MultipartFile;
 @EntityScan
-public class FormResponse {
+public final class FormResponse {
 
     //region MEMBERS
     private MultipartFile classCourse;

@@ -7,7 +7,7 @@ package pt.iscte.asd.projectn3.group11.models.util;
  * @implNote Comparable
  * </p>
  */
-public class Date implements Comparable {
+public final class Date implements Comparable {
 
     private final int NOTHING = 0;
     private final int day;
