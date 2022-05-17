@@ -5,7 +5,6 @@ import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.apache.logging.log4j.Logger;
-import org.moeaframework.util.progress.ProgressHelper;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
@@ -41,17 +40,16 @@ public class CustomAlgorithmService implements IAlgorithmService {
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
 
-            long maxTime = 3600;
 
             //configure and run this experiment
-            Executor executor = new Executor()
+            Executor newExecutor = new Executor()
                     .withProblemClass(Problem.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
                     .withAlgorithm(this.algorithmName)
                     .withMaxEvaluations(this.maxEvaluation)
                     .withProgressListener(this.customProgressListener);
-            setExecutor(executor);
+            setExecutor(newExecutor);
 
-            NondominatedPopulation result = executor.run();
+            NondominatedPopulation result = newExecutor.run();
             LOGGER.info(result);
 
             //display the results
@@ -79,7 +77,6 @@ public class CustomAlgorithmService implements IAlgorithmService {
         finally
         {
             this.isRunning = false;
-            //this.progress = 1.0;
             LOGGER.info("Finished " + algorithmName);
         }
     }
