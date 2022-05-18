@@ -40,9 +40,11 @@ public class ClassCourseControllerHandler {
     public static final List<ClassCourse.ClassCourseJson> getClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(SessionsService.containsSession(uuid))
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
+
+        if(sessionServiceInstance.containsSession(uuid))
         {
-            Context context = SessionsService.getContext(uuid);
+            Context context = sessionServiceInstance.getContext(uuid);
             List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             try {
                 context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
@@ -67,9 +69,10 @@ public class ClassCourseControllerHandler {
     {
         LOGGER.info(className);
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(SessionsService.containsSession(uuid))
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
+        if(sessionServiceInstance.containsSession(uuid))
         {
-            Context context = SessionsService.getContext(uuid);
+            Context context = sessionServiceInstance.getContext(uuid);
             List<ClassCourse.ClassCourseJson> loadedClassCoursesJSON = new LinkedList<>();
             final TreeMap<String, HashMap<Date, HashMap<Integer, HashSet<ClassCourse>>>> classesByStudents = context.getClassesByStudents();
             return classesByStudents.get(className);
@@ -86,9 +89,10 @@ public class ClassCourseControllerHandler {
     public static final List<MetricResult> getMetricResultsHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(SessionsService.containsSession(uuid))
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
+        if(sessionServiceInstance.containsSession(uuid))
         {
-            Context context = SessionsService.getContext(uuid);
+            Context context = sessionServiceInstance.getContext(uuid);
             return context.getMetricResults();
         }
 
@@ -104,9 +108,10 @@ public class ClassCourseControllerHandler {
     public static final ResponseEntity<Resource> downloadClassesHandler(HttpServletResponse response, HttpServletRequest request)
     {
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if(!SessionsService.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
+        if(!sessionServiceInstance.containsSession(uuid)) return (ResponseEntity<Resource>) ResponseEntity.notFound();
 
-        Context context = SessionsService.getContext(uuid);
+        Context context = sessionServiceInstance.getContext(uuid);
 
         try {
             File file = ClassCourseLoaderService.export(context.getClassCourses());
@@ -157,15 +162,16 @@ public class ClassCourseControllerHandler {
         }
 
         UUID uuid = CookieHandlerService.getUUID(request, response);
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
 
-        if (SessionsService.containsSession(uuid)) {
+        if (sessionServiceInstance.containsSession(uuid)) {
             LOGGER.info("Context found setting new classcourses");
-            Context context = SessionsService.getContext(uuid);
+            Context context = sessionServiceInstance.getContext(uuid);
             context.setClassCourses(loadedClassCourses);
         } else {
             LOGGER.info("Context not found, creating empty and setting new classcourses");
             Context context = new Context.Builder().classCourses(loadedClassCourses).build();
-            SessionsService.putSession(uuid, context);
+            sessionServiceInstance.putSession(uuid, context);
         }
         return ResponseEntity.ok().build();
     }

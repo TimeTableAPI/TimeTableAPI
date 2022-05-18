@@ -33,7 +33,8 @@ public class CookieHandlerService {
     private static Cookie addIdCookie(HttpServletResponse response)
     {
         UUID id = UUID.randomUUID();
-        while(SessionsService.containsSession(id))
+        SessionsService sessionsService = SessionsService.getInstance();
+        while(sessionsService.containsSession(id))
         {
             id = UUID.randomUUID();
         }
