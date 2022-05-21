@@ -2,7 +2,7 @@ package pt.iscte.asd.projectn3.group11.services;
 
 
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.CustomAlgorithmService;
+import pt.iscte.asd.projectn3.group11.services.algorithms.moea.CustomAlgorithmServiceMoea;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 
 import java.util.List;
@@ -30,11 +30,11 @@ public final class AlgorithmService {
 			if(querryResult == null) {
 				iAlgorithmService = new BasicAlgorithmService();
 			}else {
-				iAlgorithmService = new CustomAlgorithmService(querryResult.get(0), MAX_EVALUATION);
+				iAlgorithmService = new CustomAlgorithmServiceMoea(querryResult.get(0), MAX_EVALUATION);
 			}
 		}
 		else {
-			iAlgorithmService = new CustomAlgorithmService(algoName, MAX_EVALUATION);
+			iAlgorithmService = new CustomAlgorithmServiceMoea(algoName, MAX_EVALUATION);
 		}
 		return iAlgorithmService;
 	}
