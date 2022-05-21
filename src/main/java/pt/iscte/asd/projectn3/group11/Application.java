@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan({"pt.iscte.asd.projectn3.group11.controllers"})
 @SpringBootApplication
 @EnableSwagger2
-public final class Application {
+public class Application {
 
     private static final Logger LOGGER  = LogManager.getLogger(Application.class);
 
