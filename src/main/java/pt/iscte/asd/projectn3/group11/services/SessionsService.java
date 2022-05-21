@@ -14,7 +14,8 @@ public final class SessionsService {
     }
 
     private static SessionsService INSTANCE = null;
-    public static SessionsService getInstance(){
+
+    public static synchronized SessionsService getInstance(){
         if(INSTANCE == null){
             INSTANCE = new SessionsService();
         }

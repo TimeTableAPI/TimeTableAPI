@@ -7,6 +7,7 @@ import org.moeaframework.core.Solution;
 import org.apache.logging.log4j.Logger;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.util.Problem;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
@@ -14,13 +15,12 @@ import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCal
 import java.util.*;
 
 public final class CustomAlgorithmService implements IAlgorithmService {
-    private static final Logger LOGGER  = LogManager.getLogger(CustomAlgorithmService.class);
+
     private final String algorithmName;
     private final int maxEvaluation;
     private boolean isRunning;
     private double progress;
     private Executor executor;
-
 
     private final CustomProgressListener customProgressListener;
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
@@ -36,7 +36,7 @@ public final class CustomAlgorithmService implements IAlgorithmService {
         this.isRunning = true;
         try
         {
-            LOGGER.info(this.algorithmName + "::EXECUTE");
+            LogService.getInstance().info(this.algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
 
@@ -50,12 +50,12 @@ public final class CustomAlgorithmService implements IAlgorithmService {
             setExecutor(newExecutor);
 
             NondominatedPopulation result = newExecutor.run();
-            LOGGER.info(result);
+            LogService.getInstance().info(result);
 
             //display the results
-            LOGGER.info(String.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n"));
+            LogService.getInstance().info(String.format("Objective1   Objective2   Objective3   Objective4   Objective5   Objective6   Objective7   Objective8%n"));
             for (Solution solution : result) {
-                LOGGER.info(String.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
+                LogService.getInstance().info(String.format("%.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f     %.4f%n",
                         solution.getObjective(0),
                         solution.getObjective(1),
                         solution.getObjective(2),
@@ -69,15 +69,15 @@ public final class CustomAlgorithmService implements IAlgorithmService {
             final Solution bestSolution = getBestSolution(result);
             final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
 
-            LOGGER.info(Arrays.toString(bestSolution.getObjectives()));
-            LOGGER.info(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
+            LogService.getInstance().info(Arrays.toString(bestSolution.getObjectives()));
+            LogService.getInstance().info(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));
 
             inputClasses = bestClassCourses;
         }
         finally
         {
             this.isRunning = false;
-            LOGGER.info("Finished " + algorithmName);
+            LogService.getInstance().info("Finished " + algorithmName);
         }
     }
 

@@ -26,9 +26,6 @@ import java.util.*;
 
 public final class ClassCourseControllerHandler {
 
-
-    private static final Logger LOGGER  = LogManager.getLogger(ClassCourseControllerHandler.class);
-
     //region HANDLERS
 
     /**
@@ -49,7 +46,7 @@ public final class ClassCourseControllerHandler {
             try {
                 context.getClassCourses().stream().map(ClassCourse::toJsonType).forEach(loadedClassCoursesJSON::add);
             } catch (NullPointerException e) {
-                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
+                LogService.getInstance().trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
             }
             return loadedClassCoursesJSON;
         }
@@ -67,7 +64,7 @@ public final class ClassCourseControllerHandler {
                                                                                                        HttpServletRequest request,
                                                                                                        String className)
     {
-        LOGGER.info(className);
+        LogService.getInstance().info(className);
         UUID uuid = CookieHandlerService.getUUID(request, response);
         SessionsService sessionServiceInstance = SessionsService.getInstance();
         if(sessionServiceInstance.containsSession(uuid))
@@ -150,14 +147,14 @@ public final class ClassCourseControllerHandler {
      */
     public static final ResponseEntity setClassesHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile)
     {
-        LOGGER.info("In set classes handler");
+        LogService.getInstance().info("In set classes handler");
         LinkedList<ClassCourse> loadedClassCourses;
         try {
             loadedClassCourses = ClassCourseLoaderService.load(classesFile, false);
         }
         catch (IOException e)
         {
-            LOGGER.error(e.getMessage());
+            LogService.getInstance().error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
 
@@ -165,11 +162,11 @@ public final class ClassCourseControllerHandler {
         SessionsService sessionServiceInstance = SessionsService.getInstance();
 
         if (sessionServiceInstance.containsSession(uuid)) {
-            LOGGER.info("Context found setting new classcourses");
+            LogService.getInstance().info("Context found setting new classcourses");
             Context context = sessionServiceInstance.getContext(uuid);
             context.setClassCourses(loadedClassCourses);
         } else {
-            LOGGER.info("Context not found, creating empty and setting new classcourses");
+            LogService.getInstance().info("Context not found, creating empty and setting new classcourses");
             Context context = new Context.Builder().classCourses(loadedClassCourses).build();
             sessionServiceInstance.putSession(uuid, context);
         }
