@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import pt.iscte.asd.projectn3.group11.services.Context;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public final class AlgorithmControllerHandler {
-    private static final Logger LOGGER  = LogManager.getLogger(AlgorithmControllerHandler.class);
 
     /**
      * Handler for Algorithm Name requests
@@ -30,7 +30,7 @@ public final class AlgorithmControllerHandler {
             try {
                 result = context.getAlgorithm().getName();
             } catch (NullPointerException e) {
-                LOGGER.trace("getAlgorithmNameHandler::No algorithm in context "+e.getMessage());
+                LogService.getInstance().trace("getAlgorithmNameHandler::No algorithm in context "+e.getMessage());
                 result = "";
             }
 
@@ -56,7 +56,7 @@ public final class AlgorithmControllerHandler {
             try {
                 result = context.getAlgorithm().getProgress();
             } catch (NullPointerException e) {
-                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
+                LogService.getInstance().trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
                 result = 0.0;
             }
 
@@ -135,7 +135,7 @@ public final class AlgorithmControllerHandler {
             try {
                 context.getAlgorithm().stop();
             } catch (NullPointerException e) {
-                LOGGER.trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
+                LogService.getInstance().trace("getAlgorithmProgressHandler::No algorithm in context "+e.getMessage());
                 return ResponseEntity.noContent().build();
             }
 

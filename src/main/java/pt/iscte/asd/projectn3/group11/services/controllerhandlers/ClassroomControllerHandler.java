@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.services.Context;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.CookieHandlerService;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.SessionsService;
 import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 
@@ -19,8 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 public final class ClassroomControllerHandler {
-
-    private static final Logger LOGGER  = LogManager.getLogger(ClassroomControllerHandler.class);
 
     //region HANDLERS
 
@@ -77,14 +76,14 @@ public final class ClassroomControllerHandler {
      */
     public static final ResponseEntity setClassroomsHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile)
     {
-        LOGGER.info("In set classrooms handler");
+        LogService.getInstance().info("In set classrooms handler");
         LinkedList<Classroom> loadedClassrooms;
         try {
             loadedClassrooms = ClassroomLoaderService.load(classesFile, false);
         }
         catch (IOException e)
         {
-            LOGGER.error(e.getMessage());
+            LogService.getInstance().error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
 
@@ -92,11 +91,11 @@ public final class ClassroomControllerHandler {
         SessionsService sessionsService = SessionsService.getInstance();
 
         if (sessionsService.containsSession(uuid)) {
-            LOGGER.info("Context found setting new classrooms");
+            LogService.getInstance().info("Context found setting new classrooms");
             Context context = sessionsService.getContext(uuid);
             context.setClassrooms(loadedClassrooms);
         } else {
-            LOGGER.info("Context not found, creating empty and setting new classrooms");
+            LogService.getInstance().info("Context not found, creating empty and setting new classrooms");
             Context context = new Context.Builder().classrooms(loadedClassrooms).build();
             sessionsService.putSession(uuid, context);
         }
