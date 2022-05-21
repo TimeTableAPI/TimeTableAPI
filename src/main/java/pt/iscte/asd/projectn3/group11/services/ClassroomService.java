@@ -12,7 +12,7 @@ import java.util.*;
  * <h1>ClassRoom service</h1>
  * <p>Provides Getters for specific ClassRooms</p>
  */
-public class ClassroomService {
+public final class ClassroomService {
 
 
 //region ALLOCATOR

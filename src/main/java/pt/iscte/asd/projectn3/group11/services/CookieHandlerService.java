@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-public class CookieHandlerService {
+public final class CookieHandlerService {
 
     private static final String ID_NAME = "id";
 
@@ -33,7 +33,8 @@ public class CookieHandlerService {
     private static Cookie addIdCookie(HttpServletResponse response)
     {
         UUID id = UUID.randomUUID();
-        while(SessionsService.containsSession(id))
+        SessionsService sessionsService = SessionsService.getInstance();
+        while(sessionsService.containsSession(id))
         {
             id = UUID.randomUUID();
         }

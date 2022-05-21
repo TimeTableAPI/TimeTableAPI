@@ -17,7 +17,7 @@ import java.util.List;
 /**
  *
  */
-public class ClassroomLoaderService {
+public final class ClassroomLoaderService {
 
     /**
      * Loads a Classroom List from a file in the given path.

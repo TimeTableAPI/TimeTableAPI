@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-public class AlgorithmControllerHandler {
+public final class AlgorithmControllerHandler {
     private static final Logger LOGGER  = LogManager.getLogger(AlgorithmControllerHandler.class);
 
     /**
@@ -23,8 +23,10 @@ public class AlgorithmControllerHandler {
     public static final String getAlgorithmNameHandler(HttpServletResponse response, HttpServletRequest request) {
         String result = "";
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if (SessionsService.containsSession(uuid)) {
-            Context context = SessionsService.getContext(uuid);
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
+
+        if (sessionServiceInstance.containsSession(uuid)) {
+            Context context = sessionServiceInstance.getContext(uuid);
             try {
                 result = context.getAlgorithm().getName();
             } catch (NullPointerException e) {
@@ -47,8 +49,10 @@ public class AlgorithmControllerHandler {
     public static final Double getAlgorithmProgressHandler(HttpServletResponse response, HttpServletRequest request) {
         Double result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
-        if (SessionsService.containsSession(uuid)) {
-            Context context = SessionsService.getContext(uuid);
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
+
+        if (sessionServiceInstance.containsSession(uuid)) {
+            Context context = sessionServiceInstance.getContext(uuid);
             try {
                 result = context.getAlgorithm().getProgress();
             } catch (NullPointerException e) {
@@ -73,9 +77,10 @@ public class AlgorithmControllerHandler {
 
         ResponseEntity<Object> result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
 
-        if (SessionsService.containsSession(uuid)) {
-            Context context = SessionsService.getContext(uuid);
+        if (sessionServiceInstance.containsSession(uuid)) {
+            Context context = sessionServiceInstance.getContext(uuid);
             context.changeAlgorithm(newAlgorithmName);
             result = ResponseEntity.ok().build();
         } else {
@@ -94,9 +99,10 @@ public class AlgorithmControllerHandler {
     public static final ResponseEntity runAlgorithmHandler(HttpServletResponse response, HttpServletRequest request ) {
         ResponseEntity<Object> result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
 
-        if (SessionsService.containsSession(uuid)) {
-            Context context = SessionsService.getContext(uuid);
+        if (sessionServiceInstance.containsSession(uuid)) {
+            Context context = sessionServiceInstance.getContext(uuid);
 
             Thread computingThread = new Thread(() -> {
                 context.computeSolutionWithAlgorithm();
@@ -121,9 +127,10 @@ public class AlgorithmControllerHandler {
     public static final ResponseEntity stopAlgorithmHandler(HttpServletResponse response, HttpServletRequest request ) {
         ResponseEntity<Object> result;
         UUID uuid = CookieHandlerService.getUUID(request, response);
+        SessionsService sessionServiceInstance = SessionsService.getInstance();
 
-        if (SessionsService.containsSession(uuid)) {
-            Context context = SessionsService.getContext(uuid);
+        if (sessionServiceInstance.containsSession(uuid)) {
+            Context context = sessionServiceInstance.getContext(uuid);
 
             try {
                 context.getAlgorithm().stop();

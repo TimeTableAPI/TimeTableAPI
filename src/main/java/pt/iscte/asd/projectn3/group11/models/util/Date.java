@@ -7,7 +7,7 @@ package pt.iscte.asd.projectn3.group11.models.util;
  * @implNote Comparable
  * </p>
  */
-public class Date implements Comparable {
+public final class Date implements Comparable {
 
     private final int NOTHING = 0;
     private final int day;
@@ -106,10 +106,7 @@ public class Date implements Comparable {
         if(getClass() != obj.getClass())
             return false;
         final Date other = (Date) obj;
-        if(other.day == this.day && other.month == this.month && other.year == this.year)
-            return true;
-
-        return false;
+        return other.day == this.day && other.month == this.month && other.year == this.year;
     }
 
     @Override

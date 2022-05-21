@@ -5,16 +5,15 @@ import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.apache.logging.log4j.Logger;
-import org.moeaframework.util.progress.ProgressHelper;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.util.Problem;
-import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.MetricCalculator;
+import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
 
 import java.util.*;
 
-public class CustomAlgorithmService implements IAlgorithmService {
+public final class CustomAlgorithmService implements IAlgorithmService {
     private static final Logger LOGGER  = LogManager.getLogger(CustomAlgorithmService.class);
     private final String algorithmName;
     private final int maxEvaluation;
@@ -23,7 +22,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
     private Executor executor;
 
 
-    private CustomProgressListener customProgressListener;
+    private final CustomProgressListener customProgressListener;
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;
@@ -41,17 +40,16 @@ public class CustomAlgorithmService implements IAlgorithmService {
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
 
-            long maxTime = 3600;
 
             //configure and run this experiment
-            Executor executor = new Executor()
+            Executor newExecutor = new Executor()
                     .withProblemClass(Problem.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
                     .withAlgorithm(this.algorithmName)
                     .withMaxEvaluations(this.maxEvaluation)
                     .withProgressListener(this.customProgressListener);
-            setExecutor(executor);
+            setExecutor(newExecutor);
 
-            NondominatedPopulation result = executor.run();
+            NondominatedPopulation result = newExecutor.run();
             LOGGER.info(result);
 
             //display the results
@@ -79,7 +77,6 @@ public class CustomAlgorithmService implements IAlgorithmService {
         finally
         {
             this.isRunning = false;
-            //this.progress = 1.0;
             LOGGER.info("Finished " + algorithmName);
         }
     }
@@ -128,7 +125,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
         return result.get(bestIndex);
     }
 
-    private static double euclideanMetricDistance(double[] metricResults, List<MetricCalculator> metricCalculatorList){
+    private static double euclideanMetricDistance(double[] metricResults, List<IMetricCalculator> metricCalculatorList){
         double value = 0;
         for(int i = 0 ; i< metricResults.length;i++){
             value += Math.pow(metricResults[i] - metricCalculatorList.get(i).getObjective() ,2);
