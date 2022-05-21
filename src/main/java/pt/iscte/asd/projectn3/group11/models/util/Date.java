@@ -106,10 +106,7 @@ public class Date implements Comparable {
         if(getClass() != obj.getClass())
             return false;
         final Date other = (Date) obj;
-        if(other.day == this.day && other.month == this.month && other.year == this.year)
-            return true;
-
-        return false;
+        return other.day == this.day && other.month == this.month && other.year == this.year;
     }
 
     @Override

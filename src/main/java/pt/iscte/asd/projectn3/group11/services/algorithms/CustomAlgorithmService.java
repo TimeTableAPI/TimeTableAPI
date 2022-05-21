@@ -22,7 +22,7 @@ public class CustomAlgorithmService implements IAlgorithmService {
     private Executor executor;
 
 
-    private CustomProgressListener customProgressListener;
+    private final CustomProgressListener customProgressListener;
     public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;

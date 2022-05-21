@@ -27,6 +27,6 @@ public interface MetricCalculator {
 	 *
 	 * @return
 	 */
-	public float getObjective();
+    float getObjective();
 }
 
