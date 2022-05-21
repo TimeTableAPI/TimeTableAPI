@@ -83,6 +83,23 @@
             <version>2.13</version>
         </dependency>
         <!--endregion -->
+
+        <!--region jmetal -->
+        <!-- https://mvnrepository.com/artifact/org.uma.jmetal/jmetal-core -->
+        <dependency>
+            <groupId>org.uma.jmetal</groupId>
+            <artifactId>jmetal-core</artifactId>
+            <version>5.11</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.uma.jmetal/jmetal-lab -->
+        <dependency>
+            <groupId>org.uma.jmetal</groupId>
+            <artifactId>jmetal-lab</artifactId>
+            <version>5.11</version>
+        </dependency>
+
+        <!--endregion -->
+
         <!--region owl -->
         <dependency>
             <groupId>edu.stanford.swrl</groupId>
