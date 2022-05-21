@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -115,7 +116,7 @@ public final class ClassroomLoaderService {
                     build();
             classrooms.add(classN);
         }
-        System.out.println("ClassRoomLoad.main::classRooms = " + classrooms);
+        LogService.getInstance().info("ClassRoomLoad.main::classRooms = " + classrooms);
     }
 
 }

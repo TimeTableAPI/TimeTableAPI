@@ -8,6 +8,8 @@ import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import org.springframework.web.multipart.MultipartFile;
 import pt.iscte.asd.projectn3.group11.services.FileUploadService;
+import pt.iscte.asd.projectn3.group11.services.LogService;
+
 import java.io.*;
 import java.io.IOException;
 import java.io.Reader;
@@ -162,7 +164,7 @@ public final class ClassCourseLoaderService {
                                 classroomBuild
                         ).
                         build();
-                System.out.println(aclassCourse);
+                LogService.getInstance().info(aclassCourse);
                 classCourses.add(aclassCourse);
             }
         }
@@ -180,10 +182,10 @@ public final class ClassCourseLoaderService {
                 }
 
             }
-            System.out.println("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::File created in:" + myObj.getAbsolutePath());
+            LogService.getInstance().info("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::File created in:" + myObj.getAbsolutePath());
             return myObj;
         } catch (IOException e) {
-            System.out.println("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::An error occurred.");
+            LogService.getInstance().info("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::An error occurred.");
             e.printStackTrace();
             throw e;
         }
