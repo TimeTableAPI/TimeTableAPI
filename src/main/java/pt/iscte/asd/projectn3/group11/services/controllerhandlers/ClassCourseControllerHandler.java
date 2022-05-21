@@ -148,9 +148,9 @@ public final class ClassCourseControllerHandler {
     public static final ResponseEntity setClassesHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile)
     {
         LogService.getInstance().info("In set classes handler");
-        LinkedList<ClassCourse> loadedClassCourses;
+        List<ClassCourse> loadedClassCourses;
         try {
-            loadedClassCourses = ClassCourseLoaderService.load(classesFile, false);
+            loadedClassCourses = ClassCourseLoaderService.getInstance().load(classesFile, false);
         }
         catch (IOException e)
         {

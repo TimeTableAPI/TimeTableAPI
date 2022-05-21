@@ -16,7 +16,7 @@ class ClassroomServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		classRoomsTestList = ClassroomLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
+		classRoomsTestList = ClassroomLoaderService.getInstance().load(SAMPLE_CSV_FILE_CLASS_PATH);
 	}
 
 

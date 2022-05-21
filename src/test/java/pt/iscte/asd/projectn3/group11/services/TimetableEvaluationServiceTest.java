@@ -10,6 +10,7 @@ import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.*;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,14 +21,14 @@ class TimetableEvaluationServiceTest {
 
 	//private LinkedList<MetricResult> metricResultList = new LinkedList<>();
 	private static  Hashtable<String, Float> metricResultListTimetable;
-	private static LinkedList<ClassCourse> classCoursesTestList;
-	private static LinkedList<Classroom> classroomsTestList;
+	private static List<ClassCourse> classCoursesTestList;
+	private static List<Classroom> classroomsTestList;
 
 	@BeforeAll
 	static void setUp()
 	{
-		classroomsTestList = ClassroomLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
-		classCoursesTestList = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_FILLED_PATH);
+		classroomsTestList = ClassroomLoaderService.getInstance().load(SAMPLE_CSV_FILE_CLASS_PATH);
+		classCoursesTestList = ClassCourseLoaderService.getInstance().load(SAMPLE_CSV_FILE_CLASS_FILLED_PATH);
 
 		metricResultListTimetable = TimetableEvaluationService.evaluateTimetable(classCoursesTestList, classroomsTestList);
 		LogService.getInstance().info(metricResultListTimetable);

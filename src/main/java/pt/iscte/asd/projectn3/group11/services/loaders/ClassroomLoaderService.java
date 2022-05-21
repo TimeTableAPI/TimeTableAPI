@@ -2,99 +2,34 @@ package pt.iscte.asd.projectn3.group11.services.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.web.multipart.MultipartFile;
+import org.jetbrains.annotations.NotNull;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  */
-public final class ClassroomLoaderService {
+public final class ClassroomLoaderService extends LoaderService<Classroom> {
 
-    /**
-     * Loads a Classroom List from a file in the given path.
-     *
-     * @param path path to the classroom csv.
-     * @return List of classrooms
-     */
-    public static final LinkedList<Classroom> load(final String path) {
-        LinkedList<Classroom> classrooms = new LinkedList<>();
-        try (
-                final Reader reader = Files.newBufferedReader(Paths.get(path));
-                final CSVReader csvReader = new CSVReader(reader)
-        ) {
+    private static ClassroomLoaderService INSTANCE = null;
 
-            extract(csvReader, classrooms);
-
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+    private ClassroomLoaderService(){}
+    public static synchronized ClassroomLoaderService getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new ClassroomLoaderService();
         }
-        return classrooms;
+        return INSTANCE;
     }
 
-    /**
-     * Loads a Classroom List from a file.
-     *
-     * @param file object containing the classroom csv.
-     * @return List of classrooms
-     */
-    public static final LinkedList<Classroom> load(final File file) {
-        LinkedList<Classroom> classrooms = new LinkedList<>();
-        try (
-                final Reader reader = new FileReader(file);
-                final CSVReader csvReader = new CSVReader(reader)
-        ) {
-
-            extract(csvReader, classrooms);
-
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
-            return classrooms;
-        }
-        return classrooms;
-    }
-
-    /**
-     * Loads a Classroom List from a MultipartFile.
-     *
-     * @param multipartFile MultipartFile containing the classroom csv.
-     * @param toDisk
-     * @return List of classrooms
-     */
-    public static final LinkedList<Classroom> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
-        File file;
-        if (toDisk) {
-            file = new File(FileUploadService.UPLOADED_FILES_LOCATION + multipartFile.getOriginalFilename());
-        } else {
-            Path temp = Files.createTempFile(multipartFile.getOriginalFilename(), ".csv");
-            file = new File(temp.toUri());
-        }
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(multipartFile.getBytes());
-        fos.close();
-        LinkedList<Classroom> classrooms = load(file);
-        return classrooms;
-    }
-
-    /**
-     * Loads a ClassRoom List from a CSVreader given as a param
-     *
-     * @param csvReader  reader to extract the data
-     * @param classrooms list where the extracted classRooms will be appended
-     */
-    private static void extract(CSVReader csvReader, List<Classroom> classrooms) throws IOException, CsvValidationException {
-        final String[] headers = csvReader.readNext();
-
+    @Override
+    protected void extract(@NotNull CSVReader csvReader, @NotNull List<Classroom> classrooms) throws IOException, CsvValidationException {
+        csvReader.readNext();
         String[] nextRecord;
+
         while ((nextRecord = csvReader.readNext()) != null) {
             final String building = nextRecord[0];
             final String classroomName = nextRecord[1];
@@ -116,7 +51,7 @@ public final class ClassroomLoaderService {
                     build();
             classrooms.add(classN);
         }
-        LogService.getInstance().info("ClassRoomLoad.main::classRooms = " + classrooms);
+        LogService.getInstance().info(classrooms);
     }
 
 }
