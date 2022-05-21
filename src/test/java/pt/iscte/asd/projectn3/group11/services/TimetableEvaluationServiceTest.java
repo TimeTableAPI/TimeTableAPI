@@ -30,7 +30,7 @@ class TimetableEvaluationServiceTest {
 		classCoursesTestList = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_FILLED_PATH);
 
 		metricResultListTimetable = TimetableEvaluationService.evaluateTimetable(classCoursesTestList, classroomsTestList);
-		System.out.println(metricResultListTimetable);
+		LogService.getInstance().info(metricResultListTimetable);
 	}
 
 
