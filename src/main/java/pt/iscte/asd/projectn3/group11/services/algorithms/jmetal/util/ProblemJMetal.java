@@ -1,10 +1,12 @@
 package pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.uma.jmetal.problem.integerproblem.impl.AbstractIntegerProblem;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
 
@@ -16,10 +18,12 @@ public class ProblemJMetal extends AbstractIntegerProblem {
     List<ClassCourse> classes;
     List<Classroom> classrooms;
 
-    public ProblemJMetal(List<IMetricCalculator> metricList, List<ClassCourse> classes, List<Classroom> classrooms) {
+    public ProblemJMetal(
+            @NotNull List<IMetricCalculator> metricList,
+            @NotNull List<ClassCourse> classes,
+            @NotNull List<Classroom> classrooms) {
         this.classes = classes;
         this.classrooms = classrooms;
-
         setName("Jmetal");
         setNumberOfVariables(classes.size());
         setNumberOfObjectives(metricList.size());
@@ -57,9 +61,7 @@ public class ProblemJMetal extends AbstractIntegerProblem {
 
         LinkedList<ClassCourse> solutionClassCourses = solutionToTimetable(integerSolution, this.classes, this.classrooms);
         Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
-
         int itr = 0;
-
         for (IMetricCalculator metricCalculator : TimetableEvaluationService.METRICSLIST) {
             for(Map.Entry<String, Float> entry: stringFloatHashtable.entrySet()){
                 if (metricCalculator.getClass().getSimpleName().equals(entry.getKey())){
@@ -69,6 +71,8 @@ public class ProblemJMetal extends AbstractIntegerProblem {
                 }
             }
         }
+        LogService.getInstance().debug(Arrays.toString(integerSolution.objectives()));
+
         /*
         ArrayList<Double> objectivesDoubleList = new ArrayList<>();
         stringFloatHashtable.values().forEach(aFloat -> objectivesDoubleList.add((double)aFloat));

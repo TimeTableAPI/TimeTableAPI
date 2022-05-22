@@ -2,6 +2,7 @@ package pt.iscte.asd.projectn3.group11.services;
 
 
 import pt.iscte.asd.projectn3.group11.services.algorithms.BasicAlgorithmService;
+import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.CustomAlgorithmServiceJMetal;
 import pt.iscte.asd.projectn3.group11.services.algorithms.moea.CustomAlgorithmServiceMoea;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
 
@@ -30,11 +31,13 @@ public final class AlgorithmService {
 			if(querryResult == null) {
 				iAlgorithmService = new BasicAlgorithmService();
 			}else {
-				iAlgorithmService = new CustomAlgorithmServiceMoea(querryResult.get(0), MAX_EVALUATION);
+				//iAlgorithmService = new CustomAlgorithmServiceMoea(querryResult.get(0), MAX_EVALUATION);
+				iAlgorithmService = new CustomAlgorithmServiceJMetal();
 			}
 		}
 		else {
-			iAlgorithmService = new CustomAlgorithmServiceMoea(algoName, MAX_EVALUATION);
+			//iAlgorithmService = new CustomAlgorithmServiceMoea(algoName, MAX_EVALUATION);
+			iAlgorithmService = new CustomAlgorithmServiceJMetal();
 		}
 		return iAlgorithmService;
 	}

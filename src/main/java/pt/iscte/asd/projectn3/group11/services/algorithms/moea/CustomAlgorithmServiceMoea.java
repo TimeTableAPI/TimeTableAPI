@@ -41,8 +41,6 @@ public final class CustomAlgorithmServiceMoea implements IAlgorithmService {
             LogService.getInstance().info(this.algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
 
-
-
             //configure and run this experiment
             Executor newExecutor = new Executor()
                     .withProblemClass(ProblemMoea.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)

@@ -38,4 +38,9 @@ public class LogService {
     {
         LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).trace(log);
     }
+
+    public void debug(String log)
+    {
+        LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).debug(log);
+    }
 }
