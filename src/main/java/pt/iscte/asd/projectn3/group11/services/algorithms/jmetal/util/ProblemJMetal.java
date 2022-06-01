@@ -15,8 +15,8 @@ import java.util.*;
 
 public class ProblemJMetal extends AbstractIntegerProblem {
 
-    List<ClassCourse> classes;
-    List<Classroom> classrooms;
+    private final List<ClassCourse> classes;
+    private final List<Classroom> classrooms;
 
     public ProblemJMetal(
             @NotNull List<IMetricCalculator> metricList,
