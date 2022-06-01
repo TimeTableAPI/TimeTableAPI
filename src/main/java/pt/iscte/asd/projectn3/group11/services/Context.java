@@ -20,7 +20,7 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * </p>
  *
  */
-public class Context {
+public final class Context {
     private List<ClassCourse> classCourses;
     private List<Classroom> classrooms;
     private IAlgorithmService algorithm;

@@ -18,13 +18,13 @@ public class ClassCourseLoaderServiceTest {
     private static final String SAMPLE_CSV_FILE_CLASS_PATH = "./src/test/resources/classTest.csv";
     private static ClassCourse classCourse1;
     private static ClassCourse classCourse2;
-    private static LinkedList<ClassCourse> loadedClassCourses ;
+    private static List<ClassCourse> loadedClassCourses ;
     private static ClassCourse aClassCourse;
 
     @BeforeAll
     static void setUp()
     {
-        loadedClassCourses = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
+        loadedClassCourses = ClassCourseLoaderService.getInstance().load(SAMPLE_CSV_FILE_CLASS_PATH);
 
         final List<String> courses = Arrays.asList("ISCTE-IUL", "LCP", "LHMC", "LP", "LS", "LS-PL", "MIA");
         final List<String> units = Collections.singletonList("Língua Espanhola");
@@ -132,9 +132,9 @@ public class ClassCourseLoaderServiceTest {
     @Test
     void export() {
         try {
-            LinkedList<ClassCourse> classCourses = ClassCourseLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH);
+            List<ClassCourse> classCourses = ClassCourseLoaderService.getInstance().load(SAMPLE_CSV_FILE_CLASS_PATH);
             File file = ClassCourseLoaderService.export(classCourses);
-            LinkedList<ClassCourse> classesExported = ClassCourseLoaderService.load(file);
+            List<ClassCourse> classesExported = ClassCourseLoaderService.getInstance().load(file);
             for (int i = 0; i < min(classCourses.size(), classesExported.size()); i++) {
                 assertEquals(classCourses.get(i), classesExported.get(i));
             }

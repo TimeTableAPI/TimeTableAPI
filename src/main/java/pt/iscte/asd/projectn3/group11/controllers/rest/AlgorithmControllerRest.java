@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.AlgorithmControllerHandler.*;
 
 @RestController
-public class AlgorithmControllerRest {
+public final class AlgorithmControllerRest {
     //region PATH_CONSTANTS
     public static final String ALGORITHM_REST_PATH = "/rest/algorithm";
     //endregion

@@ -18,7 +18,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCo
 
 @Controller
 @ApiIgnore
-public class ClassCourseController {
+public final class ClassCourseController {
 
     //region PATH_CONSTANTS
     public static final String TIMETABLE_PATH = "/timetable";

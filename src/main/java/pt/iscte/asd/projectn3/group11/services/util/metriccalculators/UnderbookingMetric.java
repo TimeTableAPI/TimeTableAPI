@@ -13,8 +13,8 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * <p>Metric that calculates the number of classes with timeshifts that aren't being used</p>
  * <p>The <b>smaller</b> the result the better.</p>
  */
-public class UnderbookingMetric implements MetricCalculator{
-	private static float objective = 0f;
+public final class UnderbookingMetric implements IMetricCalculator {
+	private static final float OBJECTIVE = 0f;
 	/**
 	 * @param classCourseList List<ClassCourse>
 	 * @param classroomsList List<Classroom>
@@ -48,6 +48,6 @@ public class UnderbookingMetric implements MetricCalculator{
 	}
 	@Override
 	public float getObjective() {
-		return objective;
+		return OBJECTIVE;
 	}
 }

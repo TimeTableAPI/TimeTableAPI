@@ -12,8 +12,8 @@ import static pt.iscte.asd.projectn3.group11.services.ClassroomService.organizeC
  * <p>Metric to evaluate the quantity of Movements between classrooms that the Students have to make throughout the day.</p>
  * 	<p>The <b>smaller</b> the result the better.</p>
  */
-public class StudentClassMovementsMetric implements MetricCalculator{
-	private static float objective = 0f;
+public final class StudentClassMovementsMetric implements IMetricCalculator {
+	private static final float OBJECTIVE = 0f;
 
 	/**
 	 * @param classCourseList List<ClassCourse>
@@ -47,6 +47,6 @@ public class StudentClassMovementsMetric implements MetricCalculator{
 	}
 	@Override
 	public float getObjective() {
-		return objective;
+		return OBJECTIVE;
 	}
 }

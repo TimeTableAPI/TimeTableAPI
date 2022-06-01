@@ -7,11 +7,12 @@ import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
 import pt.iscte.asd.projectn3.group11.services.ClassroomService;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 
 import java.util.*;
 
-public class BasicAlgorithmService implements IAlgorithmService {
-    private static final Logger LOGGER  = LogManager.getLogger(BasicAlgorithmService.class);
+public final class BasicAlgorithmService implements IAlgorithmService {
+
     private double progress;
     private final String name;
 
@@ -31,7 +32,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
         double quanityOfClassCourses = classCourses.size();
         try
         {
-            LOGGER.info("BASIC_ALGORITHM::EXECUTE");
+            LogService.getInstance().info("BASIC_ALGORITHM::EXECUTE");
 
             TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
             TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
@@ -43,7 +44,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
                     ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
                 }
                 this.progress = i/quanityOfClassCourses;
-                LOGGER.info("BASIC_ALGORITHM::PROGRESS" + this.progress);
+                LogService.getInstance().info("BASIC_ALGORITHM::PROGRESS" + this.progress);
 
             }
         }
@@ -53,7 +54,7 @@ public class BasicAlgorithmService implements IAlgorithmService {
             if(this.canRun) {
                 this.progress = 1;
             }
-            LOGGER.info("Finished BASIC_ALGORITHM");
+            LogService.getInstance().info("Finished BASIC_ALGORITHM");
         }
     }
 

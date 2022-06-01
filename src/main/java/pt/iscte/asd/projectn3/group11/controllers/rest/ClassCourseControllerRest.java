@@ -15,9 +15,8 @@ import java.util.*;
 
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.*;
 
-
 @RestController
-public class ClassCourseControllerRest {
+public final class ClassCourseControllerRest {
 
     //region PATH_CONSTANTS
     public static final String CLASSES_REST_PATH = "/rest/classes";

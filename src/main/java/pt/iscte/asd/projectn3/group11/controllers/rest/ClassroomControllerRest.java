@@ -15,7 +15,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.Classro
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassroomControllerHandler.setClassroomsHandler;
 
 @RestController
-public class ClassroomControllerRest {
+public final class ClassroomControllerRest {
 
     //region PATH_CONSTANTS
     public static final String CLASSROOM_REST_PATH = "/rest/classrooms";

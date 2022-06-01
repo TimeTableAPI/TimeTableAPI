@@ -1,6 +1,6 @@
 package pt.iscte.asd.projectn3.group11.models;
 
-public class MetricResult {
+public final class MetricResult {
 
 	public final String metricName;
 	public final Float result;

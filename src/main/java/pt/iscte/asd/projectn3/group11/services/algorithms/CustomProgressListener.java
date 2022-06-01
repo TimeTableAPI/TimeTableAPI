@@ -1,12 +1,10 @@
 package pt.iscte.asd.projectn3.group11.services.algorithms;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.moeaframework.util.progress.ProgressEvent;
 import org.moeaframework.util.progress.ProgressListener;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 
-public class CustomProgressListener implements ProgressListener {
-	private static final Logger LOGGER  = LogManager.getLogger(CustomProgressListener.class);
+public final class CustomProgressListener implements ProgressListener {
 
 	private final CustomAlgorithmService algorithmService;
 
@@ -19,7 +17,7 @@ public class CustomProgressListener implements ProgressListener {
 		final double progress = progressEvent.getPercentComplete();
 		final double timeLeft = progressEvent.getRemainingTime();
 		final String resultForLogging = progress + "%;" + timeLeft + " sec left";
-		LOGGER.info(resultForLogging);
+		LogService.getInstance().info(resultForLogging);
 		this.algorithmService.setProgress(progress);
 	}
 }

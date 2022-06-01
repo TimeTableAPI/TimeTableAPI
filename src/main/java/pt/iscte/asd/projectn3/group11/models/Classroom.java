@@ -28,7 +28,7 @@ import java.util.Objects;
  * <p>Depending on the position in the list the {@link Boolean} values have certain meaning, which follow the next order: {@link Classroom#NUMBER_OF_CHARACTERISTICS}</p>
  * @see Classroom#isDummy()
  */
-public class Classroom {
+public final class Classroom {
 
     public static final String[] HEADER = {
             "Edifício",

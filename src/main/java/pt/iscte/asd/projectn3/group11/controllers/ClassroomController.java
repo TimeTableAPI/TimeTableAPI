@@ -13,7 +13,7 @@ import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.Classro
 
 @Controller
 @ApiIgnore
-public class ClassroomController {
+public final class ClassroomController {
 
     //region PATH_CONSTANTS
     public static final String CLASSROOM_PATH = "/classrooms";

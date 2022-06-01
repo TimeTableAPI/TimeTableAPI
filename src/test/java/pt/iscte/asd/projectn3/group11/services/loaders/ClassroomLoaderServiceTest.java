@@ -64,7 +64,7 @@ public class ClassroomLoaderServiceTest {
     @org.junit.jupiter.api.Test
     void load()
     {
-        Classroom classRoomTest = ClassroomLoaderService.load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
+        Classroom classRoomTest = ClassroomLoaderService.getInstance().load(SAMPLE_CSV_FILE_CLASS_PATH).get(0);
         assertEquals(classRoomTest.getBuilding(), classroom.getBuilding());
         assertEquals(classRoomTest.getClassroomName(), classroom.getClassroomName());
         assertEquals(classRoomTest.getExamCapacity(), classroom.getExamCapacity());
