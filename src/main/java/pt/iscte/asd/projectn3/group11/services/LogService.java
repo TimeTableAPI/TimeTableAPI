@@ -14,27 +14,27 @@ public class LogService {
         return INSTANCE;
     }
 
-    public synchronized void info(String log)
+    public void info(String log)
     {
         LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).info(log);
     }
 
-    public synchronized void info(Object log)
+    public void info(Object log)
     {
         LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).info(log);
     }
 
-    public synchronized void info(Marker var1, String... var2)
+    public void info(Marker var1, String... var2)
     {
         LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).info(var1, var2);
     }
 
-    public synchronized void error(String log)
+    public void error(String log)
     {
         LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).error(log);
     }
 
-    public synchronized void trace(String log)
+    public void trace(String log)
     {
         LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).trace(log);
     }

@@ -77,9 +77,9 @@ public final class ClassroomControllerHandler {
     public static final ResponseEntity setClassroomsHandler(HttpServletResponse response, HttpServletRequest request, MultipartFile classesFile)
     {
         LogService.getInstance().info("In set classrooms handler");
-        LinkedList<Classroom> loadedClassrooms;
+        List<Classroom> loadedClassrooms;
         try {
-            loadedClassrooms = ClassroomLoaderService.load(classesFile, false);
+            loadedClassrooms = ClassroomLoaderService.getInstance().load(classesFile, false);
         }
         catch (IOException e)
         {

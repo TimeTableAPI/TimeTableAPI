@@ -2,20 +2,17 @@ package pt.iscte.asd.projectn3.group11.services.loaders;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.jetbrains.annotations.NotNull;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
-import org.springframework.web.multipart.MultipartFile;
-import pt.iscte.asd.projectn3.group11.services.FileUploadService;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 
 import java.io.*;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,71 +20,20 @@ import java.util.List;
 /**
  *
  */
-public final class ClassCourseLoaderService {
+public final class ClassCourseLoaderService extends LoaderService<ClassCourse> {
 
-    /**
-     * Loads a Class csv file from given path.
-     *
-     * @param path path to the classroom csv.
-     * @return List of classrooms
-     */
-    public static final LinkedList<ClassCourse> load(final String path) {
-        LinkedList<ClassCourse> classCourses = new LinkedList<>();
-        try (
-                final Reader reader = Files.newBufferedReader(Paths.get(path));
-                final CSVReader csvReader = new CSVReader(reader)
-        ) {
+    private static ClassCourseLoaderService INSTANCE = null;
 
-            extract(csvReader, classCourses);
-
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+    private ClassCourseLoaderService(){}
+    public static synchronized ClassCourseLoaderService getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new ClassCourseLoaderService();
         }
-        return classCourses;
+        return INSTANCE;
     }
 
-    /**
-     * Loads a Class csv file.
-     *
-     * @param file object containing the csv for the Classes.
-     * @return List of classrooms
-     */
-    public static final LinkedList<ClassCourse> load(final File file) {
-        LinkedList<ClassCourse> classCourses = new LinkedList<>();
-        try (
-                final Reader reader = new FileReader(file);
-                final CSVReader csvReader = new CSVReader(reader)
-        ) {
-            extract(csvReader, classCourses);
-
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
-        }
-        return classCourses;
-    }
-
-    /**
-     * Loads a Class csv file.
-     *
-     * @param multipartFile object containing the csv for the Classes.
-     * @return List of classrooms
-     */
-    public static final LinkedList<ClassCourse> load(final MultipartFile multipartFile, boolean toDisk) throws IOException {
-        File file;
-        if (toDisk) {
-            file = new File(FileUploadService.UPLOADED_FILES_LOCATION + multipartFile.getOriginalFilename());
-        } else {
-            Path temp = Files.createTempFile(multipartFile.getOriginalFilename(), ".csv");
-            file = new File(temp.toUri());
-        }
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(multipartFile.getBytes());
-        fos.close();
-        LinkedList<ClassCourse> classCourses = load(file);
-        return classCourses;
-    }
-
-    private static void extract(CSVReader csvReader, List<ClassCourse> classCourses) throws IOException, CsvValidationException {
+    @Override
+    protected void extract(@NotNull CSVReader csvReader, @NotNull List<ClassCourse> classCourses) throws IOException, CsvValidationException {
         csvReader.readNext();
         String[] nextRecord;
 
@@ -170,6 +116,7 @@ public final class ClassCourseLoaderService {
         }
     }
 
+    @NotNull
     public static File export(List<ClassCourse> classCourses) throws IOException {
         try {
             Path temp = Files.createTempFile("tempExportedClasses", ".csv");
@@ -182,10 +129,10 @@ public final class ClassCourseLoaderService {
                 }
 
             }
-            LogService.getInstance().info("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::File created in:" + myObj.getAbsolutePath());
+            LogService.getInstance().info("File created in:" + myObj.getAbsolutePath());
             return myObj;
         } catch (IOException e) {
-            LogService.getInstance().info("CONTROLLERS::CLASSCOURSELOADERSERVICE::EXPORT::An error occurred.");
+            LogService.getInstance().error("An error occurred.");
             e.printStackTrace();
             throw e;
         }
