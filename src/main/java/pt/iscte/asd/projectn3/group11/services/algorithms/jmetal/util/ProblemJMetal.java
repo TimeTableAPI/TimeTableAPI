@@ -59,8 +59,8 @@ public class ProblemJMetal extends AbstractIntegerProblem {
     @Override
     public IntegerSolution evaluate(IntegerSolution integerSolution) {
 
-        LinkedList<ClassCourse> solutionClassCourses = solutionToTimetable(integerSolution, this.classes, this.classrooms);
-        Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
+        final LinkedList<ClassCourse> solutionClassCourses = solutionToTimetable(integerSolution, this.classes, this.classrooms);
+        final Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
         int itr = 0;
         for (IMetricCalculator metricCalculator : TimetableEvaluationService.METRICSLIST) {
             for(Map.Entry<String, Float> entry: stringFloatHashtable.entrySet()){
