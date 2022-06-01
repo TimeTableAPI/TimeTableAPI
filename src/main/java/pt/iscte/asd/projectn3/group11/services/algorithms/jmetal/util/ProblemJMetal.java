@@ -3,6 +3,7 @@ package pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util;
 
 import org.jetbrains.annotations.NotNull;
 import org.uma.jmetal.problem.integerproblem.impl.AbstractIntegerProblem;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
@@ -17,6 +18,7 @@ public class ProblemJMetal extends AbstractIntegerProblem {
 
     private final List<ClassCourse> classes;
     private final List<Classroom> classrooms;
+    private final List<IMetricCalculator> metricList;
 
     public ProblemJMetal(
             @NotNull List<IMetricCalculator> metricList,
@@ -24,6 +26,7 @@ public class ProblemJMetal extends AbstractIntegerProblem {
             @NotNull List<Classroom> classrooms) {
         this.classes = classes;
         this.classrooms = classrooms;
+        this.metricList = metricList;
         setName("Jmetal");
         setNumberOfVariables(classes.size());
         setNumberOfObjectives(metricList.size());
@@ -37,13 +40,22 @@ public class ProblemJMetal extends AbstractIntegerProblem {
         setVariableBounds(lowerBounds,upperBounds);
     }
 
-    private static LinkedList<ClassCourse> solutionToTimetable(IntegerSolution solution, List<ClassCourse> inputClasses, List<Classroom> classrooms) {
+    public LinkedList<ClassCourse> solutionToTimetable(
+            IntegerSolution solution
+            //List<ClassCourse> inputClasses,
+            //List<Classroom> classrooms
+    ) {
+        List<Integer> variables = solution.variables();
+        return solutionToTimetable(variables);
+
+    }
+
+    private LinkedList<ClassCourse> solutionToTimetable(List<Integer> variables){
         LinkedList<ClassCourse> classCourses = new LinkedList<>();
-        List<Integer> doubles = solution.variables();
-        for(int i = 0; i < doubles.size(); i++) {
+        for(int i = 0; i < variables.size(); i++) {
             try {
-                ClassCourse classCourse = inputClasses.get(i);
-                Classroom classroom = classrooms.get(doubles.get(i));
+                ClassCourse classCourse = this.classes.get(i);
+                Classroom classroom = classrooms.get(variables.get(i));
                 classCourse.setClassroom(classroom);
                 classCourses.add(classCourse);
             }catch(Exception e) {
@@ -53,13 +65,21 @@ public class ProblemJMetal extends AbstractIntegerProblem {
             }
         }
         return classCourses;
+
     }
 
 
     @Override
+    public IntegerSolution createSolution() {
+        LogService.getInstance().debug("created new solution");
+        return new JMetalSolution(this.metricList,this.classes,this.classrooms);
+
+    }
+
+    @Override
     public IntegerSolution evaluate(IntegerSolution integerSolution) {
 
-        final LinkedList<ClassCourse> solutionClassCourses = solutionToTimetable(integerSolution, this.classes, this.classrooms);
+        final LinkedList<ClassCourse> solutionClassCourses = this.solutionToTimetable(integerSolution);
         final Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
         int itr = 0;
         for (IMetricCalculator metricCalculator : TimetableEvaluationService.METRICSLIST) {

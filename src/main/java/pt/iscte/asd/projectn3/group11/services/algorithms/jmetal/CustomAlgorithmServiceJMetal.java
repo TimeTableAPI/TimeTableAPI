@@ -22,55 +22,72 @@ import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.ProblemJMe
 import java.util.List;
 
 public final class CustomAlgorithmServiceJMetal extends AbstractAlgorithmRunner implements IAlgorithmService {
+    private final String algorithmName = "jmetal";
+    private final int maxEvaluation = 3;
+    private final int populationSize = 10;
+    private boolean isRunning;
+    private double progress;
+    private Algorithm<List<IntegerSolution>> algorithm;
+    private AlgorithmRunner algorithmRunner;
+
 
     @Override
-    public void execute(List<ClassCourse> classes, List<Classroom> classrooms) {
-        final ProblemJMetal problem = new ProblemJMetal(TimetableEvaluationService.METRICSLIST, classes, classrooms);
-        Algorithm<List<IntegerSolution>> algorithm;
-        CrossoverOperator<IntegerSolution> crossover;
-        MutationOperator<IntegerSolution> mutation;
-        SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
+    public void execute(List<ClassCourse> inputClasses, List<Classroom> classrooms) {
+        try{
+            LogService.getInstance().info(this.algorithmName + "::EXECUTE");
+            this.isRunning = true;
+            final ProblemJMetal problem = new ProblemJMetal(TimetableEvaluationService.METRICSLIST, inputClasses, classrooms);
+
+            CrossoverOperator<IntegerSolution> crossover;
+            MutationOperator<IntegerSolution> mutation;
+            SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
+
+            double crossoverProbability = 0.9;
+            double crossoverDistributionIndex = 20.0;
+            crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
+
+            double mutationProbability = 1.0 / problem.getNumberOfVariables();
+            double mutationDistributionIndex = 20.0;
+            mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
+            selection = new BinaryTournamentSelection<IntegerSolution>();
+
+            algorithm = new NSGAIIBuilder<IntegerSolution>(problem, crossover, mutation, populationSize)
+                    .setSelectionOperator(selection)
+                    .setMaxEvaluations(maxEvaluation)
+                    .build();
 
 
-        double crossoverProbability = 0.9;
-        double crossoverDistributionIndex = 20.0;
-        crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
+            algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
+            List<IntegerSolution> finalSolutions = algorithm.getResult();
 
-        double mutationProbability = 1.0 / problem.getNumberOfVariables();
-        double mutationDistributionIndex = 20.0;
-        mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
+            printFinalSolutionSet(finalSolutions);
+            //printQualityIndicators(finalSolutions, "");
+            LogService.getInstance().debug("Total execution time: " + algorithmRunner.getComputingTime() + "ms");
+            inputClasses =problem.solutionToTimetable( finalSolutions.get(0));
 
-        selection = new BinaryTournamentSelection<IntegerSolution>();
-
-        int populationSize = 100;
-        algorithm =new NSGAIIBuilder<IntegerSolution>(problem, crossover, mutation, populationSize)
-                        .setSelectionOperator(selection)
-                        .setMaxEvaluations(25000)
-                        .build() ;
-
-
-        final AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
-        List<IntegerSolution> finalSolutions= algorithm.getResult();
-
-        printFinalSolutionSet(finalSolutions);
-        printQualityIndicators(finalSolutions, "") ;
-        LogService.getInstance().debug("Total execution time: " + algorithmRunner.getComputingTime() + "ms");
-
+        }finally
+        {
+            this.isRunning = false;
+            LogService.getInstance().info("Finished " + algorithmName);
+        }
     }
 
     @Override
     public boolean isRunning() {
-        return false;
+        return this.isRunning;
     }
 
     @Override
     public double getProgress() {
-        return 0;
+        final double computingTime = (double) this.algorithmRunner.getComputingTime();
+        LogService.getInstance().info("Progress: " + computingTime);
+
+        return computingTime;
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.algorithmName;
     }
 
     @Override

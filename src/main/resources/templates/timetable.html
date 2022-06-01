@@ -22,7 +22,7 @@
         let data = await response.json();
         var e = document.getElementById('algorithmProgressBar');
         e.setAttribute("value",data);
-        console.log(data);
+        console.log("algorithm progress: " + data);
         return data;
     }
     var getClassRooms = setInterval(getTest , 1000);
