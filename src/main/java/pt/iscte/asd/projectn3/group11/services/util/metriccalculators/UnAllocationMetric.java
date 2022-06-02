@@ -11,7 +11,7 @@ import java.util.List;
 public final class UnAllocationMetric implements IMetricCalculator {
 	private static final float OBJECTIVE = 0f;
 	/**
-	 * <p> The <b>bigger</b> the result the better.</p>
+	 * <p> The <b>smaller</b> the result the better.</p>
 	 * @param classCourseList List<ClassCourse>
 	 * @param classroomsList List<Classroom>
 	 *

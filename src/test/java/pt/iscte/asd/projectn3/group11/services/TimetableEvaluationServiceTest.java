@@ -37,20 +37,20 @@ class TimetableEvaluationServiceTest {
 		@Test
 	void AllocationMetricTest(){
 		String metricName= UnAllocationMetric.class.getSimpleName();
-		assertEquals((classCoursesTestList.size()-1f)/classCoursesTestList.size(),metricResultListTimetable.get(metricName));
+		assertEquals((float)1, metricResultListTimetable.get(metricName));
 	}
 
 	@Test
 	void GoodCharacteristicsMetricTest(){
 		String metricName= GoodCharacteristicsMetric.class.getSimpleName();
-			assertEquals(4f/classCoursesTestList.size(),
+			assertEquals(12.0,
 					(float)Math.round(metricResultListTimetable.get(metricName)*100)/100);
 	}
 
 	@Test
 	void EnoughCapacityMetricTest(){
 		String metricName= UnderCapacityMetric.class.getSimpleName();
-		assertEquals(12f/classCoursesTestList.size(),
+		assertEquals((float)4.0,
 				metricResultListTimetable.get(metricName));
 	}
 
