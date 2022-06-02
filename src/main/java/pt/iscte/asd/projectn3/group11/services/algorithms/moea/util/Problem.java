@@ -20,6 +20,7 @@ public final class Problem extends AbstractProblem {
         super(numberOfVariables, numberOfObjectives);
         this.classCourses = classes;
         this.classrooms = classrooms;
+
     }
 
     @Override

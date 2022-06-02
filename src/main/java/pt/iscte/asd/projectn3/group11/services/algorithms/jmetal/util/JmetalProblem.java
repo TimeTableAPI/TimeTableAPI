@@ -2,10 +2,13 @@ package pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util;
 
 
 import org.jetbrains.annotations.NotNull;
-import org.uma.jmetal.problem.integerproblem.impl.AbstractIntegerProblem;
-import org.uma.jmetal.solution.integersolution.IntegerSolution;
+import org.uma.jmetal.problem.AbstractGenericProblem;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.models.TimeSlot;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
+import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
+import pt.iscte.asd.projectn3.group11.models.util.Tuple;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
@@ -13,48 +16,83 @@ import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCal
 import java.util.*;
 
 
-public class Problem extends AbstractIntegerProblem {
+public class JmetalProblem extends AbstractGenericProblem<JmetalSolution> {
 
     private final List<ClassCourse> classes;
     private final List<Classroom> classrooms;
+    private final List<TimeSlot> timeSlots;
     private final List<IMetricCalculator> metricList;
 
-    public Problem(
+    private final Date startDate;
+    private final Date endDate;
+
+    public JmetalProblem(
             @NotNull List<IMetricCalculator> metricList,
             @NotNull List<ClassCourse> classes,
-            @NotNull List<Classroom> classrooms) {
+            @NotNull List<Classroom> classrooms,
+            @NotNull Date startDate,
+            @NotNull Date endDate
+    ) {
         this.classes = classes;
         this.classrooms = classrooms;
         this.metricList = metricList;
+        this.startDate = startDate;
+        this.endDate = endDate;
+
+        this.timeSlots = createTimeSlots(startDate,endDate);
+
         setName("Jmetal");
         setNumberOfVariables(classes.size());
         setNumberOfObjectives(metricList.size());
         setNumberOfConstraints(0);
-        List<Integer> lowerBounds = new ArrayList<>();
-        List<Integer> upperBounds = new ArrayList<>();
-        for(int i = 0 ;i<classes.size();i++){
-            lowerBounds.add(0);
-            upperBounds.add(classes.size());
-        }
+        /*
+         List<Integer> lowerBounds = new ArrayList<>();
+         List<Integer> upperBounds = new ArrayList<>();
+         for(int i = 0 ; i<classes.size(); i++){
+             lowerBounds.add(0);
+             upperBounds.add(classes.size());
+         }
         setVariableBounds(lowerBounds,upperBounds);
+        */
+    }
+
+    private List<TimeSlot> createTimeSlots(Date startDate,Date endDate) {
+        List<TimeSlot> slots = new ArrayList<>();
+        for(int year = startDate.getYear(); year <= endDate.getYear(); year++){
+            for (int month = startDate.getMonth(); month <= endDate.getMonth() ; month++) {
+                for (int day = startDate.getDay(); day <= endDate.getDay() ; day++){
+                    for (TimeShift timeShift : TimeShift.values()) {
+                        if(timeShift != TimeShift.NOTHING) {
+                            slots.add(new TimeSlot(timeShift, new Date(day,month,year)));
+                        }
+                    }
+                }
+            }
+        }
+        LogService.getInstance().info(slots);
+        return slots;
     }
 
     public LinkedList<ClassCourse> solutionToTimetable(
-            IntegerSolution solution
+            JmetalSolution solution
             //List<ClassCourse> inputClasses,
             //List<Classroom> classrooms
     ) {
-        List<Integer> variables = solution.variables();
+        List<Tuple<Integer, Integer>> variables = solution.variables();
         return solutionToTimetable(variables);
 
     }
 
-    private LinkedList<ClassCourse> solutionToTimetable(List<Integer> variables){
+    private LinkedList<ClassCourse> solutionToTimetable(List<Tuple<Integer, Integer>> variables){
         LinkedList<ClassCourse> classCourses = new LinkedList<>();
         for(int i = 0; i < variables.size(); i++) {
             try {
+                final TimeSlot timeSlot = this.timeSlots.get(variables.get(i).y);
                 ClassCourse classCourse = this.classes.get(i);
-                Classroom classroom = classrooms.get(variables.get(i));
+                classCourse.setDate(timeSlot.getDate());
+                classCourse.setBeginningHour(timeSlot.getTimeShift());
+                classCourse.setEndHour(timeSlot.getTimeShift());
+                Classroom classroom = classrooms.get(variables.get(i).x);
                 classCourse.setClassroom(classroom);
                 classCourses.add(classCourse);
             }catch(Exception e) {
@@ -69,14 +107,14 @@ public class Problem extends AbstractIntegerProblem {
 
 
     @Override
-    public IntegerSolution createSolution() {
+    public JmetalSolution createSolution() {
         LogService.getInstance().debug("created new solution");
-        return new Solution(this.metricList,this.classes,this.classrooms);
+        return new JmetalSolution(this.metricList,this.classes,this.classrooms,this.timeSlots);
 
     }
 
     @Override
-    public IntegerSolution evaluate(IntegerSolution integerSolution) {
+    public JmetalSolution evaluate(JmetalSolution integerSolution) {
 
         final LinkedList<ClassCourse> solutionClassCourses = this.solutionToTimetable(integerSolution);
         final Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
@@ -101,4 +139,5 @@ public class Problem extends AbstractIntegerProblem {
 
         return integerSolution;
     }
+
 }

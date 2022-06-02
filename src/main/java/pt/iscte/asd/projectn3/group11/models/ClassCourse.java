@@ -64,9 +64,9 @@ public final class ClassCourse {
     private final int shiftsWithFreeSpots;
     private final int shiftsWithMoreThanTheCapacity;
     private final String weekday;
-    private final TimeShift beginningHour;
-    private final TimeShift endHour;
-    private final Date date;
+    private TimeShift beginningHour;
+    private TimeShift endHour;
+    private Date date;
     private final LinkedList<String> askedCharacteristics;
     private final LinkedList<String> classesOfCourse;
     private int capacity;
@@ -414,6 +414,30 @@ public final class ClassCourse {
         this.classroom = classroom;
         capacity = classroom.getNormalCapacity();
         realCharacteristics = (LinkedList<String>) classroom.getCharacteristicsToString();
+    }
+
+    /**
+     * <p>Sets the date.</p>
+     * <p>@param date to set</p>
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    /**
+     * <p>Sets the beginningHour.</p>
+     * <p>@param beginningHour to set</p>
+     */
+    public void setBeginningHour(TimeShift beginningHour) {
+        this.beginningHour = beginningHour;
+    }
+
+    /**
+     * <p>Sets the endHour.</p>
+     * <p>@param endHour to set</p>
+     */
+    public void setEndHour(TimeShift endHour) {
+        this.endHour = endHour;
     }
 
     //endregion

@@ -5,20 +5,22 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.example.AlgorithmRunner;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
-import org.uma.jmetal.operator.crossover.impl.IntegerSBXCrossover;
 import org.uma.jmetal.operator.mutation.MutationOperator;
-import org.uma.jmetal.operator.mutation.impl.IntegerPolynomialMutation;
 import org.uma.jmetal.operator.selection.SelectionOperator;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
-import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
+import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.Problem;
+import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.JmetalCrossOver;
+import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.JmetalMutation;
+import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.JmetalSolution;
+import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.JmetalProblem;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public final class CustomAlgorithmServiceJMetal extends AbstractAlgorithmRunner implements IAlgorithmService {
@@ -27,7 +29,7 @@ public final class CustomAlgorithmServiceJMetal extends AbstractAlgorithmRunner 
     private final int populationSize = 10;
     private boolean isRunning;
     private double progress;
-    private Algorithm<List<IntegerSolution>> algorithm;
+    private Algorithm<List<JmetalSolution>> algorithm;
     private AlgorithmRunner algorithmRunner;
 
 
@@ -36,29 +38,34 @@ public final class CustomAlgorithmServiceJMetal extends AbstractAlgorithmRunner 
         try{
             LogService.getInstance().info(this.algorithmName + "::EXECUTE");
             this.isRunning = true;
-            final Problem problem = new Problem(TimetableEvaluationService.METRICSLIST, inputClasses, classrooms);
+            final JmetalProblem problem = new JmetalProblem(TimetableEvaluationService.METRICSLIST,
+                    inputClasses,
+                    classrooms,
+                    new Date(1,7, LocalDateTime.now().getYear()),
+                    new Date(1,6, LocalDateTime.now().getYear()+1)
+            );
 
-            CrossoverOperator<IntegerSolution> crossover;
-            MutationOperator<IntegerSolution> mutation;
-            SelectionOperator<List<IntegerSolution>, IntegerSolution> selection;
+            CrossoverOperator<JmetalSolution> crossover;
+            MutationOperator<JmetalSolution> mutation;
+            SelectionOperator<List<JmetalSolution>, JmetalSolution> selection;
 
             double crossoverProbability = 0.9;
             double crossoverDistributionIndex = 20.0;
-            crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
+            crossover = new JmetalCrossOver(crossoverProbability);
 
             double mutationProbability = 1.0 / problem.getNumberOfVariables();
             double mutationDistributionIndex = 20.0;
-            mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
-            selection = new BinaryTournamentSelection<IntegerSolution>();
+            mutation = new JmetalMutation(mutationProbability);
+            selection = new BinaryTournamentSelection<>();
 
-            algorithm = new NSGAIIBuilder<IntegerSolution>(problem, crossover, mutation, populationSize)
+            algorithm = new NSGAIIBuilder<JmetalSolution>(problem, crossover, mutation, populationSize)
                     .setSelectionOperator(selection)
                     .setMaxEvaluations(maxEvaluation)
                     .build();
 
 
             algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
-            List<IntegerSolution> finalSolutions = algorithm.getResult();
+            List<JmetalSolution> finalSolutions = algorithm.getResult();
 
             printFinalSolutionSet(finalSolutions);
             //printQualityIndicators(finalSolutions, "");
