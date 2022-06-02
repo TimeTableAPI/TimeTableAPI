@@ -35,7 +35,7 @@ public final class ClassCourseController {
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
         model.addAttribute("timetable", getClassesHandler(response, request));
         final List<MetricResult> metricResultsHandler = getMetricResultsHandler(response, request);
-        LogService.getInstance().debug("" + metricResultsHandler);
+        LogService.getInstance().info("Metrics: " + metricResultsHandler);
         model.addAttribute("metrics", metricResultsHandler);
         return "timetable";
     }

@@ -58,18 +58,30 @@ public class JmetalProblem extends AbstractGenericProblem<JmetalSolution> {
 
     private List<TimeSlot> createTimeSlots(Date startDate,Date endDate) {
         List<TimeSlot> slots = new ArrayList<>();
-        for(int year = startDate.getYear(); year <= endDate.getYear(); year++){
+        final int dateComparison = startDate.compareTo(endDate);
+        assert dateComparison > 0;
+        Date currentDate = new Date(startDate.getDay(),startDate.getMonth(),startDate.getYear());
+        while(currentDate.compareTo(endDate) > 0){
+            final TimeShift[] values = TimeShift.values();
+            for (TimeShift timeShift : TimeShift.values()) {
+                if(timeShift != TimeShift.NOTHING) {
+                    slots.add(new TimeSlot(timeShift, currentDate));
+                }
+            }
+            currentDate = currentDate.plus(1);
+        }
+        /*for(int year = startDate.getYear(); year <= endDate.getYear(); year++){
             for (int month = startDate.getMonth(); month <= endDate.getMonth() ; month++) {
                 for (int day = startDate.getDay(); day <= endDate.getDay() ; day++){
                     for (TimeShift timeShift : TimeShift.values()) {
                         if(timeShift != TimeShift.NOTHING) {
-                            slots.add(new TimeSlot(timeShift, new Date(day,month,year)));
+                            slots.add(new TimeSlot(timeShift, currentDate));
                         }
                     }
+
                 }
             }
-        }
-        LogService.getInstance().info(slots);
+        }*/
         return slots;
     }
 
@@ -108,36 +120,34 @@ public class JmetalProblem extends AbstractGenericProblem<JmetalSolution> {
 
     @Override
     public JmetalSolution createSolution() {
-        LogService.getInstance().debug("created new solution");
+        LogService.getInstance().info("created new solution");
         return new JmetalSolution(this.metricList,this.classes,this.classrooms,this.timeSlots);
 
     }
 
     @Override
-    public JmetalSolution evaluate(JmetalSolution integerSolution) {
+    public JmetalSolution evaluate(JmetalSolution solution) {
 
-        final LinkedList<ClassCourse> solutionClassCourses = this.solutionToTimetable(integerSolution);
+        final LinkedList<ClassCourse> solutionClassCourses = this.solutionToTimetable(solution);
         final Hashtable<String, Float> stringFloatHashtable = TimetableEvaluationService.evaluateTimetable(solutionClassCourses, this.classrooms);
         int itr = 0;
         for (IMetricCalculator metricCalculator : TimetableEvaluationService.METRICSLIST) {
             for(Map.Entry<String, Float> entry: stringFloatHashtable.entrySet()){
                 if (metricCalculator.getClass().getSimpleName().equals(entry.getKey())){
-                    integerSolution.objectives()[itr] = entry.getValue();
+                    solution.objectives()[itr] = entry.getValue();
                     itr++;
                     break;
                 }
             }
         }
-        LogService.getInstance().debug(Arrays.toString(integerSolution.objectives()));
-
         /*
         ArrayList<Double> objectivesDoubleList = new ArrayList<>();
         stringFloatHashtable.values().forEach(aFloat -> objectivesDoubleList.add((double)aFloat));
         double[] arr = objectivesDoubleList.stream().mapToDouble(Double::doubleValue).toArray();
-        integerSolution.objectives()[0] = 1;
+        solution.objectives()[0] = 1;
         */
 
-        return integerSolution;
+        return solution;
     }
 
 }

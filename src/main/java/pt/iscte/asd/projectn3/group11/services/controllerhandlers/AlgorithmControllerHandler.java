@@ -108,6 +108,7 @@ public final class AlgorithmControllerHandler {
             Thread computingThread = new Thread(() -> {
                 context.computeSolutionWithAlgorithm();
                 context.calculateMetrics();
+                LogService.getInstance().info("Metric results: " + context.getMetricResults());
             });
             computingThread.start();
 

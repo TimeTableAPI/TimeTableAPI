@@ -44,8 +44,9 @@ public final class BasicAlgorithmService implements IAlgorithmService {
                     ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
                 }
                 this.progress = i/quanityOfClassCourses;
-                LogService.getInstance().info("BASIC_ALGORITHM::PROGRESS" + this.progress);
-
+                if(progress % 0.1 == 0) {
+                    LogService.getInstance().info("BASIC_ALGORITHM::PROGRESS" + this.progress);
+                }
             }
         }
         finally
