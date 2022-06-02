@@ -35,7 +35,6 @@ public class JmetalCrossOver implements CrossoverOperator<JmetalSolution> {
 
 		JmetalSolution girl = mom.copy();
 		JmetalSolution boy = dad.copy();
-		boolean swap = false;
 
 		for (int i = 0; i < mom.variables().size(); i++) {
 			if (Math.random()<crossoverProbability) {

@@ -36,7 +36,7 @@ public final class BasicAlgorithmService implements IAlgorithmService {
 
             TreeMap<Date, EnumMap<TimeShift, HashSet<ClassCourse>>> classCoursedateMap = ClassroomService.organizeClassCourseByDate(classCourses);
             TreeMap<Date, EnumMap<TimeShift, HashSet<Classroom>>> classRoomAvailabilityMap = ClassroomService.organizeClassroomByDate(classCoursedateMap, classrooms);
-
+            double lastPrint = 0.0;
             for (int i = 0; i < quanityOfClassCourses && this.canRun; i++) {
                 ClassCourse classCourse = classCourses.get(i);
                 final boolean hasClassRoomAllocated = classCourse.hasClassRoomAllocated();
@@ -44,8 +44,9 @@ public final class BasicAlgorithmService implements IAlgorithmService {
                     ClassroomService.allocate(classCourse, classrooms, classRoomAvailabilityMap, 0.5F);
                 }
                 this.progress = i/quanityOfClassCourses;
-                if(progress % 0.1 == 0) {
-                    LogService.getInstance().info("BASIC_ALGORITHM::PROGRESS" + this.progress);
+                if(progress > lastPrint) {
+                    LogService.getInstance().info("BASIC_ALGORITHM::PROGRESS: " + this.progress);
+                    lastPrint = progress + 0.1;
                 }
             }
         }
