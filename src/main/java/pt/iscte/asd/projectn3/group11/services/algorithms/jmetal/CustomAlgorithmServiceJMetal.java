@@ -25,8 +25,8 @@ import java.util.List;
 
 public final class CustomAlgorithmServiceJMetal extends AbstractAlgorithmRunner implements IAlgorithmService {
     private final String algorithmName = "jmetal";
-    private final int maxEvaluation = 3;
-    private final int populationSize = 10;
+    private final int maxEvaluation = 10;
+    private final int populationSize = 20;
     private boolean isRunning;
     private double progress;
     private Algorithm<List<JmetalSolution>> algorithm;
