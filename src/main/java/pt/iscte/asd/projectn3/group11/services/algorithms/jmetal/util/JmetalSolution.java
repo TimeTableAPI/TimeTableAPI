@@ -14,10 +14,10 @@ import java.util.Map;
 
 public class JmetalSolution implements org.uma.jmetal.solution.Solution<Tuple<Integer,Integer>> {
 
-	private final List<ClassCourse> classes;
-	private final List<Classroom> classrooms;
-	private final List<IMetricCalculator> metricList;
-	private final  List<TimeSlot> timeSlotsList;
+	public final List<ClassCourse> classes;
+	public final List<Classroom> classrooms;
+	public final List<IMetricCalculator> metricList;
+	public final  List<TimeSlot> timeSlotsList;
 	private List<Tuple<Integer,Integer>> variables;
 	private double[] objectives;
 	private double[] constraints;

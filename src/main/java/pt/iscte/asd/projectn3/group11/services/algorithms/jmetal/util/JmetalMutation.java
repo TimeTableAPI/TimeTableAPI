@@ -17,20 +17,21 @@ public class JmetalMutation implements MutationOperator<JmetalSolution> {
 
 	@Override
 	public JmetalSolution execute(JmetalSolution jmetalSolution) {
-		for (int i = 0; i < jmetalSolution.variables().size(); i++) {
+		JmetalSolution newSolution = new JmetalSolution(jmetalSolution.metricList,jmetalSolution.classes,jmetalSolution.classrooms,jmetalSolution.timeSlotsList);
+		for (int i = 0; i < newSolution.variables().size(); i++) {
 			if (Math.random() <= this.mutationProbability) {
-				final int lowerBoundClassRoom = jmetalSolution.getLowerBoundClassrooms();
-				final int upperBoundClassRoom = jmetalSolution.getHigherBoundClassrooms();
+				final int lowerBoundClassRoom = newSolution.getLowerBoundClassrooms();
+				final int upperBoundClassRoom = newSolution.getHigherBoundClassrooms();
 				final int valueClassRooms = (int) (lowerBoundClassRoom + ((upperBoundClassRoom - lowerBoundClassRoom) * Math.random()));
 
-				final int lowerBoundTime = jmetalSolution.getLowerBoundTime();
-				final int upperBoundTime = jmetalSolution.getHigherBoundTime();
+				final int lowerBoundTime = newSolution.getLowerBoundTime();
+				final int upperBoundTime = newSolution.getHigherBoundTime();
 				final int valueTime = (int) (lowerBoundTime + ((upperBoundTime - lowerBoundTime) * Math.random()));
 
-				jmetalSolution.variables().set(i, new Tuple<>(valueClassRooms, valueTime));
+				newSolution.variables().set(i, new Tuple<>(valueClassRooms, valueTime));
 			}
 		}
 
-		return null;
+		return newSolution;
 	}
 }

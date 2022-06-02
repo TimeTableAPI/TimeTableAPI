@@ -47,7 +47,5 @@ public class JmetalCrossOver implements CrossoverOperator<JmetalSolution> {
 		result.add(girl);
 		result.add(boy);
 		return result;
-
-
 	}
 }
