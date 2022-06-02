@@ -33,7 +33,9 @@ public final class ClassCourseLoaderService extends LoaderService<ClassCourse> {
     }
 
     @Override
-    protected void extract(@NotNull CSVReader csvReader, @NotNull List<ClassCourse> classCourses) throws IOException, CsvValidationException {
+    protected void extract(@NotNull CSVReader csvReader,
+                           @NotNull List<ClassCourse> classCourses)
+            throws IOException, CsvValidationException {
         csvReader.readNext();
         String[] nextRecord;
 

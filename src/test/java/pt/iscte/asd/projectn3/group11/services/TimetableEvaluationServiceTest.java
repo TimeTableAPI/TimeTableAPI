@@ -9,7 +9,6 @@ import pt.iscte.asd.projectn3.group11.services.loaders.ClassroomLoaderService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.*;
 
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,21 +36,21 @@ class TimetableEvaluationServiceTest {
 
 		@Test
 	void AllocationMetricTest(){
-		String metricName= AllocationMetric.class.getSimpleName();
-		assertEquals((classCoursesTestList.size()-1f)/classCoursesTestList.size(),metricResultListTimetable.get(metricName));
+		String metricName= UnAllocationMetric.class.getSimpleName();
+		assertEquals((float)1, metricResultListTimetable.get(metricName));
 	}
 
 	@Test
 	void GoodCharacteristicsMetricTest(){
-		String metricName= GoodCharacteristicsMetric.class.getSimpleName();
-			assertEquals(4f/classCoursesTestList.size(),
+		String metricName= MissingCharacteristicsMetric.class.getSimpleName();
+			assertEquals(12.0,
 					(float)Math.round(metricResultListTimetable.get(metricName)*100)/100);
 	}
 
 	@Test
 	void EnoughCapacityMetricTest(){
-		String metricName=EnoughCapacityMetric.class.getSimpleName();
-		assertEquals(12f/classCoursesTestList.size(),
+		String metricName= UnderCapacityMetric.class.getSimpleName();
+		assertEquals((float)4.0,
 				metricResultListTimetable.get(metricName));
 	}
 

@@ -21,7 +21,8 @@ public final class IndexController {
      */
     @GetMapping(value = "/")
     public String index(Model model) {
-        model.addAttribute("teamMembers", new String[]{"Afonso Costa Vale", "João ALmeida", "Saroj Duwadi"});
+        model.addAttribute("teamMembers", new String[]{"Afonso Costa Vale", "João ALmeida"});
+        //model.addAttribute("teamMembers", new String[]{"Afonso Costa Vale", "João ALmeida", "Saroj Duwadi"});
         return "index";
     }
     //endregion

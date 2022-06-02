@@ -1,14 +1,14 @@
-package pt.iscte.asd.projectn3.group11.services.algorithms;
+package pt.iscte.asd.projectn3.group11.services.algorithms.moea;
 
 import org.moeaframework.util.progress.ProgressEvent;
 import org.moeaframework.util.progress.ProgressListener;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 
-public final class CustomProgressListener implements ProgressListener {
+public final class CustomProgressListenerMoea implements ProgressListener {
 
-	private final CustomAlgorithmService algorithmService;
+	private final CustomAlgorithmServiceMoea algorithmService;
 
-	public CustomProgressListener(CustomAlgorithmService algorithmService) {
+	public CustomProgressListenerMoea(CustomAlgorithmServiceMoea algorithmService) {
 		this.algorithmService = algorithmService;
 	}
 

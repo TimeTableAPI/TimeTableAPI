@@ -82,6 +82,7 @@ public final class AlgorithmControllerHandler {
         if (sessionServiceInstance.containsSession(uuid)) {
             Context context = sessionServiceInstance.getContext(uuid);
             context.changeAlgorithm(newAlgorithmName);
+            LogService.getInstance().info("Set algorithm: " + newAlgorithmName);
             result = ResponseEntity.ok().build();
         } else {
             result = ResponseEntity.noContent().build();
@@ -107,6 +108,7 @@ public final class AlgorithmControllerHandler {
             Thread computingThread = new Thread(() -> {
                 context.computeSolutionWithAlgorithm();
                 context.calculateMetrics();
+                LogService.getInstance().info("Metric results: " + context.getMetricResults());
             });
             computingThread.start();
 

@@ -1,4 +1,4 @@
-package pt.iscte.asd.projectn3.group11.services.algorithms.util;
+package pt.iscte.asd.projectn3.group11.services.algorithms.moea.util;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -20,6 +20,7 @@ public final class Problem extends AbstractProblem {
         super(numberOfVariables, numberOfObjectives);
         this.classCourses = classes;
         this.classrooms = classrooms;
+
     }
 
     @Override

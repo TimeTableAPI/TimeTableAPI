@@ -3,7 +3,7 @@ package pt.iscte.asd.projectn3.group11.services;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Marker;
 
-public class LogService {
+public final class LogService {
 
     private static LogService INSTANCE = null;
 
@@ -37,5 +37,10 @@ public class LogService {
     public void trace(String log)
     {
         LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).trace(log);
+    }
+
+    public void debug(String log)
+    {
+        LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName()).debug(log);
     }
 }

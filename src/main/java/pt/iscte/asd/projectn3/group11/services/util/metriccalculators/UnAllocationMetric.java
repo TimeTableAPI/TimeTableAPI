@@ -8,24 +8,24 @@ import java.util.List;
 /**
  * <p>Metric to evaluate the quantity of classes with assigned Classrooms.</p>
  */
-public final class AllocationMetric implements IMetricCalculator {
-	private static final float OBJECTIVE = 1f;
+public final class UnAllocationMetric implements IMetricCalculator {
+	private static final float OBJECTIVE = 0f;
 	/**
-	 * <p> The <b>bigger</b> the result the better.</p>
+	 * <p> The <b>smaller</b> the result the better.</p>
 	 * @param classCourseList List<ClassCourse>
 	 * @param classroomsList List<Classroom>
 	 *
-	 * @return a float value between 0 and 1, which represents the percentage of classes with assigned classroom from the algorithm.
+	 * @return a float value representing quantity of classes withOUT an assigned classroom.
 	 * */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
 		float counter = 0f;
 		for(ClassCourse classCourse : classCourseList){
-			if(classCourse.hasClassRoomAllocated()){
+			if(!classCourse.hasClassRoomAllocated()){
 				counter ++;
 			}
 		}
-		return counter / classCourseList.size();
+		return counter;
 	}
 
 	@Override

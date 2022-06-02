@@ -1,20 +1,18 @@
 package pt.iscte.asd.projectn3.group11.controllers;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import pt.iscte.asd.projectn3.group11.models.MetricResult;
+import pt.iscte.asd.projectn3.group11.services.LogService;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
-import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getMetricResultsHandler;
 import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getClassesHandler;
+import static pt.iscte.asd.projectn3.group11.services.controllerhandlers.ClassCourseControllerHandler.getMetricResultsHandler;
 
 @Controller
 @ApiIgnore
@@ -36,7 +34,9 @@ public final class ClassCourseController {
     @GetMapping(value = ClassCourseController.TIMETABLE_PATH)
     public String fetchTimeTable(HttpServletResponse response, HttpServletRequest request, Model model) {
         model.addAttribute("timetable", getClassesHandler(response, request));
-        model.addAttribute("metrics", getMetricResultsHandler(response, request));
+        final List<MetricResult> metricResultsHandler = getMetricResultsHandler(response, request);
+        LogService.getInstance().info("Metrics: " + metricResultsHandler);
+        model.addAttribute("metrics", metricResultsHandler);
         return "timetable";
     }
     //endregion

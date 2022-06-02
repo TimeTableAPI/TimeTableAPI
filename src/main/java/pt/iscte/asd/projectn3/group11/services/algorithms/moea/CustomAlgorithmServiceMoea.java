@@ -1,20 +1,19 @@
-package pt.iscte.asd.projectn3.group11.services.algorithms;
+package pt.iscte.asd.projectn3.group11.services.algorithms.moea;
 
-import org.apache.logging.log4j.LogManager;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
-import org.apache.logging.log4j.Logger;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.util.Problem;
+import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
+import pt.iscte.asd.projectn3.group11.services.algorithms.moea.util.Problem;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
 
 import java.util.*;
 
-public final class CustomAlgorithmService implements IAlgorithmService {
+public final class CustomAlgorithmServiceMoea implements IAlgorithmService {
 
     private final String algorithmName;
     private final int maxEvaluation;
@@ -22,13 +21,14 @@ public final class CustomAlgorithmService implements IAlgorithmService {
     private double progress;
     private Executor executor;
 
-    private final CustomProgressListener customProgressListener;
-    public CustomAlgorithmService(String algorithmName, int maxEvaluation) {
+
+    private final CustomProgressListenerMoea customProgressListener;
+    public CustomAlgorithmServiceMoea(String algorithmName, int maxEvaluation) {
         this.algorithmName = algorithmName.trim().toUpperCase(Locale.ROOT);
         this.maxEvaluation = maxEvaluation;
         this.isRunning = false;
         this.progress = 0;
-        this.customProgressListener = new CustomProgressListener(this);
+        this.customProgressListener = new CustomProgressListenerMoea(this);
     }
 
     @Override
@@ -38,8 +38,6 @@ public final class CustomAlgorithmService implements IAlgorithmService {
         {
             LogService.getInstance().info(this.algorithmName + "::EXECUTE");
             LinkedList<ClassCourse> classes = new LinkedList<>(inputClasses);
-
-
 
             //configure and run this experiment
             Executor newExecutor = new Executor()
