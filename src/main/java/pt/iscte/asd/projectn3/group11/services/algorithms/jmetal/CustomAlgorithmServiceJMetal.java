@@ -41,7 +41,7 @@ public final class CustomAlgorithmServiceJMetal extends AbstractAlgorithmRunner 
             final JmetalProblem problem = new JmetalProblem(TimetableEvaluationService.METRICSLIST,
                     inputClasses,
                     classrooms,
-                    new Date(1,7, LocalDateTime.now().getYear()),
+                    new Date(1,9, LocalDateTime.now().getYear()),
                     new Date(1,6, LocalDateTime.now().getYear()+1)
             );
 
