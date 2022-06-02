@@ -42,7 +42,7 @@ class TimetableEvaluationServiceTest {
 
 	@Test
 	void GoodCharacteristicsMetricTest(){
-		String metricName= GoodCharacteristicsMetric.class.getSimpleName();
+		String metricName= MissingCharacteristicsMetric.class.getSimpleName();
 			assertEquals(12.0,
 					(float)Math.round(metricResultListTimetable.get(metricName)*100)/100);
 	}

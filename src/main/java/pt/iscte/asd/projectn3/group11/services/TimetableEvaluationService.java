@@ -17,7 +17,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @see ClassCourse
  * @see ClassCourse
  * @see UnAllocationMetric
- * @see GoodCharacteristicsMetric
+ * @see MissingCharacteristicsMetric
  * @see UnderCapacityMetric
  * @see RoomMovementsMetric
  * @see OverbookingMetric
@@ -30,7 +30,7 @@ public final class TimetableEvaluationService {
 
 	public static final LinkedList<IMetricCalculator> METRICSLIST = new LinkedList<IMetricCalculator>(Arrays.asList(
 			new UnAllocationMetric(),
-			new GoodCharacteristicsMetric(),
+			new MissingCharacteristicsMetric(),
 			new UnderCapacityMetric(),
 			new RoomMovementsMetric(),
 			new OverbookingMetric(),

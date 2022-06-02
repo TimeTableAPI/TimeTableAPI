@@ -15,19 +15,20 @@ import java.util.Locale;
 public final class AlgorithmService {
 	public static final String BASIC_ALGORITHM_NAME = "BASIC";
 	public static final String OWL_ALGORITHM_NAME = "OWL";
-	public static final String MOEA_ALGORITHM_NAME = "OWL";
+	public static final String MOEA_ALGORITHM_NAME = "MOEA";
 
 	public static final int NOT_USE_BASIC_FLAG = 1;  	// 001
 	public static final int USE_MOEA_FLAG = 2;  		// 010
 	public static final int USE_OWL_FLAG = 4;  			// 100
 
-	private static final int MAX_EVALUATION = 1000;
+	private static final int MAX_EVALUATION = 40;
 
 	public static IAlgorithmService generateAlgorithm(String algoName){
 		LogService.getInstance().info(algoName);
 		algoName = algoName.toLowerCase(Locale.ROOT).trim();
 
 		int flags = parse(algoName);
+		LogService.getInstance().info(flags);
 		if(flags == 0) {
 			LogService.getInstance().info("Chose Basic");
 			return new BasicAlgorithmService();
@@ -53,7 +54,7 @@ public final class AlgorithmService {
 			else {
 				if((flags & USE_MOEA_FLAG) == USE_MOEA_FLAG) {
 					LogService.getInstance().info("Chose Moea");
-					return new CustomAlgorithmServiceMoea(algoName, MAX_EVALUATION);
+					return new CustomAlgorithmServiceMoea(algoName.split("-")[1], MAX_EVALUATION);
 				}
 				else {
 					LogService.getInstance().info("Chose jmetal");
