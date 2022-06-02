@@ -8,16 +8,16 @@ import java.util.List;
 
 /**
  * <p>Metric that calculates the percentage of Characteristics fulfilled</p>
- * <p>The <b>bigger</b> the result the better.</p>
+ * <p>The <b>smaller</b> the result the better.</p>
  */
 public final class GoodCharacteristicsMetric implements IMetricCalculator {
-	private static final float OBJECTIVE =1f;
+	private static final float OBJECTIVE =0f;
 
 	/**
 	 * @param classCourseList List<ClassCourse>
 	 * @param classroomsList List<Classroom>
 	 *
-	 * @return a float between 0 and 1 representing the percentage of characteristics that were fulfilled.
+	 * @return a float number representing the quantity of characteristics that were NOT fulfilled.
 	 * */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
@@ -29,7 +29,8 @@ public final class GoodCharacteristicsMetric implements IMetricCalculator {
 				totalAskedCharacteristics += classCourse.getAskedCharacteristics().size();
 			}
 		}
-		return totalRealCharacteristics / totalAskedCharacteristics;
+		return totalAskedCharacteristics - totalRealCharacteristics;
+		//return totalRealCharacteristics / totalAskedCharacteristics;
 	}
 
 	/**

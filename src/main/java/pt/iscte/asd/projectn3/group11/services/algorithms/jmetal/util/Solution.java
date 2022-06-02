@@ -1,18 +1,16 @@
 package pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util;
 
 import org.jetbrains.annotations.NotNull;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
-import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class JMetalSolution implements IntegerSolution {
+public class Solution implements IntegerSolution {
 
 	private final List<ClassCourse> classes;
 	private final List<Classroom> classrooms;
@@ -21,7 +19,7 @@ public class JMetalSolution implements IntegerSolution {
 	private double[] objectives;
 	private double[] constraints;
 
-	public JMetalSolution(
+	public Solution(
 			@NotNull List<IMetricCalculator> metricList,
 			@NotNull List<ClassCourse> classes,
 			@NotNull List<Classroom> classrooms) {
@@ -73,7 +71,7 @@ public class JMetalSolution implements IntegerSolution {
 	}
 
 	@Override
-	public Solution<Integer> copy() {
+	public org.uma.jmetal.solution.Solution<Integer> copy() {
 		return null;
 	}
 

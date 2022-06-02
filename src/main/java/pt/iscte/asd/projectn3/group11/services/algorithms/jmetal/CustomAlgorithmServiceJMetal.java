@@ -17,7 +17,7 @@ import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.ProblemJMetal;
+import pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util.Problem;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public final class CustomAlgorithmServiceJMetal extends AbstractAlgorithmRunner 
         try{
             LogService.getInstance().info(this.algorithmName + "::EXECUTE");
             this.isRunning = true;
-            final ProblemJMetal problem = new ProblemJMetal(TimetableEvaluationService.METRICSLIST, inputClasses, classrooms);
+            final Problem problem = new Problem(TimetableEvaluationService.METRICSLIST, inputClasses, classrooms);
 
             CrossoverOperator<IntegerSolution> crossover;
             MutationOperator<IntegerSolution> mutation;

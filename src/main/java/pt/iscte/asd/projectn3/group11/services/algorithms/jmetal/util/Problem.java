@@ -3,7 +3,6 @@ package pt.iscte.asd.projectn3.group11.services.algorithms.jmetal.util;
 
 import org.jetbrains.annotations.NotNull;
 import org.uma.jmetal.problem.integerproblem.impl.AbstractIntegerProblem;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
@@ -14,13 +13,13 @@ import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCal
 import java.util.*;
 
 
-public class ProblemJMetal extends AbstractIntegerProblem {
+public class Problem extends AbstractIntegerProblem {
 
     private final List<ClassCourse> classes;
     private final List<Classroom> classrooms;
     private final List<IMetricCalculator> metricList;
 
-    public ProblemJMetal(
+    public Problem(
             @NotNull List<IMetricCalculator> metricList,
             @NotNull List<ClassCourse> classes,
             @NotNull List<Classroom> classrooms) {
@@ -72,7 +71,7 @@ public class ProblemJMetal extends AbstractIntegerProblem {
     @Override
     public IntegerSolution createSolution() {
         LogService.getInstance().debug("created new solution");
-        return new JMetalSolution(this.metricList,this.classes,this.classrooms);
+        return new Solution(this.metricList,this.classes,this.classrooms);
 
     }
 

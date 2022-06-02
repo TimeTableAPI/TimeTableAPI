@@ -1,16 +1,14 @@
 package pt.iscte.asd.projectn3.group11.services.algorithms.moea;
 
-import org.apache.logging.log4j.LogManager;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
-import org.apache.logging.log4j.Logger;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.LogService;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
 import pt.iscte.asd.projectn3.group11.services.algorithms.IAlgorithmService;
-import pt.iscte.asd.projectn3.group11.services.algorithms.moea.util.ProblemMoea;
+import pt.iscte.asd.projectn3.group11.services.algorithms.moea.util.Problem;
 import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
 
 import java.util.*;
@@ -43,7 +41,7 @@ public final class CustomAlgorithmServiceMoea implements IAlgorithmService {
 
             //configure and run this experiment
             Executor newExecutor = new Executor()
-                    .withProblemClass(ProblemMoea.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
+                    .withProblemClass(Problem.class, classes.size(), TimetableEvaluationService.METRICSLIST.size(), classes, classrooms)
                     .withAlgorithm(this.algorithmName)
                     .withMaxEvaluations(this.maxEvaluation)
                     .withProgressListener(this.customProgressListener);
@@ -67,7 +65,7 @@ public final class CustomAlgorithmServiceMoea implements IAlgorithmService {
                 ));
             }
             final Solution bestSolution = getBestSolution(result);
-            final LinkedList<ClassCourse> bestClassCourses = ProblemMoea.solutionToTimetable(bestSolution, inputClasses, classrooms);
+            final LinkedList<ClassCourse> bestClassCourses = Problem.solutionToTimetable(bestSolution, inputClasses, classrooms);
 
             LogService.getInstance().info(Arrays.toString(bestSolution.getObjectives()));
             LogService.getInstance().info(TimetableEvaluationService.evaluateTimetable(bestClassCourses,classrooms));

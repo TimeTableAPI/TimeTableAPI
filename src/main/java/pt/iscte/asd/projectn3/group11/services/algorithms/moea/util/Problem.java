@@ -11,12 +11,12 @@ import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCal
 
 import java.util.*;
 
-public final class ProblemMoea extends AbstractProblem {
+public final class Problem extends AbstractProblem {
 
     private final List<ClassCourse> classCourses;
     private final List<Classroom> classrooms;
 
-    public ProblemMoea(int numberOfVariables, int numberOfObjectives, List<ClassCourse> classes, List<Classroom> classrooms) {
+    public Problem(int numberOfVariables, int numberOfObjectives, List<ClassCourse> classes, List<Classroom> classrooms) {
         super(numberOfVariables, numberOfObjectives);
         this.classCourses = classes;
         this.classrooms = classrooms;

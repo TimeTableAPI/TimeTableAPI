@@ -7,30 +7,31 @@ import java.util.List;
 
 /**
  * <p>Metric to evaluate the capacity of the assigned Classrooms compared to the number of students in each class.</p>
- * <p>The <b>bigger</b> the result the better.</p>
+ * <p>The <b>smaller</b> the result the better.</p>
  */
-public final class EnoughCapacityMetric implements IMetricCalculator {
-	private static final float OBJECTIVE = 1f;
+public final class UnderCapacityMetric implements IMetricCalculator {
+	private static final float OBJECTIVE = 0f;
 
 	/**
 	 * @param classCourseList List<ClassCourse>
 	 * @param classroomsList List<Classroom>
 	 *
-	 * @return a float between 0 and 1 representing the percentage of classes with enough capacity.
+	 * @return a float number representing the ammount of classes with OUT enough capacity.
 	 * */
 	@Override
 	public float evaluate(List<ClassCourse> classCourseList, List<Classroom> classroomsList) {
-		float totalClassCoursesWithClassroom = 0f;
-		float totalClassCoursesWithEnoughCapacity = 0f;
+		//float totalClassCoursesWithClassroom = 0f;
+		float totalClassCoursesNotEnoughCapacity = 0f;
 		for(ClassCourse classCourse : classCourseList){
 			if(classCourse.getClassroom() != null){
-				if(classCourse.getNumberOfStudentsInClass() <= classCourse.getCapacity()){
-					totalClassCoursesWithEnoughCapacity++;
+				if(classCourse.getNumberOfStudentsInClass() > classCourse.getCapacity()){
+					totalClassCoursesNotEnoughCapacity++;
 				}
-				totalClassCoursesWithClassroom ++;
+		//		totalClassCoursesWithClassroom ++;
 			}
 		}
-		return totalClassCoursesWithEnoughCapacity/totalClassCoursesWithClassroom;
+		return totalClassCoursesNotEnoughCapacity;
+		//return totalClassCoursesNotEnoughCapacity/totalClassCoursesWithClassroom;
 	}
 	@Override
 	public float getObjective() {
