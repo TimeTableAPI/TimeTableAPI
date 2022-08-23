@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @ApiIgnore
-public class IndexController {
+public final class IndexController {
 
     //region home
 

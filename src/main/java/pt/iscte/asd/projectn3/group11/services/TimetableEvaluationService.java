@@ -11,9 +11,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * <h1>TimetableEvaluationService</h1>
  * <p>Service to Evaluate a given Timetable (List of {@link Classroom})</p>
- * <p>Computing a list of results for all the different implemented {@link MetricCalculator} stored in METRICSLIST</p>
+ * <p>Computing a list of results for all the different implemented {@link IMetricCalculator} stored in METRICSLIST</p>
  * <p>
- * @see MetricCalculator
+ * @see IMetricCalculator
  * @see ClassCourse
  * @see ClassCourse
  * @see AllocationMetric
@@ -26,9 +26,9 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @see StudentBuildingMovementsMetric
  * </p>
  */
-public class TimetableEvaluationService {
+public final class TimetableEvaluationService {
 
-	public static final LinkedList<MetricCalculator> METRICSLIST = new LinkedList<MetricCalculator>(Arrays.asList(
+	public static final LinkedList<IMetricCalculator> METRICSLIST = new LinkedList<IMetricCalculator>(Arrays.asList(
 			new AllocationMetric(),
 			new GoodCharacteristicsMetric(),
 			new EnoughCapacityMetric(),
@@ -54,7 +54,7 @@ public class TimetableEvaluationService {
 		Queue<MetricResult> globalQueue = new ArrayBlockingQueue<MetricResult>(METRICSLIST.size());
 		List<Thread> threadList = new LinkedList<>();
 
-		for(MetricCalculator metric : METRICSLIST){
+		for(IMetricCalculator metric : METRICSLIST){
 			Thread t1 = new Thread(() -> {
 				float metricresult = metric.evaluate(timetableList, classroomsList);
 				String metricName = metric.getClass().getSimpleName();

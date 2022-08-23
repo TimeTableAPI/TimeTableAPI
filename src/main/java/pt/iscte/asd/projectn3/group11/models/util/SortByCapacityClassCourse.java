@@ -5,7 +5,7 @@ import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 /**
  * <p>Class to implement a comparator for ClassCourses based on their capacity</p>
  */
-public class SortByCapacityClassCourse implements Comparator<ClassCourse> {
+public final class SortByCapacityClassCourse implements Comparator<ClassCourse> {
     /**
      *
      * <p>Method to compare two classCourses capacities</p>

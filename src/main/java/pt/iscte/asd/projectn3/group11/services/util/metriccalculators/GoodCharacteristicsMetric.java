@@ -10,8 +10,8 @@ import java.util.List;
  * <p>Metric that calculates the percentage of Characteristics fulfilled</p>
  * <p>The <b>bigger</b> the result the better.</p>
  */
-public class GoodCharacteristicsMetric implements MetricCalculator{
-	private static float objective =1f;
+public final class GoodCharacteristicsMetric implements IMetricCalculator {
+	private static final float OBJECTIVE =1f;
 
 	/**
 	 * @param classCourseList List<ClassCourse>
@@ -50,7 +50,7 @@ public class GoodCharacteristicsMetric implements MetricCalculator{
 	}
 	@Override
 	public float getObjective() {
-		return objective;
+		return OBJECTIVE;
 	}
 }
 

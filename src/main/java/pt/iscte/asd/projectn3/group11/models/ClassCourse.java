@@ -1,6 +1,8 @@
 package pt.iscte.asd.projectn3.group11.models;
 import pt.iscte.asd.projectn3.group11.models.util.Date;
 import pt.iscte.asd.projectn3.group11.models.util.TimeShift;
+
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +35,7 @@ import java.util.Objects;
  * </ul>
  *
  */
-public class ClassCourse {
+public final class ClassCourse {
 
     public static final String[] HEADER = {
             "Curso",
@@ -55,8 +57,8 @@ public class ClassCourse {
 
     //region MEMBERS
 
-    private final LinkedList<String> courses;
-    private final LinkedList<String> units;
+    private final LinkedHashSet<String> courses;
+    private final LinkedHashSet<String> units;
     private final String shift;
     private final int numberOfStudentsInClass;
     private final int shiftsWithFreeSpots;
@@ -112,8 +114,8 @@ public class ClassCourse {
      * <p>Simple builder class for {@link ClassCourse}</p>
      */
     public static class Builder {
-        private LinkedList<String> courses;
-        private LinkedList<String> units;
+        private LinkedHashSet<String> courses;
+        private LinkedHashSet<String> units;
         private String shift;
         private LinkedList<String> classesOfCourse;
         private int numberOfStudentsInClass;
@@ -129,12 +131,12 @@ public class ClassCourse {
         private Classroom classroom;
 
         public Builder courses(List<String> courses) {
-            this.courses = new LinkedList<>(courses);
+            this.courses = new LinkedHashSet<>(courses);
             return this;
         }
 
         public Builder units(List<String> units) {
-            this.units = new LinkedList<>(units);
+            this.units = new LinkedHashSet<>(units);
             return this;
         }
 
@@ -218,8 +220,8 @@ public class ClassCourse {
      * <p>This is to more easily transfer all of the information into our frontEnd, kinda like a JSON</p>
      */
     public static class ClassCourseJson{
-        public final LinkedList<String> courses;
-        public final LinkedList<String> units;
+        public final LinkedHashSet<String> courses;
+        public final LinkedHashSet<String> units;
         public final String shift;
         public final String numberOfStudentsInClass;
         public final String shiftsWithFreeSpots;
@@ -236,7 +238,7 @@ public class ClassCourse {
         public String classroom;
 
 
-        public ClassCourseJson(LinkedList<String> courses, LinkedList<String> units, String shift, int numberOfStudentsInClass, int shiftsWithFreeSpots, int shiftsWithMoreThanTheCapacity, String weekday, TimeShift beginningHour, TimeShift endHour, Date date, LinkedList<String> askedCharacteristics, LinkedList<String> classesOfCourse, int capacity, LinkedList<String> realCharacteristics, Classroom classroom) {
+        public ClassCourseJson(LinkedHashSet<String> courses, LinkedHashSet<String> units, String shift, int numberOfStudentsInClass, int shiftsWithFreeSpots, int shiftsWithMoreThanTheCapacity, String weekday, TimeShift beginningHour, TimeShift endHour, Date date, LinkedList<String> askedCharacteristics, LinkedList<String> classesOfCourse, int capacity, LinkedList<String> realCharacteristics, Classroom classroom) {
             this.courses = courses;
             this.units = units;
             this.shift = shift;
@@ -283,7 +285,7 @@ public class ClassCourse {
      * Gets Course.
      * @return {@link ClassCourse#courses}
      */
-    public final LinkedList<String> getCourses() {
+    public final LinkedHashSet<String> getCourses() {
         return courses;
     }
 
@@ -291,7 +293,7 @@ public class ClassCourse {
      * Gets Unit.
      * @return {@link ClassCourse#units}
      */
-    public final LinkedList<String> getUnits() {
+    public final LinkedHashSet<String> getUnits() {
         return units;
     }
 

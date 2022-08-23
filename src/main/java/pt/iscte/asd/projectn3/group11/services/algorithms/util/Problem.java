@@ -7,11 +7,11 @@ import org.moeaframework.problem.AbstractProblem;
 import pt.iscte.asd.projectn3.group11.models.ClassCourse;
 import pt.iscte.asd.projectn3.group11.models.Classroom;
 import pt.iscte.asd.projectn3.group11.services.TimetableEvaluationService;
-import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.MetricCalculator;
+import pt.iscte.asd.projectn3.group11.services.util.metriccalculators.IMetricCalculator;
 
 import java.util.*;
 
-public class Problem extends AbstractProblem {
+public final class Problem extends AbstractProblem {
 
     private final List<ClassCourse> classCourses;
     private final List<Classroom> classrooms;
@@ -32,7 +32,7 @@ public class Problem extends AbstractProblem {
 
         int itr = 0;
 
-        for (MetricCalculator me : TimetableEvaluationService.METRICSLIST) {
+        for (IMetricCalculator me : TimetableEvaluationService.METRICSLIST) {
             for(Map.Entry<String, Float> entry: stringFloatHashtable.entrySet()){
                 if (me.getClass().getSimpleName().equals(entry.getKey())){
                     metricNumber[itr] = entry.getValue();

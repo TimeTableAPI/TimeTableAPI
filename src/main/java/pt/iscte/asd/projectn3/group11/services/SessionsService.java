@@ -3,10 +3,24 @@ package pt.iscte.asd.projectn3.group11.services;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class SessionsService {
+public final class SessionsService {
 
-    private static final HashMap<UUID, Context> SESSIONS = new HashMap<>();
-    private static int SESSION_NUM = 0;
+    private final HashMap<UUID, Context> sessions;
+    private int sessionNum;
+
+    private SessionsService (){
+        sessions = new HashMap<>();
+        sessionNum = 0;
+    }
+
+    private static SessionsService INSTANCE = null;
+
+    public static synchronized SessionsService getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new SessionsService();
+        }
+        return INSTANCE;
+    }
 
     //region SESSION_CONTEXT
     /**
@@ -14,18 +28,18 @@ public class SessionsService {
      * @param uuid UUID of the session
      * @param context context of the session
      */
-    public synchronized static void putSession(UUID uuid, Context context)
+    public synchronized void putSession(UUID uuid, Context context)
     {
-        SESSIONS.put(uuid, context);
+        sessions.put(uuid, context);
     }
 
     /**
      * Removes the session of a UUID
      * @param uuid UUID of the session
      */
-    public synchronized static void removeSession(UUID uuid)
+    public synchronized void removeSession(UUID uuid)
     {
-        SESSIONS.remove(uuid);
+        sessions.remove(uuid);
     }
 
     /**
@@ -33,9 +47,9 @@ public class SessionsService {
      * @param uuid UUID of the session
      * @return the context of the session
      */
-    public synchronized static Context getContext(UUID uuid)
+    public synchronized Context getContext(UUID uuid)
     {
-        return SESSIONS.get(uuid);
+        return sessions.get(uuid);
     }
 
     /**
@@ -43,9 +57,9 @@ public class SessionsService {
      * @param uuid UUID of the session
      * @return if the session has context
      */
-    public synchronized static boolean containsSession(UUID uuid)
+    public synchronized boolean containsSession(UUID uuid)
     {
-        return SESSIONS.containsKey(uuid);
+        return sessions.containsKey(uuid);
     }
     //endregion
 
@@ -53,26 +67,26 @@ public class SessionsService {
     /**
      * Increases the number of sessions
      */
-    public synchronized static void increaseSessionNum()
+    public synchronized void increaseSessionNum()
     {
-        SESSION_NUM++;
+        sessionNum++;
     }
 
     /**
      * Decreases the number of sessions
      */
-    public synchronized static void removeSessionNum()
+    public synchronized void removeSessionNum()
     {
-        SESSION_NUM--;
+        sessionNum--;
     }
 
     /**
      * Gets the session number
      * @return Session number
      */
-    public synchronized static int getSessionNum()
+    public synchronized int getSessionNum()
     {
-        return SESSION_NUM;
+        return sessionNum;
     }
     //endregion
 }
